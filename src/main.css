@@ -1,0 +1,44 @@
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@source '../patterns';
+@source '../templates';
+
+@theme inline {
+  --font-display: var(--wp--preset--font-family--bira-display), Impact, sans-serif;
+  --color-pop: var(--wp--preset--color--bira-pop, #1faa59);
+  --color-ink: #111111;
+}
+
+/* ---------- Bagian yang tetap CSS biasa ---------- */
+.split-char { display: inline-block; will-change: transform; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-hero-title] {
+    visibility: hidden;
+    animation: bira-failsafe 0s 4s forwards;
+  }
+}
+@keyframes bira-failsafe { to { visibility: visible; } }
+
+.bira-hero__stage {
+  --hero-3d-color: #1faa59;
+  --hero-card-bg: #ffffff;
+  --hero-card-ink: #111111;
+}
+.bira-hero__stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.bira-hero__stage.is-3d canvas { opacity: 1; }
+.bira-hero__stage.is-3d .bira-hero__stage-fallback { opacity: 0; }
+
+.bira-hero.is-3d-cards .bira-hero__mockup {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease, visibility 0s 0.6s;
+}

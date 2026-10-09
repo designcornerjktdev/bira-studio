@@ -1,0 +1,53 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "color": {
+      "palette": [
+        { "slug": "bira-ink",   "name": "Ink",   "color": "#0B0B0B" },
+        { "slug": "bira-paper", "name": "Paper", "color": "#F6F2EA" },
+        { "slug": "bira-pop",   "name": "Pop",   "color": "#1FAA59" }
+      ]
+    },
+    "typography": {
+  "fontFamilies": [
+    {
+      "slug": "bira-display",
+      "name": "BIRA Display",
+      "fontFamily": "'Anton', Impact, sans-serif",
+      "fontFace": [
+        {
+          "fontFamily": "Anton",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "fontDisplay": "swap",
+          "src": ["file:./assets/fonts/Anton-Regular.woff2"]
+        }
+      ]
+    },
+    {
+      "slug": "bira-body",
+      "name": "BIRA Body",
+      "fontFamily": "'Inter', system-ui, sans-serif",
+      "fontFace": [
+        {
+          "fontFamily": "Inter",
+          "fontWeight": "100 900",
+          "fontStyle": "normal",
+          "fontDisplay": "swap",
+          "src": ["file:./assets/fonts/Inter-Variable.woff2"]
+        }
+      ]
+    }
+  ]
+},
+"styles": {
+  "typography": { "fontFamily": "var(--wp--preset--font-family--bira-body)" },
+  "elements": {
+    "heading": {
+      "typography": { "fontFamily": "var(--wp--preset--font-family--bira-display)" }
+    }
+  }
+}
+  }
+}

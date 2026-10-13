@@ -4,18 +4,13 @@ import { SplitText } from 'gsap/SplitText';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-const RADIUS = 170;   // jangkauan pengaruh kursor (px)
-const PUSH = 28;      // dorongan maksimum (px)
+const RADIUS = 170;
+const PUSH = 28;
 
 export function initHero() {
   const root = document.querySelector('[data-hero]');
   const title = root?.querySelector('[data-hero-title]');
   if (!root || !title) return;
-
-  const desc = root.querySelector('.bira-hero__desc');
-  const cta = root.querySelector('.bira-hero__cta');
-  const mockup = root.querySelector('[data-hero-mockup]');
-  const cards = mockup ? gsap.utils.toArray('[data-mock-card]', mockup) : [];
 
   const mm = gsap.matchMedia();
 
@@ -27,7 +22,6 @@ export function initHero() {
     (ctx) => {
       const { motion, fine } = ctx.conditions;
 
-      // Reduced motion: tampilkan judul apa adanya, tanpa animasi.
       if (!motion) {
         gsap.set(title, { visibility: 'visible' });
         return;
@@ -40,7 +34,6 @@ export function initHero() {
       let touched = [];
       let split;
 
-      // Posisi tiap huruf relatif ke judul, dihitung sekali (bukan tiap mouse move).
       const measure = () => {
         const t = title.getBoundingClientRect();
         centers = chars.map((c) => {
@@ -57,7 +50,7 @@ export function initHero() {
         });
       };
 
-      // ---------- Intro judul (per huruf) ----------
+      // ---------- Pecah judul per huruf (tanpa animasi masuk) ----------
       document.fonts.ready.then(() => {
         split = SplitText.create(title, {
           type: 'lines,chars',
@@ -75,79 +68,21 @@ export function initHero() {
             }));
             touched = chars.map(() => false);
 
-            // Jika re-split terjadi setelah intro (resize), ukur ulang segera.
-            if (ready) measure();
-
-            const tl = gsap.timeline();
-            tl.from(chars, {
-              yPercent: 120,
-              rotationX: -90,
-              opacity: 0,
-              filter: 'blur(12px)',
-              transformPerspective: 700,
-              transformOrigin: '50% 100% -40px',
-              duration: 1.1,
-              ease: 'back.out(1.6)',
-              stagger: 0.035,
-              clearProps: 'filter',
-            });
-
-            const accentChars = title.querySelectorAll('.bira-hero__accent .split-char');
-            if (accentChars.length) {
-              tl.from(
-                accentChars,
-                { color: '#222522', duration: 0.5, stagger: 0.045 },
-                '-=0.5'
-              );
-            }
-
-            tl.call(() => {
-              measure();
-              ready = true;
-            });
-
-            return tl; // dikembalikan agar progres terjaga saat re-split
+            measure();
+            ready = true;
           },
         });
       });
 
-      // ---------- Elemen pendukung ----------
-      const extras = [desc, cta].filter(Boolean);
-      if (extras.length) {
-        gsap.from(extras, {
-          y: 28,
-          opacity: 0,
-          duration: 0.8,
-          delay: 1.1,
-          stagger: 0.12,
-          ease: 'power3.out',
-        });
-      }
-      if (cards.length) {
-        gsap.from(cards, {
-          scale: 0.6,
-          opacity: 0,
-          duration: 0.9,
-          delay: 0.9,
-          stagger: 0.15,
-          ease: 'back.out(1.8)',
-        });
-      }
-
-      // ---------- Parallax scroll (naik dan turun) ----------
+      // ---------- Parallax scroll judul ----------
       gsap.to(title, {
         yPercent: -14,
         opacity: 0.15,
         ease: 'none',
-        scrollTrigger: {
-          trigger: root,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
+        scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: true },
       });
 
-      // ---------- Interaksi kursor (hanya perangkat dengan mouse) ----------
+      // ---------- Huruf bereaksi pada kursor ----------
       let cleanupPointer = () => {};
       if (fine) {
         let px = 0, py = 0, queued = false;
@@ -183,58 +118,16 @@ export function initHero() {
 
         root.addEventListener('pointermove', onMove);
         root.addEventListener('pointerleave', onLeave);
-
-        // Kartu mockup terpencar saat kursor masuk area kanan.
-        const onEnter = () => {
-          if (!ready) return;
-          cards.forEach((c) => {
-            const [x, y, r] = c.dataset.scatter.split(',').map(Number);
-            gsap.to(c, { x, y, rotation: `+=${r}`, duration: 0.6, ease: 'power3.out', overwrite: 'auto' });
-          });
-        };
-        const onExit = () => {
-          cards.forEach((c) =>
-            gsap.to(c, { x: 0, y: 0, rotation: 'auto', duration: 0.6, ease: 'power3.out', overwrite: 'auto' })
-          );
-        };
-        mockup?.addEventListener('pointerenter', onEnter);
-        mockup?.addEventListener('pointerleave', onExit);
-
         cleanupPointer = () => {
           root.removeEventListener('pointermove', onMove);
           root.removeEventListener('pointerleave', onLeave);
-          mockup?.removeEventListener('pointerenter', onEnter);
-          mockup?.removeEventListener('pointerleave', onExit);
         };
       }
 
-
-let destroy3D = () => {};
-let cancelled = false;
-const saveData = navigator.connection?.saveData;
-
-if (!saveData) {
-  const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 800));
-  idle(() => {
-    if (cancelled) return;
-    import('./hero3d.js')
-      .then(({ initHero3D }) => initHero3D(root))
-      .then((destroy) => {
-        if (!destroy) return;
-        if (cancelled) destroy(); // kondisi media berubah saat 3D masih dimuat
-        else destroy3D = destroy;
-      })
-      .catch(() => {});
-  });
-}
-
-      // Dibersihkan otomatis saat kondisi media berubah.
       return () => {
-  cancelled = true;
-  destroy3D();
-  cleanupPointer();
-  split?.revert();
-};
+        cleanupPointer();
+        split?.revert();
+      };
     }
   );
 }

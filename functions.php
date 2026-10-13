@@ -1,7 +1,34 @@
 <?php
+/**
+ * BIRA — standalone theme (tanpa parent theme).
+ */
+
+add_action( 'after_setup_theme', function () {
+	add_theme_support( 'title-tag' );
+	add_theme_support( 'post-thumbnails' );
+	add_theme_support( 'responsive-embeds' );
+	add_theme_support( 'custom-logo', [ 'height' => 58, 'width' => 128, 'flex-height' => true, 'flex-width' => true ] );
+	add_theme_support( 'html5', [ 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script' ] );
+
+	register_nav_menus( [
+		'primary' => __( 'Primary Menu', 'bira' ),
+		'footer'  => __( 'Footer Menu', 'bira' ),
+	] );
+} );
+
+/**
+ * Ambil field ACF tanpa fatal error bila plugin ACF nonaktif.
+ */
+function bira_field( string $key, $post_id = false ) {
+	return function_exists( 'get_field' ) ? get_field( $key, $post_id ) : null;
+}
+
+require_once get_template_directory() . '/inc/template-tags.php';
+require_once get_template_directory() . '/inc/acf-fields.php';
+
 add_action( 'wp_enqueue_scripts', function () {
 	$ver = wp_get_theme()->get( 'Version' );
-	wp_enqueue_style( 'bira-child', get_stylesheet_uri(), [], $ver );
+	wp_enqueue_style( 'bira', get_stylesheet_uri(), [], $ver );
 } );
 
 // Tandai bahwa JS aktif (dipakai CSS untuk menyembunyikan teks sebelum animasi).
@@ -22,10 +49,20 @@ add_action( 'wp_enqueue_scripts', function () {
 	}
 } );
 
-add_action( 'wp_head', function () {
-	$url = get_stylesheet_directory_uri() . '/assets/fonts/Anton-Regular.woff2';
-	echo '<link rel="preload" href="' . esc_url( $url ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
-}, 2 );
+// Font dari Google Fonts CDN: Inter Tight (grotesk untuk semua UI) + Caveat (aksen handwritten).
+const BIRA_FONTS_URL = 'https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..800;1,300..800&family=Caveat:wght@500..700&display=swap';
+
+add_action( 'wp_enqueue_scripts', function () {
+	wp_enqueue_style( 'bira-fonts', BIRA_FONTS_URL, [], null );
+} );
+
+add_filter( 'wp_resource_hints', function ( array $urls, string $relation ): array {
+	if ( 'preconnect' === $relation ) {
+		$urls[] = 'https://fonts.googleapis.com';
+		$urls[] = [ 'href' => 'https://fonts.gstatic.com', 'crossorigin' ];
+	}
+	return $urls;
+}, 10, 2 );
 
 add_action( 'wp_enqueue_scripts', function () {
 	$css = get_stylesheet_directory() . '/assets/dist/main.css';

@@ -3,51 +3,65 @@
   "version": 3,
   "settings": {
     "color": {
+      "defaultPalette": false,
+      "defaultGradients": false,
       "palette": [
-        { "slug": "bira-ink",   "name": "Ink",   "color": "#0B0B0B" },
-        { "slug": "bira-paper", "name": "Paper", "color": "#F6F2EA" },
-        { "slug": "bira-pop",   "name": "Pop",   "color": "#1FAA59" }
+        {
+          "slug": "bira-cream",
+          "name": "Cream Canvas",
+          "color": "#F8EFDD"
+        },
+        {
+          "slug": "bira-green",
+          "name": "BIRA Green",
+          "color": "#167529"
+        },
+        {
+          "slug": "bira-ink",
+          "name": "Near-Black",
+          "color": "#1A1A18"
+        },
+        {
+          "slug": "bira-white",
+          "name": "Pure White",
+          "color": "#FFFFFF"
+        },
+        {
+          "slug": "bira-sand",
+          "name": "Warm Sand",
+          "color": "#BD8A5D"
+        }
       ]
     },
     "typography": {
-  "fontFamilies": [
-    {
-      "slug": "bira-display",
-      "name": "BIRA Display",
-      "fontFamily": "'Anton', Impact, sans-serif",
-      "fontFace": [
+      "fontFamilies": [
         {
-          "fontFamily": "Anton",
-          "fontWeight": "400",
-          "fontStyle": "normal",
-          "fontDisplay": "swap",
-          "src": ["file:./assets/fonts/Anton-Regular.woff2"]
+          "slug": "bira-sans",
+          "name": "BIRA Grotesk",
+          "fontFamily": "\"Inter Tight\", \"Helvetica Neue\", Arial, sans-serif"
+        },
+        {
+          "slug": "bira-hand",
+          "name": "BIRA Handwritten (accent only)",
+          "fontFamily": "\"Caveat\", cursive"
         }
       ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "var(--wp--preset--color--bira-cream)",
+      "text": "var(--wp--preset--color--bira-ink)"
     },
-    {
-      "slug": "bira-body",
-      "name": "BIRA Body",
-      "fontFamily": "'Inter', system-ui, sans-serif",
-      "fontFace": [
-        {
-          "fontFamily": "Inter",
-          "fontWeight": "100 900",
-          "fontStyle": "normal",
-          "fontDisplay": "swap",
-          "src": ["file:./assets/fonts/Inter-Variable.woff2"]
+    "typography": {
+      "fontFamily": "var(--wp--preset--font-family--bira-sans)"
+    },
+    "elements": {
+      "heading": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--bira-sans)"
         }
-      ]
+      }
     }
-  ]
-},
-"styles": {
-  "typography": { "fontFamily": "var(--wp--preset--font-family--bira-body)" },
-  "elements": {
-    "heading": {
-      "typography": { "fontFamily": "var(--wp--preset--font-family--bira-display)" }
-    }
-  }
-}
   }
 }

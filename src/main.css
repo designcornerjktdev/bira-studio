@@ -1,31 +1,207 @@
 @layer theme, base, components, utilities;
 @import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
-@source '../patterns';
-@source '../templates';
+@source '../*.php';
+@source '../template-parts';
 
+/* Token warna dari BIRA Website Guideline (sumber utama: theme.json). */
 @theme inline {
-  --font-display: var(--wp--preset--font-family--bira-display), Impact, sans-serif;
-  --color-pop: var(--wp--preset--color--bira-pop, #1faa59);
-  --color-ink: #111111;
+  --font-display: var(--wp--preset--font-family--bira-sans), "Helvetica Neue", Arial, sans-serif;
+  --font-hand: var(--wp--preset--font-family--bira-hand), cursive;
+  --color-cream: var(--wp--preset--color--bira-cream, #f8efdd);
+  --color-green: var(--wp--preset--color--bira-green, #167529);
+  --color-ink: var(--wp--preset--color--bira-ink, #1a1a18);
+  --color-white: var(--wp--preset--color--bira-white, #ffffff);
+  --color-sand: var(--wp--preset--color--bira-sand, #bd8a5d);
 }
+
+/* ---------- Dasar (menggantikan global styles dari parent theme lama) ---------- */
+@layer base {
+  body {
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-display);
+  }
+  /* H1/H2: oversized, tight-tracked. Utility tracking-* tetap bisa menimpa. */
+  h1, h2, h3, h4, h5, h6, .font-display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.04em; }
+}
+
+/* ---------- Layout: 12 kolom, max 1280px, margin 24px mobile → 80px desktop ---------- */
+@layer components {
+  .bira-container {
+    --bira-margin: clamp(24px, 6.25vw, 80px);
+    width: 100%;
+    max-width: calc(1280px + 2 * var(--bira-margin));
+    margin-inline: auto;
+    padding-inline: var(--bira-margin);
+  }
+
+  /* Mobile: satu kolom. Desktop: 12 kolom, gutter 24px. Anak default selebar penuh, atur dengan lg:col-span-* */
+  .bira-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 24px;
+  }
+  .bira-grid > * { grid-column: 1 / -1; }
+  @media (min-width: 64rem) {
+    .bira-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  }
+
+  .bira-section { padding-block: clamp(4rem, 10vw, 9rem); }
+
+  /* Eyebrow: all-caps, spaced, kecil — di atas headline */
+  .bira-eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .bira-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 4.5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .bira-body { font-size: clamp(1rem, 1.2vw, 1.125rem); line-height: 1.6; }
+}
+
+/* ---------- Header (struktur dari prototype) ---------- */
+html { scroll-padding-top: 88px; } /* anchor tidak tertutup header sticky */
+
+.bira-menu,
+.bira-menu ul { display: flex; flex-wrap: wrap; gap: 2.5rem; list-style: none; margin: 0; padding: 0; }
+.bira-menu a {
+  display: inline-flex; align-items: center; min-height: 44px; /* tap target */
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  transition: color 0.2s;
+}
+.bira-menu a:hover,
+.bira-menu .current-menu-item > a,
+.bira-menu .current_page_item > a { color: var(--color-green); }
+.bira-mobile-nav .bira-menu { flex-direction: column; gap: 0; }
+.bira-mobile-nav .bira-menu a { font-size: 1rem; }
+
+/* ---------- Primary button ----------
+   Normal : pill hitam, titik putih di kiri, teks.
+   Hover  : hijau menyebar dari titik (wave) → titik hilang → teks geser kiri → panah muncul.
+   Keluar : urutan dibalik (panah hilang dulu, lalu titik muncul). Lebar tombol tetap. */
+.bira-btn {
+  --btn-pad: 1.5rem;
+  --btn-slot: 1.5rem;         /* ruang titik di kiri = ruang panah di kanan, jadi lebar tetap */
+  --btn-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.95rem var(--btn-pad);
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: var(--color-white);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Titik */
+.bira-btn__dot {
+  flex: none;
+  width: var(--btn-slot);
+  display: flex;
+  align-items: center;
+}
+.bira-btn__dot::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: currentColor;
+  transition: transform 0.25s var(--btn-ease) 0.3s; /* muncul kembali setelah panah hilang */
+}
+
+/* Wave hijau: lingkaran yang tumbuh dari posisi titik */
+.bira-btn::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: calc(var(--btn-pad) + 0.2rem);
+  top: 50%;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin: -0.2rem 0 0 -0.2rem;
+  border-radius: 50%;
+  background: var(--color-green);
+  transform: scale(0);
+  transition: transform 0.6s var(--btn-ease);
+}
+
+.bira-btn__label {
+  transition: transform 0.35s var(--btn-ease) 0.15s;
+}
+
+/* Panah */
+.bira-btn__arrow {
+  position: absolute;
+  right: var(--btn-pad);
+  top: 50%;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: -0.55rem;
+  opacity: 0;
+  transform: translateX(-0.6rem);
+  transition: opacity 0.2s ease, transform 0.25s var(--btn-ease); /* hilang lebih dulu saat keluar */
+}
+
+.bira-btn:hover::before,
+.bira-btn:focus-visible::before { transform: scale(90); }
+.bira-btn:hover .bira-btn__dot::before,
+.bira-btn:focus-visible .bira-btn__dot::before { transform: scale(0); transition-delay: 0s; }
+.bira-btn:hover .bira-btn__label,
+.bira-btn:focus-visible .bira-btn__label { transform: translateX(calc(-1 * var(--btn-slot))); transition-delay: 0.1s; }
+.bira-btn:hover .bira-btn__arrow,
+.bira-btn:focus-visible .bira-btn__arrow {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.25s ease 0.3s, transform 0.35s var(--btn-ease) 0.3s; /* muncul setelah titik hilang */
+}
+.bira-btn:focus-visible { outline: 2px solid var(--color-green); outline-offset: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bira-btn *, .bira-btn::before, .bira-btn *::before { transition: none !important; }
+}
+
+/* Konten dari editor (halaman & post) */
+.bira-content > * + * { margin-top: 1.25em; }
+.bira-content h2 { margin-top: 2em; font-size: 2rem; line-height: 1.1; text-transform: uppercase; }
+.bira-content h3 { margin-top: 1.75em; font-size: 1.5rem; line-height: 1.15; }
+.bira-content a { color: var(--color-green); text-decoration: underline; }
+.bira-content ul { list-style: disc; padding-left: 1.5em; }
+.bira-content ol { list-style: decimal; padding-left: 1.5em; }
+.bira-content blockquote { border-left: 3px solid var(--color-green); padding-left: 1em; font-style: italic; }
+.bira-content img { border-radius: 0.5rem; }
 
 /* ---------- Bagian yang tetap CSS biasa ---------- */
 .split-char { display: inline-block; will-change: transform; }
 
-@media (prefers-reduced-motion: no-preference) {
+/* @media (prefers-reduced-motion: no-preference) {
   .js [data-hero-title] {
     visibility: hidden;
     animation: bira-failsafe 0s 4s forwards;
   }
 }
-@keyframes bira-failsafe { to { visibility: visible; } }
+@keyframes bira-failsafe { to { visibility: visible; } } */
 
 .bira-hero__stage {
-  --hero-3d-color: #1faa59;
-  --hero-card-bg: #ffffff;
-  --hero-card-ink: #111111;
+  --hero-card-bg: var(--color-white);
+  --hero-card-ink: var(--color-ink);
 }
 .bira-hero__stage canvas {
   display: block;
@@ -41,4 +217,589 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.6s ease, visibility 0s 0.6s;
+}
+
+
+/* ---------- Mockup hero (komposisi seperti BIRA Studio) ---------- */
+.bira-mock {
+  --mock-ink: var(--color-ink);
+  --mock-green: var(--color-green);
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 44rem;
+  justify-self: end;
+  aspect-ratio: 1 / 1;
+  container-type: inline-size; /* ukuran font dan jarak mengikuti lebar mockup (cqw) */
+  color: var(--mock-ink);
+  font-family: var(--font-display);
+}
+.bira-mock > * { position: absolute; margin: 0; }
+
+/* Bingkai garis tipis yang miring */
+.bira-mock__frame {
+  left: 6.6%; top: 28%; width: 70%; height: 70%;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 35%, transparent);
+  transform-origin: 0 0;
+  transform: rotate(-28deg);
+  z-index: 0;
+}
+
+/* Simbol BIRA (opsional, menggantikan bingkai garis) */
+.bira-mock__symbol {
+  left: 29%; top: 8%; height: 90%;
+  rotate: -28deg;
+  z-index: 0;
+  pointer-events: none;
+}
+.bira-mock__symbol img { height: 100%; width: auto; }
+
+/* Kartu */
+.bira-mock__card {
+  overflow: hidden;
+  border: max(4px, 0.8cqw) solid var(--color-white); /* bingkai polaroid seperti prototype */
+  border-radius: 4cqw;
+  background: color-mix(in srgb, var(--color-sand) 35%, var(--color-cream)); /* tampil bila gambar belum diisi */
+  color: var(--color-white);
+  box-shadow: 0 2cqw 5cqw -1.5cqw color-mix(in srgb, var(--color-ink) 30%, transparent);
+}
+.bira-mock__card--a { left: 18.5%; top: 5%;  width: 48%; aspect-ratio: 4 / 5;  transform: rotate(6deg);  z-index: 2; }
+.bira-mock__card--b { left: 54%;   top: 41%; width: 37%; aspect-ratio: 9 / 10; transform: rotate(-1deg); z-index: 3; }
+
+.bira-mock__card img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.bira-mock__card::after { /* gradasi gelap di bagian bawah */
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, color-mix(in srgb, var(--color-ink) 72%, transparent), transparent 55%);
+}
+.bira-mock__meta {
+  position: absolute; z-index: 1;
+  left: 7%; right: 7%; bottom: 6%;
+}
+.bira-mock__arrow {
+  position: absolute; z-index: 1;
+  top: 6%; right: 6%;
+  width: max(22px, 4.2cqw); aspect-ratio: 1;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-white) 92%, transparent);
+  color: var(--mock-ink);
+}
+.bira-mock__arrow svg { width: 55%; height: 55%; }
+
+.bira-mock__pill {
+  display: inline-block;
+  padding: 0.55em 1.1em;
+  border: 1px solid color-mix(in srgb, var(--color-white) 75%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-white) 12%, transparent);
+  font-size: clamp(8px, 1.45cqw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.bira-mock__handle {
+  margin: 1.4cqw 0 0;
+  font-size: clamp(10px, 1.8cqw, 15px);
+  font-weight: 700;
+}
+.bira-mock__caption {
+  margin: 0;
+  max-width: 85%;
+  font-size: clamp(10px, 1.9cqw, 15px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.bira-mock__label {
+  margin: 1cqw 0 0;
+  font-size: clamp(8px, 1.4cqw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.bira-mock__chat {
+  position: absolute; z-index: 1;
+  right: 7%; bottom: 6%;
+  width: max(14px, 2.4cqw);
+}
+.bira-mock__chat svg { display: block; width: 100%; }
+
+/* Stiker hijau */
+.bira-mock__sticker {
+  left: 73%; top: 9%;
+  width: 18%; aspect-ratio: 1;
+  display: grid; place-content: center;
+  border-radius: 50%;
+  background: var(--color-green);
+  color: var(--color-white);
+  box-shadow: 0.7cqw 0.7cqw 0 var(--mock-ink);
+  text-align: center;
+  z-index: 3;
+}
+.bira-mock__sticker-inner {
+  display: grid; justify-items: center; gap: 0.6cqw;
+  transform: rotate(14deg);
+}
+.bira-mock__sticker svg { width: max(10px, 2.6cqw); }
+.bira-mock__sticker p {
+  margin: 0;
+  max-width: 9ch;
+  font-size: clamp(7px, 1.45cqw, 12px);
+  font-weight: 800;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+/* Bintang hijau */
+.bira-mock__star { left: 11%; top: 39%; width: 6.5%; color: var(--mock-green); z-index: 3; }
+.bira-mock__star svg { display: block; width: 100%; }
+
+/* Bubble komentar */
+.bira-mock__comment {
+  left: 13.5%; top: 67%; width: 43%;
+  display: flex; align-items: center; gap: 2cqw;
+  padding: 2cqw 2.6cqw;
+  border-radius: 2.6cqw;
+  background: var(--color-white);
+  box-shadow: 0 1.4cqw 3.6cqw -1.2cqw color-mix(in srgb, var(--color-ink) 25%, transparent);
+  transform: rotate(-6deg);
+  z-index: 4;
+}
+.bira-mock__avatar {
+  flex: none;
+  width: 5.4cqw; aspect-ratio: 1;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--color-sand);
+  font-size: clamp(9px, 1.9cqw, 15px);
+  font-weight: 800;
+}
+.bira-mock__comment small {
+  display: block;
+  font-size: clamp(7px, 1.3cqw, 11px);
+  font-weight: 600;
+  color: color-mix(in srgb, var(--color-ink) 60%, transparent);
+}
+.bira-mock__comment p {
+  margin: 0.3cqw 0 0;
+  font-size: clamp(9px, 1.95cqw, 16px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.bira-mock__heart { flex: none; margin-left: auto; width: max(12px, 2.3cqw); color: var(--mock-green); }
+.bira-mock__heart svg { display: block; width: 100%; }
+
+/* Catatan panah di bawah — aksen handwritten (satu-satunya di section hero) */
+.bira-mock__note {
+  left: 31%; top: 92%;
+  display: flex; align-items: center; gap: 1.6cqw;
+  font-family: var(--font-hand);
+  font-size: clamp(16px, 3cqw, 26px);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  transform: rotate(-3deg);
+  z-index: 1;
+}
+.bira-mock__note svg { flex: none; width: max(14px, 3cqw); }
+
+/* Disembunyikan sampai animasi mulai; pengaman 4 detik jika JS gagal */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-mock-item],
+  .js [data-mock-frame] {
+    opacity: 0;
+    animation: bira-failsafe-show 0s 4s forwards;
+  }
+}
+@keyframes bira-failsafe-show { to { opacity: 1; } }
+/* ======================================================================
+   Section homepage
+   ====================================================================== */
+
+/* ---------- Marquee (satu-satunya horizontal scroll yang disengaja) ---------- */
+.bira-marquee { overflow: hidden; }
+.bira-marquee__track {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  width: max-content;
+  animation: bira-marquee 28s linear infinite;
+}
+@keyframes bira-marquee { to { transform: translateX(calc(-50% - clamp(1.5rem, 3vw, 3rem) / 2)); } }
+
+/* Strip logo klien: jarak sama dengan gap di dalam item, supaya loop mulus. */
+.bira-marquee__track--clients {
+  --gap: 3.5rem;
+  gap: var(--gap);
+  animation-name: bira-marquee-clients;
+  animation-duration: 36s;
+}
+@media (min-width: 48rem) { .bira-marquee__track--clients { --gap: 6rem; } }
+@keyframes bira-marquee-clients { to { transform: translateX(calc(-50% - var(--gap) / 2)); } }
+.bira-clients .bira-marquee:hover .bira-marquee__track { animation-play-state: paused; }
+
+/* ---------- Scroll line: garis kurva yang tergambar saat scroll ---------- */
+/* SVG di atas background section, tapi di bawah konten (.bira-container). */
+.bira-line-wrap { position: relative; }
+.bira-scroll-line {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+.bira-scroll-line path {
+  fill: none;
+  stroke: var(--color-green);
+  stroke-width: clamp(10px, 1.6vw, 22px);
+  stroke-linecap: round;
+}
+.bira-line-wrap .bira-container { position: relative; z-index: 2; }
+
+/* ---------- The Good Stuff: project dalam satu baris horizontal ---------- */
+/* Mobile / reduced motion: swipe native dengan scroll-snap. Desktop: di-pin oleh work.js. */
+.bira-work__viewport {
+  --bira-margin: clamp(24px, 6.25vw, 80px);
+  position: relative;
+  z-index: 2;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.bira-work__viewport::-webkit-scrollbar { display: none; }
+.bira-work__track {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  width: max-content;
+  padding-inline: max(var(--bira-margin), calc((100vw - 1280px) / 2));
+}
+.bira-work__item {
+  --ratio: 1.35;
+  width: min(82vw, calc(var(--work-h, 62vw) * var(--ratio)));
+  scroll-snap-align: start;
+}
+.bira-work__item:nth-child(2) { --ratio: 1.85; }
+.bira-work__item:nth-child(3) { --ratio: 0.85; }
+.bira-work__item--outro {
+  width: auto;
+  align-self: center;
+  padding-right: var(--bira-margin);
+}
+.bira-work__media {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 4px;
+  aspect-ratio: var(--ratio);
+  background: var(--color-green);
+}
+.bira-work__media--sand { background: var(--color-sand); }
+.bira-work__media--ink { background: var(--color-ink); }
+.bira-work__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+.group:hover .bira-work__img { transform: scale(1.035); }
+
+/* Desktop: tinggi media mengikuti tinggi layar supaya seluruh kartu muat saat di-pin. */
+@media (min-width: 64rem) {
+  .bira-work__item { --work-h: clamp(260px, 48vh, 520px); width: calc(var(--work-h) * var(--ratio)); }
+  .bira-work.is-pinned { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding-block: 3rem; }
+  .bira-work.is-pinned .bira-work__viewport { overflow: visible; }
+}
+
+/* ---------- Made for the Feed: kolase editorial ---------- */
+.bira-feed {
+  display: grid;
+  gap: 24px;
+}
+.bira-feed__tile {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--color-ink);
+  box-shadow: 0 18px 40px -24px color-mix(in srgb, var(--color-ink) 60%, transparent);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.bira-feed__tile--2 { background: var(--color-green); }
+.bira-feed__tile--3 { background: var(--color-white); }
+.bira-feed__tile--4 { background: var(--color-sand); }
+.bira-feed__img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.bira-feed__tag {
+  position: absolute; left: 1rem; bottom: 1rem;
+  padding: 0.45em 0.8em;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+@media (min-width: 64rem) {
+  /* 8 kolom di dalam grid utama; tile sengaja tidak rata (rhythm over symmetry) */
+  .bira-feed {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-auto-rows: clamp(6rem, 9vw, 8rem);
+  }
+  .bira-feed__tile { aspect-ratio: auto; }
+  .bira-feed__tile--1 { grid-column: 1 / 5; grid-row: 1 / 5; rotate: -2deg; }
+  .bira-feed__tile--2 { grid-column: 5 / 9; grid-row: 1 / 3; rotate: 1.5deg; }
+  .bira-feed__tile--3 { grid-column: 5 / 8; grid-row: 3 / 6; rotate: -1deg; }
+  .bira-feed__tile--4 { grid-column: 2 / 5; grid-row: 5 / 7; rotate: 2deg; }
+  .bira-feed__tile--5 { grid-column: 5 / 9; grid-row: 6 / 8; rotate: -1.5deg; }
+}
+@media (hover: hover) {
+  .bira-feed__tile:hover { transform: rotate(-1.5deg) scale(1.02); }
+}
+
+/* ---------- Internet People ---------- */
+.bira-person__photo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--color-sand);
+}
+.bira-person__photo img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Aksen ---------- */
+/* Aksen handwritten di CTA (satu-satunya di section ini) */
+.bira-cta__accent {
+  display: inline-block;
+  font-family: var(--font-hand);
+  font-size: 1.15em;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  rotate: -4deg;
+}
+
+/* Link besar: garis bawah dan panah bergerak saat hover ATAU focus */
+.bira-link__text {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 3px no-repeat;
+  transition: background-size 0.35s ease;
+}
+.bira-link__arrow { transition: transform 0.35s ease; }
+.bira-link:hover .bira-link__text,
+.bira-link:focus-visible .bira-link__text { background-size: 100% 3px; }
+.bira-link:hover .bira-link__arrow,
+.bira-link:focus-visible .bira-link__arrow { transform: translateX(0.3em); }
+.bira-link:focus-visible { outline: 3px solid currentColor; outline-offset: 6px; }
+
+/* ---------- Motion: sticker/doodle melayang pelan ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .bira-drift { animation: bira-drift 6s ease-in-out infinite alternate; }
+}
+@keyframes bira-drift {
+  from { translate: 0 0; }
+  to   { translate: 0 -8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bira-marquee__track { animation: none; }
+  .bira-feed__tile { transition: none; }
+}
+
+/* ---------- What We Do: accordion layanan ---------- */
+.bira-acc.is-open .bira-acc__title { color: var(--color-green); }
+.bira-acc.is-open .bira-acc__icon { border-color: var(--color-green); background: var(--color-green); color: var(--color-white); }
+.bira-acc__plus { transition: opacity 0.2s; }
+.bira-acc.is-open .bira-acc__plus { opacity: 0; }
+
+/* Buka-tutup halus: tinggi dianimasikan lewat grid 0fr → 1fr, isi ikut fade + geser. */
+.bira-acc__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.bira-acc.is-open .bira-acc__panel { grid-template-rows: 1fr; }
+.bira-acc__inner {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  translate: 0 -8px;
+  transition: opacity 0.3s ease, translate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.bira-acc.is-open .bira-acc__inner { opacity: 1; translate: 0 0; transition-delay: 0.08s; }
+.bira-acc__title, .bira-acc__icon { transition-duration: 0.3s; }
+@media (prefers-reduced-motion: reduce) {
+  .bira-acc__panel, .bira-acc__inner { transition: none; }
+}
+
+/* Mask baris heading untuk reveal dari garis tengah (data-split="center"). */
+.bira-split-mask { display: block; overflow: hidden; padding-block: 0.06em; margin-block: -0.06em; }
+
+/* ---------- How We Work: timeline proses ---------- */
+.bira-steps::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--color-sand);
+  transform-origin: top;
+  transform: scaleY(var(--fill, 0));
+}
+.bira-step__dot {
+  position: absolute;
+  left: calc(-1.75rem - 6px);
+  top: 3.1rem;
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  border: 1px solid var(--color-ink);
+  background: color-mix(in srgb, var(--color-cream) 50%, transparent);
+  transition: background-color 0.3s, transform 0.3s;
+}
+.bira-step:first-child .bira-step__dot { top: 0.5rem; }
+@media (min-width: 48rem) {
+  .bira-step__dot { left: calc(-2.5rem - 6px); top: 3.6rem; }
+}
+.bira-step.is-active .bira-step__dot { background: var(--color-sand); transform: scale(1.3); }
+.bira-step__title { transition: color 0.3s; }
+.bira-step:not(.is-active) .bira-step__title { color: color-mix(in srgb, var(--color-cream) 45%, transparent); }
+.bira-steps__bar.is-active { background: var(--color-sand); }
+@media (prefers-reduced-motion: reduce) { .bira-steps { --fill: 1; } }
+
+/* ---------- Made for the Feed: kartu moodboard bergaya post sosial ---------- */
+.bira-feed-section { background: color-mix(in srgb, var(--color-sand) 22%, var(--color-cream)); }
+.bira-feed-cards {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-inline: calc(var(--bira-margin) * -1);
+  padding: 2.5rem 2rem 6rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.bira-feed-cards::-webkit-scrollbar { display: none; }
+.bira-feed-card {
+  --tilt: -5deg;
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  width: 225px;
+  padding: 5px;
+  border-radius: 14px;
+  background: var(--color-cream);
+  box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.25);
+  scroll-snap-align: center;
+  rotate: var(--tilt);
+  transition: rotate 0.5s, scale 0.5s;
+  cursor: pointer;
+}
+.bira-feed-card:nth-child(2) { --tilt: 4deg; }
+.bira-feed-card:nth-child(3) { --tilt: -4deg; }
+.bira-feed-card:nth-child(4) { --tilt: 5deg; }
+.bira-feed-card:hover,
+.bira-feed-card:focus-visible { z-index: 30; rotate: 0deg; scale: 1.05; }
+.bira-feed-card:focus-visible { outline: 2px solid var(--color-green); outline-offset: 2px; }
+.bira-feed-card__media {
+  position: relative;
+  aspect-ratio: 0.64;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--color-green);
+}
+.bira-feed-card:nth-child(2) .bira-feed-card__media { background: var(--color-sand); }
+.bira-feed-card:nth-child(3) .bira-feed-card__media { background: var(--color-ink); }
+.bira-feed-card:nth-child(4) .bira-feed-card__media { background: color-mix(in srgb, var(--color-green) 70%, var(--color-ink)); }
+.bira-feed-card__more {
+  max-height: 0;
+  margin-top: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s, opacity 0.3s, margin-top 0.3s;
+}
+.bira-feed-card:hover .bira-feed-card__more,
+.bira-feed-card:focus-visible .bira-feed-card__more { max-height: 3rem; margin-top: 0.75rem; opacity: 1; }
+
+@media (min-width: 40rem) { .bira-feed-card { width: 260px; } }
+@media (min-width: 48rem) {
+  .bira-feed-cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+  .bira-feed-card { width: 100%; }
+  .bira-feed-card:nth-child(even) { translate: 0 3rem; }
+}
+@media (prefers-reduced-motion: reduce) { .bira-feed-card, .bira-feed-card__more { transition: none; } }
+
+/* Mode busur (desktop, diatur oleh src/feed.js): kartu ditumpuk absolut di tengah. */
+@media (min-width: 48rem) {
+  .bira-feed-cards.is-arc {
+    display: block;
+    position: relative;
+    height: min(62vh, 560px);
+    padding: 0;
+    overflow: visible;
+  }
+  .bira-feed-cards.is-arc .bira-feed-card {
+    position: absolute;
+    left: 50%;
+    top: 36%;
+    width: clamp(200px, 17vw, 260px);
+    rotate: none;
+    translate: 0 calc(var(--lift, 0) * 1px);
+    scale: var(--grow, 1);
+    transition: none;
+  }
+  .bira-feed-cards.is-arc .bira-feed-card:hover,
+  .bira-feed-cards.is-arc .bira-feed-card:focus-visible { rotate: none; scale: var(--grow, 1); }
+}
+
+/* ---------- Final CTA ---------- */
+.bira-cta__circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  width: 9rem;
+  height: 9rem;
+  flex: none;
+  border-radius: 999px;
+  background: var(--color-green);
+  color: var(--color-white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: scale 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s;
+}
+@media (min-width: 48rem) { .bira-cta__circle { width: 11rem; height: 11rem; } }
+.bira-cta__circle:hover { scale: 1.06; background: var(--color-ink); }
+.bira-cta__circle:focus-visible { outline: 2px solid var(--color-green); outline-offset: 4px; }
+@media (prefers-reduced-motion: no-preference) {
+  .bira-cta__pulse { animation: bira-pulse 2s ease-out infinite; }
+}
+@keyframes bira-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-green) 60%, transparent); }
+  100% { box-shadow: 0 0 0 10px transparent; }
 }

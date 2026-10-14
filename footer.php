@@ -10,7 +10,8 @@ $socials = array_filter( [
 	'TikTok'    => bira_text( 'footer_tiktok', 'https://tiktok.com/' ),
 ] );
 ?>
-<footer class="bira-footer border-t border-ink/15">
+<footer class="bira-footer relative isolate overflow-clip border-t border-ink/15">
+	<?php echo bira_bg_doodles( [ [ 'sparkle', 'top-[22%] right-[22%] size-7 rotate-[10deg]' ] ] ); ?>
 	<div class="bira-container">
 		<div class="flex flex-col justify-between gap-9 py-10 md:flex-row md:items-center">
 			<a class="bira-logo shrink-0" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
@@ -37,9 +38,6 @@ $socials = array_filter( [
 				<?php endforeach; ?>
 			</ul>
 
-			<a class="bira-footer__top flex size-10 items-center justify-center rounded-full border border-ink/15 transition-colors hover:border-green hover:text-green" href="#" aria-label="<?php esc_attr_e( 'Back to top', 'bira' ); ?>">
-				<svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
-			</a>
 		</div>
 
 		<div class="flex flex-col justify-between gap-2 border-t border-ink/15 py-5 text-[0.625rem] tracking-wider text-ink/55 uppercase sm:flex-row">
@@ -59,6 +57,10 @@ $socials = array_filter( [
 		</div>
 	</div>
 </footer>
+
+<a class="bira-fab" href="#top" data-fab aria-label="<?php esc_attr_e( 'Back to top', 'bira' ); ?>">
+	<svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+</a>
 
 <?php wp_footer(); ?>
 </body>

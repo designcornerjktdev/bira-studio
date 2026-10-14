@@ -25,6 +25,7 @@ function bira_field( string $key, $post_id = false ) {
 
 require_once get_template_directory() . '/inc/template-tags.php';
 require_once get_template_directory() . '/inc/acf-fields.php';
+require_once get_template_directory() . '/inc/projects.php';
 
 add_action( 'wp_enqueue_scripts', function () {
 	$ver = wp_get_theme()->get( 'Version' );
@@ -49,8 +50,8 @@ add_action( 'wp_enqueue_scripts', function () {
 	}
 } );
 
-// Font dari Google Fonts CDN: Inter Tight (grotesk untuk semua UI) + Caveat (aksen handwritten).
-const BIRA_FONTS_URL = 'https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..800;1,300..800&family=Caveat:wght@500..700&display=swap';
+// Font dari Google Fonts CDN: Hanken Grotesk (grotesk untuk semua UI) + Caveat (aksen handwritten).
+const BIRA_FONTS_URL = 'https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&family=Caveat:wght@500..700&display=swap';
 
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'bira-fonts', BIRA_FONTS_URL, [], null );

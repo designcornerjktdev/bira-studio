@@ -65,47 +65,32 @@ add_action( 'acf/include_fields', function () {
 
 	$fields = array_merge(
 		[ $tab( 'hero', 'Hero' ) ],
+		// Urutan mengikuti tampilan hero: headline → teks → 2 CTA → mockup (simbol + 2 kartu).
 		[
-			[ 'key' => 'field_6ac89835a1906', 'name' => 'hero_headline', 'label' => 'Headline', 'type' => 'text' ],
-			[ 'key' => 'field_6ac8abef4ca10', 'name' => 'hero_accent_word', 'label' => 'Kata aksen (hijau)', 'type' => 'text' ],
-			[ 'key' => 'field_6ac8984fa1907', 'name' => 'hero_description', 'label' => 'Description', 'type' => 'textarea' ],
+			[ 'key' => 'field_6ac89835a1906', 'name' => 'hero_headline', 'label' => 'Headline', 'type' => 'textarea', 'rows' => 4, 'new_lines' => '', 'placeholder' => "We make\nbrands part\nof the\nconversation.", 'instructions' => 'Enter = pindah baris di headline.' ],
+			[ 'key' => 'field_6ac8abef4ca10', 'name' => 'hero_accent_word', 'label' => 'Kata aksen (hijau)', 'type' => 'text', 'placeholder' => 'conversation', 'instructions' => 'Kata di headline yang diberi warna hijau.' ],
+			$f( 'hero_lead', 'Kalimat pembuka (tebal)', 'text', [ 'placeholder' => 'Social, content & influence from Indonesia.', 'instructions' => 'Tampil tebal di atas Description.' ] ),
+			[ 'key' => 'field_6ac8984fa1907', 'name' => 'hero_description', 'label' => 'Description', 'type' => 'textarea', 'rows' => 3, 'placeholder' => 'Built for brands that want people to actually talk about them.' ],
 			[ 'key' => 'field_6ac8985ca1908', 'name' => 'hero_cta_label', 'label' => 'CTA utama — label', 'type' => 'text', 'placeholder' => 'See our work' ],
-			[ 'key' => 'field_6ac89866a1909', 'name' => 'hero_cta_url', 'label' => 'CTA utama — URL', 'type' => 'url' ],
-			$hero_post( 1, 'field_6ac8bba663955', [ 'field_6ac8bbd063956', 'field_6ac8bbf363957', 'field_6ac8bc0a63958' ] ),
-			$hero_post( 2, 'field_6ac8bc3163959', [ 'field_6ac8bc316395a', 'field_6ac8bc316395b', 'field_6ac8bc316395c' ] ),
-			$hero_post( 3, 'field_6ac8bc326395d', [ 'field_6ac8bc326395e', 'field_6ac8bc326395f', 'field_6ac8bc3263960' ] ),
-			$hero_post( 4, 'field_6ac8bc3463961', [ 'field_6ac8bc3463962', 'field_6ac8bc3463963', 'field_6ac8bc3463964' ] ),
-		],
-		[
-			$f( 'hero_eyebrow', 'Eyebrow', 'text', [ 'placeholder' => 'Independent studio. Internet people.' ] ),
-			$f( 'hero_lead', 'Kalimat pembuka (tebal)', 'text', [ 'placeholder' => 'Social, content & influence from Indonesia.', 'instructions' => 'Tampil di atas field Description.' ] ),
+			[ 'key' => 'field_6ac89866a1909', 'name' => 'hero_cta_url', 'label' => 'CTA utama — URL', 'type' => 'text', 'placeholder' => '#made-for-the-feed' ],
 			$f( 'hero_cta2_label', 'CTA kedua — label', 'text', [ 'placeholder' => 'Let’s make something' ] ),
 			$f( 'hero_cta2_url', 'CTA kedua — URL', 'text', [ 'placeholder' => '#contact' ] ),
 			$f( 'hero_symbol', 'Simbol BIRA (latar mockup)', 'image', [ 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => 'PNG transparan. Kosongkan untuk memakai garis bingkai.' ] ),
-			$f( 'hero_strip', 'Teks strip bawah', 'text', [ 'placeholder' => 'Social. Content. Influence.' ] ),
+			$hero_post( 1, 'field_6ac8bba663955', [ 'field_6ac8bbd063956', 'field_6ac8bbf363957', 'field_6ac8bc0a63958' ] ),
+			$hero_post( 2, 'field_6ac8bc3163959', [ 'field_6ac8bc316395a', 'field_6ac8bc316395b', 'field_6ac8bc316395c' ] ),
 		],
 
-		[ $tab( 'clients', 'Klien (marquee)' ) ],
+		[ $tab( 'clients', 'Client' ) ],
 		[ $f( 'clients_title', 'Judul strip', 'text', [ 'placeholder' => 'Brands we’ve made some noise with' ] ) ],
-		$numbered( 'client', 'Klien', 5, [ [ 'name', 'Nama brand', 'text' ], [ 'style', 'Class gaya huruf (opsional)', 'text' ] ] ),
+		$numbered( 'client', 'Client', 5, [ [ 'name', 'Nama brand', 'text' ], [ 'style', 'Class gaya huruf (opsional)', 'text' ] ] ),
 
 		[ $tab( 'work', 'The Good Stuff' ) ],
 		[
 			$f( 'work_eyebrow', 'Eyebrow', 'text', [ 'placeholder' => 'The good stuff' ] ),
 			$f( 'work_title', 'Judul', 'text', [ 'placeholder' => 'Stuff we’re proud of' ] ),
 			$f( 'work_all_url', 'URL "All work"', 'text', [ 'placeholder' => '/work' ] ),
+			[ 'key' => 'field_bira_work_note', 'label' => 'Project', 'type' => 'message', 'message' => 'Project diisi di menu <strong>Projects</strong>. Yang dicentang <strong>Featured ★</strong> tampil di sini.' ],
 		],
-		$numbered( 'work_item', 'Project', 3, [
-			[ 'image', 'Gambar', 'image' ],
-			[ 'brand', 'Brand', 'text' ],
-			[ 'tag', 'Badge', 'text' ],
-			[ 'hook', 'Kalimat besar di gambar', 'textarea' ],
-			[ 'cats', 'Kategori (Social / Content / …)', 'text' ],
-			[ 'title', 'Judul project', 'text' ],
-			[ 'text', 'Deskripsi', 'textarea' ],
-			[ 'stats', 'Statistik, pisahkan koma (mis. 20M+ Views, 150+ Content pieces)', 'text' ],
-			[ 'url', 'URL', 'text' ],
-		] ),
 
 		[ $tab( 'wwd', 'What We Do' ) ],
 		[

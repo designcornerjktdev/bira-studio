@@ -15,7 +15,8 @@ $steps   = bira_items( 'hww_step', [
 	[ 'title' => 'Velocity', 'text' => 'Build enough momentum for the conversation to spread.' ],
 ] );
 ?>
-<section id="how-we-work" class="bira-section bira-line-wrap relative overflow-clip bg-ink text-cream" aria-labelledby="how-we-work-title" data-steps data-scroll-line>
+<section id="how-we-work" class="bira-section bira-line-wrap relative isolate overflow-clip bg-ink text-cream" aria-labelledby="how-we-work-title" data-steps data-scroll-line>
+	<?php echo bira_bg_doodles( [ [ 'sparkle', 'top-[10%] right-[8%] size-9 rotate-[14deg]' ], [ 'crown', 'bottom-[8%] left-[4%] size-10 rotate-[-10deg]' ] ], 'text-cream' ); ?>
 	<svg class="bira-scroll-line" aria-hidden="true" focusable="false"><path /></svg>
 	<div class="bira-container relative grid gap-12 md:grid-cols-2 md:gap-16">
 		<div>

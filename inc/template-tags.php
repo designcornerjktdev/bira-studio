@@ -51,6 +51,10 @@ function bira_doodle( string $name, string $class = '' ): string {
 		'wave'  => '<path d="M2 14c2-6 4-6 6 0s4 6 6 0 4-6 6 0 3 5 2 3"/>',
 		'arrow' => '<path d="M4 18 19 5M10 5h9v9"/>',
 		'next'  => '<path d="M4 12h15M13 6l6 6-6 6"/>',
+		// Gaya "business card": sparkle, mahkota, berlian (outline, sedikit tidak simetris).
+		'sparkle' => '<path d="M12 2.5c.7 5 4.3 8.7 9.5 9.6-5.2.8-8.8 4.5-9.6 9.6-.7-5.1-4.4-8.8-9.4-9.5 5.1-.9 8.8-4.6 9.5-9.7Z"/>',
+		'crown'   => '<path d="M3.5 18.5 2.8 7.2l5.4 5.1 3.9-8.6 3.6 8.8 5.6-5.3-.9 11.4c-5.4.6-10.6.6-16.9-.1Z"/>',
+		'diamond' => '<path d="M6.2 3.4h11.4L22 9.2 12 21 2.2 9.3Z"/><path d="M2.4 9.2h19.4M8.9 3.6 7.4 9.3 12 20.6l4.7-11.3-1.6-5.8"/>',
 	];
 	if ( ! isset( $paths[ $name ] ) ) {
 		return '';
@@ -62,6 +66,21 @@ function bira_doodle( string $name, string $class = '' ): string {
 		$view,
 		$paths[ $name ]
 	);
+}
+
+/**
+ * Doodle latar: ikon kecil, samar, di belakang konten. Pakai 1–2 per section.
+ * Section induk perlu class `relative isolate` (doodle memakai z-index -1).
+ *
+ * @param array  $items [ [ nama_doodle, class posisi/ukuran ], ... ]
+ * @param string $tone  Class warna, mis. 'text-green' atau 'text-cream' di latar gelap.
+ */
+function bira_bg_doodles( array $items, string $tone = 'text-green' ): string {
+	$out = '';
+	foreach ( $items as [ $name, $class ] ) {
+		$out .= bira_doodle( $name, "bira-bg-doodle {$tone} {$class}" );
+	}
+	return $out;
 }
 
 /**

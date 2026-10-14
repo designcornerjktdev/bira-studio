@@ -10,6 +10,7 @@ import { initAccordion } from './accordion.js';
 import { initSteps } from './steps.js';
 import { initFeed } from './feed.js';
 import { initPaper } from './paper.js';
+import { initFab } from './fab.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initHero();
@@ -22,5 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initSteps();
   initFeed();
   initPaper();
+  initFab();
   initScrollLine();
 });

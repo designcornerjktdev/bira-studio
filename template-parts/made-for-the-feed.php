@@ -17,7 +17,8 @@ $tiles   = bira_items( 'feed_item', [
 $icon_heart = '<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></svg>';
 $icon_chat  = '<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>';
 ?>
-<section id="made-for-the-feed" class="bira-section bira-feed-section relative overflow-hidden" aria-labelledby="feed-title">
+<section id="made-for-the-feed" class="bira-section relative isolate overflow-hidden" aria-labelledby="feed-title">
+	<?php echo bira_bg_doodles( [ [ 'crown', 'top-[9%] left-[46%] size-9 rotate-[-8deg]' ] ] ); ?>
 	<div class="bira-container">
 		<header class="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
 			<div>

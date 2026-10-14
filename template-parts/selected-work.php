@@ -7,7 +7,8 @@
 $eyebrow  = bira_text( 'work_eyebrow', 'The good stuff' );
 $title    = bira_text( 'work_title', 'Stuff we’re proud of' );
 $all_url  = bira_text( 'work_all_url', '/work' );
-$projects = bira_items( 'work_item', [
+// Project featured dari menu Projects; contoh di bawah hanya tampil selama belum ada yang featured.
+$projects = bira_featured_projects() ?: [
 	[
 		'image'  => 0,
 		'brand'  => 'Relaxa',
@@ -44,9 +45,10 @@ $projects = bira_items( 'work_item', [
 		'url'    => '/work/abc-rela-ngapain',
 		'tone'   => 'ink',
 	],
-] );
+];
 ?>
-<section id="selected-work" class="bira-work bira-section" aria-labelledby="work-title" data-work data-reveal-once>
+<section id="selected-work" class="bira-work bira-section relative isolate" aria-labelledby="work-title" data-work data-reveal-once>
+	<?php echo bira_bg_doodles( [ [ 'star', 'top-[9%] right-[7%] size-9 rotate-[10deg]' ], [ 'wave', 'bottom-[6%] left-[38%] w-16' ] ] ); ?>
 	<div class="bira-container">
 		<header class="mb-12 flex flex-col justify-between gap-6 sm:flex-row sm:items-end" data-reveal>
 			<div>
@@ -66,7 +68,7 @@ $projects = bira_items( 'work_item', [
 				<?php $stats = array_filter( array_map( 'trim', explode( ',', (string) $project['stats'] ) ) ); ?>
 				<li class="bira-work__item">
 					<article class="group">
-						<a class="block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green" href="<?php echo esc_url( home_url( $project['url'] ) ); ?>">
+						<a class="block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green" href="<?php echo esc_url( str_starts_with( $project['url'], 'http' ) ? $project['url'] : home_url( $project['url'] ) ); ?>">
 							<div class="bira-work__media bira-work__media--<?php echo esc_attr( $project['tone'] ); ?>">
 								<?php
 								if ( ! empty( $project['image'] ) ) {
@@ -80,8 +82,9 @@ $projects = bira_items( 'work_item', [
 								</div>
 								<div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white md:p-7">
 									<span class="max-w-[90%] whitespace-pre-line text-[clamp(2rem,3.4vw,4rem)] leading-[0.97] font-extrabold tracking-[-0.065em]"><?php echo esc_html( $project['hook'] ); ?></span>
-									<span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-cream text-ink transition-colors group-hover:bg-green group-hover:text-white md:size-12">
-										<?php echo bira_doodle( 'arrow', 'size-5' ); ?>
+									<span class="bira-swipe-arrow relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-cream text-ink transition-colors group-hover:bg-green group-hover:text-white md:size-12">
+										<?php echo bira_doodle( 'arrow', 'bira-swipe-arrow__out size-5' ); ?>
+										<?php echo bira_doodle( 'arrow', 'bira-swipe-arrow__in absolute size-5' ); ?>
 									</span>
 								</div>
 							</div>

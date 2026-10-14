@@ -13,10 +13,12 @@ $items = bira_items( 'wwd_item', [
 	[ 'title' => 'Culture', 'text' => 'Read the room. Then become part of it.', 'desc' => 'We listen to what the internet is already talking about, spot the moments worth joining, and help your brand show up like it belongs there.', 'tags' => 'Social listening, Trend activation, Community conversations, Cultural moments' ],
 ] );
 ?>
-<section id="what-we-do" class="bira-section border-b border-ink/15" aria-labelledby="what-we-do-title">
+<section id="what-we-do" class="bira-section relative isolate overflow-clip border-b border-ink/15" aria-labelledby="what-we-do-title">
+	<?php echo bira_bg_doodles( [ [ 'diamond', 'bottom-[7%] right-[5%] size-10 rotate-[-8deg]' ] ] ); ?>
 	<div class="bira-container">
 		<header class="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-			<div>
+			<div class="relative">
+				<?php echo bira_doodle( 'sparkle', 'bira-drift absolute -top-3 -right-12 hidden size-9 rotate-[14deg] text-green md:block [&_path]:stroke-[1.8]' ); ?>
 				<span class="bira-eyebrow text-green">[ What we do ]</span>
 				<?php // data-split="center": baris 1 naik dari garis tengah, baris 2 turun (lihat split-heading.js). ?>
 				<h2 id="what-we-do-title" class="bira-h2 mt-4 text-[clamp(2.5rem,5.2vw,5.3rem)] leading-[1.02] font-extrabold tracking-[-0.02em]" data-split="center">

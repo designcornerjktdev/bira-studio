@@ -33,7 +33,8 @@ $card_img = static function ( $att ) {
 	}
 };
 ?>
-<section class="bira-hero relative overflow-clip bg-cream" data-hero>
+<section class="bira-hero relative isolate overflow-clip bg-cream" data-hero>
+	<?php echo bira_bg_doodles( [ [ 'sparkle', 'top-[16%] left-[44%] size-8 rotate-[12deg]' ], [ 'wave', 'bottom-[10%] left-[3%] w-16 rotate-[-8deg]' ] ] ); ?>
 	<div class="bira-container">
 		<div class="bira-grid items-center gap-y-8 pt-[clamp(2.5rem,6vw,4.75rem)] lg:min-h-[min(80svh,640px)]">
 			<div class="bira-hero__text relative z-10 lg:col-span-7">
@@ -68,16 +69,16 @@ $card_img = static function ( $att ) {
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
 					</span>
 					<div class="bira-mock__meta">
-						<span class="bira-mock__pill"><?php echo esc_html( $a['caption'] ); ?></span>
 						<p class="bira-mock__handle"><?php echo esc_html( $a['handle'] ); ?></p>
+						<p class="bira-mock__caption"><?php echo esc_html( $a['caption'] ); ?></p>
 					</div>
 				</article>
 
 				<article class="bira-mock__card bira-mock__card--b" data-mock-item data-depth="0.9" data-spread="9 6 5">
 					<?php $card_img( $b['image'] ); ?>
 					<div class="bira-mock__meta">
-						<p class="bira-mock__caption"><?php echo esc_html( $b['caption'] ); ?></p>
 						<p class="bira-mock__label"><?php echo esc_html( $b['handle'] ); ?></p>
+						<p class="bira-mock__caption"><?php echo esc_html( $b['caption'] ); ?></p>
 					</div>
 					<span class="bira-mock__chat" aria-hidden="true">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.6A8 8 0 1 1 21 12Z"/></svg>

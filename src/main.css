@@ -1325,3 +1325,15 @@ html {
     translate: none;
   }
 }
+
+/* The Good Stuff: hook di kartu digaris bawahi saat kartu di-hover (garis tumbuh dari kiri, per baris). */
+.bira-work__hook {
+  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 0.14em) / 0 0.08em no-repeat; /* naikkan angka 0.14em agar garis lebih dekat ke teks */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .bira-work__hook,
+.group:focus-within .bira-work__hook {
+  background-size: 100% 0.08em;
+}

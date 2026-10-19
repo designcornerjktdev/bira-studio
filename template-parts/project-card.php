@@ -19,7 +19,7 @@ $url     = str_starts_with( $project['url'], 'http' ) ? $project['url'] : home_u
 			<div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-black/15"></div>
 			<div class="absolute inset-x-0 top-0 flex items-start justify-between p-5 md:p-7">
 				<span class="text-xl font-extrabold tracking-[-0.07em] text-white uppercase"><?php echo esc_html( $project['brand'] ); ?></span>
-				<span class="rounded-full border border-white/60 bg-black/15 px-2.5 py-1 text-[0.5rem] font-semibold tracking-wider text-white uppercase"><?php echo esc_html( $project['tag'] ); ?></span>
+				<span class="rounded-full border border-white/60 bg-black/15 px-2.5 py-1 text-sm font-semibold tracking-wider text-white uppercase"><?php echo esc_html( $project['tag'] ); ?></span>
 			</div>
 			<div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white md:p-7">
 				<span class="max-w-[90%] whitespace-pre-line"><span class="bira-work__hook text-[clamp(2rem,3.4vw,4rem)] leading-[0.97] font-extrabold tracking-[-0.065em]"><?php echo esc_html( $project['hook'] ); ?></span></span>
@@ -30,7 +30,7 @@ $url     = str_starts_with( $project['url'], 'http' ) ? $project['url'] : home_u
 			</div>
 		</div>
 		<div class="pt-5">
-			<p class="text-[0.625rem] font-bold tracking-[0.1em] text-green uppercase"><?php echo esc_html( $project['cats'] ); ?></p>
+			<p class="text-sm font-bold tracking-[0.1em] text-green uppercase"><?php echo esc_html( $project['cats'] ); ?></p>
 			<h3 class="mt-2 text-lg font-bold tracking-[-0.04em] md:text-xl"><?php echo esc_html( $project['title'] ); ?></h3>
 			<p class="mt-2 max-w-md text-sm leading-relaxed text-ink/60"><?php echo esc_html( $project['text'] ); ?></p>
 		</div>
@@ -38,7 +38,7 @@ $url     = str_starts_with( $project['url'], 'http' ) ? $project['url'] : home_u
 			<div class="mt-4 flex flex-wrap gap-5 border-t border-ink/15 pt-3">
 				<?php foreach ( $stats as $stat ) : ?>
 					<?php [ $num, $label ] = array_pad( explode( ' ', $stat, 2 ), 2, '' ); ?>
-					<span class="text-[0.625rem] font-semibold tracking-wide uppercase"><span class="mr-1.5 font-extrabold"><?php echo esc_html( $num ); ?></span><?php echo esc_html( $label ); ?></span>
+					<span class="text-sm font-semibold tracking-wide uppercase"><span class="mr-1.5 font-extrabold"><?php echo esc_html( $num ); ?></span><?php echo esc_html( $label ); ?></span>
 				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>

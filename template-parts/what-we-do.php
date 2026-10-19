@@ -26,7 +26,7 @@ $items = bira_items( 'wwd_item', [
 					<span class="bira-split-mask"><span class="block text-ink/45" data-split-line="down"><?php echo esc_html( $muted ); ?></span></span>
 				</h2>
 			</div>
-			<p class="max-w-[230px] text-xs leading-[1.8] whitespace-pre-line text-ink/65" data-reveal><?php echo esc_html( $intro ); ?></p>
+			<p class="max-w-[230px] text-sm leading-[1.8] whitespace-pre-line text-ink/65" data-reveal><?php echo esc_html( $intro ); ?></p>
 		</header>
 
 		<div class="border-t border-ink" data-accordion>
@@ -37,9 +37,9 @@ $items = bira_items( 'wwd_item', [
 				?>
 				<div class="bira-acc group border-b border-ink/15 transition-colors<?php echo $open ? ' is-open' : ''; ?>">
 					<button type="button" id="service-trigger-<?php echo (int) $i; ?>" class="flex w-full items-center gap-5 px-2 py-6 text-left md:gap-10 md:px-5 md:py-7" aria-expanded="<?php echo $open ? 'true' : 'false'; ?>" aria-controls="service-<?php echo (int) $i; ?>">
-						<span class="self-start pt-2 text-[0.625rem] text-ink/65"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
+						<span class="self-start pt-2 text-sm text-ink/65"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
 						<span class="bira-acc__title text-[clamp(2.8rem,6vw,6rem)] leading-none font-extrabold tracking-[-0.02em] uppercase transition-colors group-hover:text-green"><?php echo esc_html( $item['title'] ); ?></span>
-						<span class="ml-auto hidden text-[0.6875rem] text-ink/60 lg:block"><?php echo esc_html( $item['text'] ); ?></span>
+						<span class="ml-auto hidden text-sm text-ink/60 lg:block"><?php echo esc_html( $item['text'] ); ?></span>
 						<span class="bira-acc__icon ml-auto flex size-10 shrink-0 items-center justify-center rounded-full border border-ink/15 transition-colors lg:ml-10" aria-hidden="true">
 							<svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path class="bira-acc__plus" d="M12 5v14"/></svg>
 						</span>
@@ -47,14 +47,14 @@ $items = bira_items( 'wwd_item', [
 					<div id="service-<?php echo (int) $i; ?>" role="region" aria-labelledby="service-trigger-<?php echo (int) $i; ?>" class="bira-acc__panel"<?php echo $open ? "" : " inert"; ?>>
 						<div class="bira-acc__inner">
 							<div class="pb-7 pl-11 pr-5 md:pl-[82px]">
-								<p class="mb-5 text-xs text-ink/65 lg:hidden"><?php echo esc_html( $item['text'] ); ?></p>
+								<p class="mb-5 text-sm text-ink/65 lg:hidden"><?php echo esc_html( $item['text'] ); ?></p>
 								<?php if ( ! empty( $item['desc'] ) ) : ?>
 									<p class="bira-body mb-6 max-w-[60ch] text-ink/75"><?php echo esc_html( $item['desc'] ); ?></p>
 								<?php endif; ?>
 								<?php if ( $tags ) : ?>
 									<ul class="flex flex-wrap gap-x-6 gap-y-3">
 										<?php foreach ( $tags as $tag ) : ?>
-											<li class="flex items-center gap-2 text-[0.6875rem]"><?php echo bira_doodle( 'arrow', 'size-3 text-green' ); ?><?php echo esc_html( $tag ); ?></li>
+											<li class="flex items-center gap-2 text-sm"><?php echo bira_doodle( 'arrow', 'size-3 text-green' ); ?><?php echo esc_html( $tag ); ?></li>
 										<?php endforeach; ?>
 									</ul>
 								<?php endif; ?>

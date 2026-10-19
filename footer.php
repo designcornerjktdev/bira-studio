@@ -25,12 +25,12 @@ $socials = array_filter( [
 				?>
 			</a>
 
-			<p class="text-[0.6875rem] leading-relaxed font-bold tracking-[0.1em] whitespace-pre-line uppercase"><?php echo esc_html( $tagline ); ?></p>
+			<p class="text-sm leading-relaxed font-bold tracking-[0.1em] whitespace-pre-line uppercase"><?php echo esc_html( $tagline ); ?></p>
 
 			<ul class="flex flex-wrap gap-6">
 				<?php foreach ( $socials as $name => $href ) : ?>
 					<li>
-						<a class="bira-link inline-flex min-h-11 items-center gap-2 text-[0.6875rem] font-bold tracking-[0.12em] uppercase" href="<?php echo esc_url( $href ); ?>"<?php echo str_starts_with( $href, 'http' ) ? ' target="_blank" rel="noopener"' : ''; ?>>
+						<a class="bira-link inline-flex min-h-11 items-center gap-2 text-sm font-bold tracking-[0.12em] uppercase" href="<?php echo esc_url( $href ); ?>"<?php echo str_starts_with( $href, 'http' ) ? ' target="_blank" rel="noopener"' : ''; ?>>
 							<span class="bira-link__text"><?php echo esc_html( $name ); ?></span>
 							<?php echo bira_doodle( 'arrow', 'bira-link__arrow size-3.5' ); ?>
 						</a>
@@ -40,7 +40,7 @@ $socials = array_filter( [
 
 		</div>
 
-		<div class="flex flex-col justify-between gap-2 border-t border-ink/15 py-5 text-[0.625rem] tracking-wider text-ink/55 uppercase sm:flex-row">
+		<div class="flex flex-col justify-between gap-2 border-t border-ink/15 py-5 text-sm tracking-wider text-ink/55 uppercase sm:flex-row">
 			<span>&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>. <?php echo esc_html( $legal ); ?></span>
 			<?php if ( has_nav_menu( 'footer' ) ) : ?>
 				<nav aria-label="<?php esc_attr_e( 'Footer', 'bira' ); ?>">

@@ -34,7 +34,7 @@ $people = bira_items( 'people_member', [
 		<ul class="bira-paper grid gap-6 sm:grid-cols-2 lg:grid-cols-5" data-paper>
 			<?php foreach ( $people as $i => $person ) : ?>
 				<li class="bira-paper__card">
-					<p class="text-xs font-semibold tracking-[0.2em] uppercase">
+					<p class="text-sm font-semibold tracking-[0.2em] uppercase">
 						<span class="text-green"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
 						<?php echo esc_html( $person['role'] ); ?>
 					</p>

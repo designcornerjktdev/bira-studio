@@ -1,3 +1,5 @@
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 // Filter kategori di halaman /work: sembunyikan kartu yang tidak punya kategori terpilih.
 export function initWorkFilter() {
   document.querySelectorAll('[data-work-filter]').forEach((root) => {
@@ -16,6 +18,9 @@ export function initWorkFilter() {
           shown += match;
         });
         if (count) count.textContent = shown;
+        // Tinggi grid berubah: hitung ulang posisi animasi scroll di bawahnya (mis. Final CTA),
+        // kalau tidak, elemen yang naik ke layar tetap tersembunyi menunggu posisi lama.
+        ScrollTrigger.refresh();
       }),
     );
   });

@@ -77,7 +77,7 @@
   /* Eyebrow: all-caps, spaced, kecil — di atas headline */
   .bira-eyebrow {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 600;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -117,7 +117,7 @@ html {
   display: inline-flex;
   align-items: center;
   min-height: 44px; /* tap target */
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -152,7 +152,7 @@ html {
   border-radius: 4px;
   background: var(--color-ink);
   color: var(--color-white);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1;
@@ -582,6 +582,15 @@ html {
   transform: rotate(-3deg);
   z-index: 1;
 }
+/* Mobile: lebih kecil dan di tengah mockup (posisi via left/right, karena transform dipakai animasi GSAP). */
+@media (max-width: 47.99rem) {
+  .bira-mock__note {
+    left: 0;
+    right: 0;
+    justify-content: center;
+    font-size: 18px;
+  }
+}
 .bira-mock__note svg {
   flex: none;
   width: max(14px, 3cqw);
@@ -675,6 +684,8 @@ html {
   z-index: 2;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  /* Snap berhenti sejauh margin container, jadi kartu pertama tidak mepet kiri. */
+  scroll-padding-inline: max(var(--bira-margin), calc((100vw - 1280px) / 2));
   scrollbar-width: none;
 }
 .bira-work__viewport::-webkit-scrollbar {
@@ -784,7 +795,7 @@ html {
   padding: 0.45em 0.8em;
   background: var(--color-cream);
   color: var(--color-ink);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -1168,8 +1179,9 @@ html {
   flex: none;
   border-radius: 999px;
   background: var(--color-green);
+  padding-inline: 1rem; /* teks tidak menyentuh tepi lingkaran */
   color: var(--color-white);
-  font-size: 2rem;
+  font-size: 1.25rem; /* mobile: muat di lingkaran 9rem */
   font-weight: 700;
   line-height: 1.05;
   text-align: center;
@@ -1181,6 +1193,7 @@ html {
 }
 @media (min-width: 48rem) {
   .bira-cta__circle {
+    font-size: 2rem;
     width: 11rem;
     height: 11rem;
   }
@@ -1337,17 +1350,33 @@ html {
 }
 
 /* ---------- Halaman /work (archive-bira_project.php) ---------- */
+/* Grid 2 kolom bergaya masonry: tinggi kartu mengikuti rasio asli gambarnya
+   (landscape → pendek, portrait → tinggi). Kartu tanpa gambar memakai rasio 1.35. */
+.bira-work-grid__item {
+  --ratio: 1.35;
+  break-inside: avoid;
+  margin-bottom: 3.5rem;
+}
 @media (min-width: 48rem) {
-  .bira-work-grid__item:nth-child(even of :not([hidden])) {
-    padding-top: 4rem; /* kolom kanan turun sedikit, seperti prototype */
+  .bira-work-grid {
+    columns: 2;
+    column-gap: 3rem;
   }
+}
+.bira-work-grid .bira-work__media:has(.bira-work__img) {
+  aspect-ratio: auto;
+}
+.bira-work-grid .bira-work__img {
+  position: static;
+  display: block;
+  height: auto;
 }
 .bira-filter {
   min-height: 44px;
   padding: 0.625rem 1rem;
   border: 1px solid color-mix(in srgb, var(--color-ink) 15%, transparent);
   border-radius: 999px;
-  font-size: 0.625rem;
+  font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1373,4 +1402,12 @@ html {
 .bira-filter:focus-visible {
   outline: 2px solid var(--color-green);
   outline-offset: 3px;
+}
+
+/* ---------- Detail project (single-bira_project.php) ---------- */
+.bira-case__tint {
+  background: color-mix(in srgb, var(--color-sand) 22%, var(--color-cream));
+}
+.bira-case__next {
+  --ratio: 1.85; /* kartu "Up next" melebar, seperti prototype */
 }

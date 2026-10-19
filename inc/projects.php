@@ -34,7 +34,7 @@ add_action( 'init', function () {
 		'menu_icon'     => 'dashicons-portfolio',
 		'menu_position' => 5,
 		'show_in_rest'  => true,
-		'supports'      => [ 'title', 'editor', 'excerpt', 'thumbnail', 'page-attributes' ],
+		'supports'      => [ 'title', 'excerpt', 'thumbnail', 'page-attributes' ], // tanpa editor: isi halaman detail lewat field Case Study Page
 	] );
 
 	// Kategori project bergaya tag: pilih yang sudah ada (autocomplete / "most used") atau ketik baru langsung.
@@ -105,6 +105,37 @@ add_action( 'acf/include_fields', function () {
 		],
 		'location' => [ [ [ 'param' => 'post_type', 'operator' => '==', 'value' => 'bira_project' ] ] ],
 		'position' => 'side',
+	] );
+
+	// Isi halaman detail /work/{slug} (single-bira_project.php). Bagian yang kosong tidak ditampilkan.
+	$tab = static fn( string $name, string $label ): array => [ 'key' => 'field_bira_project_tab_' . $name, 'label' => $label, 'type' => 'tab', 'placement' => 'top' ];
+	acf_add_local_field_group( [
+		'key'      => 'group_bira_project_case',
+		'title'    => 'Case Study Page',
+		'fields'   => [
+			$tab( 'intro', 'Intro' ),
+			$f( 'lede', 'Tagline', 'text', [ 'placeholder' => 'A little candy. A lot of conversation.', 'instructions' => 'Short line under the title.' ] ),
+			$f( 'chips', 'Approach tags', 'text', [ 'placeholder' => 'e.g. Social-first', 'instructions' => 'Type a tag, then press Enter or comma to add it.', 'wrapper' => [ 'class' => 'bira-stats-field' ] ] ),
+			$f( 'note', 'Disclaimer (optional)', 'textarea', [ 'rows' => 2, 'instructions' => 'Small note with a green line, e.g. that imagery is a placeholder.' ] ),
+
+			$tab( 'story', 'Story' ),
+			$f( 'challenge', '01 — The Challenge', 'textarea', [ 'rows' => 3 ] ),
+			$f( 'insight', '02 — The Insight', 'textarea', [ 'rows' => 3 ] ),
+			$f( 'idea', '03 — The Idea', 'textarea', [ 'rows' => 3, 'instructions' => 'Shown big on a tinted band.' ] ),
+
+			$tab( 'execution', 'Execution' ),
+			$f( 'execution_title', '04 — Execution title', 'textarea', [ 'rows' => 2, 'new_lines' => '', 'placeholder' => "Made to live\nin the feed.", 'instructions' => 'Press Enter for a new line.' ] ),
+			$f( 'execution', '04 — Execution text', 'textarea', [ 'rows' => 3 ] ),
+			$f( 'content', '05 — The Content', 'textarea', [ 'rows' => 3 ] ),
+			$f( 'content_image', 'Supporting image', 'image', [ 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => 'Portrait works best (about 7:8).' ] ),
+			$f( 'people', '06 — The People', 'textarea', [ 'rows' => 3 ] ),
+
+			$tab( 'results', 'Results' ),
+			[ 'key' => 'field_bira_project_results_msg', 'label' => 'Numbers', 'type' => 'message', 'message' => 'The big numbers come from <strong>Stats</strong> in Project Details.' ],
+			$f( 'results_note', 'Results note (optional)', 'textarea', [ 'rows' => 2, 'instructions' => 'Small print under the numbers.' ] ),
+		],
+		'location' => [ [ [ 'param' => 'post_type', 'operator' => '==', 'value' => 'bira_project' ] ] ],
+		'position' => 'normal',
 	] );
 } );
 
@@ -191,3 +222,20 @@ add_action( 'admin_enqueue_scripts', function ( string $hook ) {
 		.bira-tags .bira-tags__entry{flex:1;min-width:120px;border:0!important;box-shadow:none!important;padding:2px!important;min-height:24px;background:transparent}
 	' );
 } );
+
+/**
+ * Project berikutnya (urutan sama dengan /work), kembali ke awal setelah yang terakhir.
+ */
+function bira_next_project( int $id ): ?WP_Post {
+	$ids = get_posts( [
+		'post_type'      => 'bira_project',
+		'posts_per_page' => -1,
+		'fields'         => 'ids',
+		'orderby'        => [ 'menu_order' => 'ASC', 'date' => 'DESC' ],
+	] );
+	$i = array_search( $id, $ids, true );
+	if ( false === $i || count( $ids ) < 2 ) {
+		return null;
+	}
+	return get_post( $ids[ ( $i + 1 ) % count( $ids ) ] );
+}

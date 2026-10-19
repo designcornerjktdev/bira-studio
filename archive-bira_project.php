@@ -1,7 +1,7 @@
 <?php
 /**
  * Halaman /work — semua project (struktur dari prototype bira-preview /work).
- * Hero → filter kategori → grid 2 kolom berselang-seling → catatan → Final CTA.
+ * Hero → filter kategori → grid project 2 kolom (tinggi mengikuti rasio gambar) → Final CTA.
  */
 get_header();
 
@@ -15,7 +15,7 @@ foreach ( $projects as $project ) {
 ?>
 <section class="bira-container pt-16 pb-12 md:pt-24 md:pb-16">
 	<span class="bira-eyebrow mb-7 text-green" data-reveal>[ Our corner of the internet ]</span>
-	<h1 class="m-0 text-[clamp(3.7rem,9vw,9rem)] leading-[0.95] font-extrabold tracking-[-0.04em] uppercase">
+	<h1 class="m-0 text-[9.2vw] sm:text-[clamp(3.7rem,9vw,9rem)] leading-[0.95] font-extrabold tracking-[-0.04em] uppercase">
 		Good work.<br>
 		<span class="text-green">Great conversations.</span>
 	</h1>
@@ -31,12 +31,12 @@ foreach ( $projects as $project ) {
 					<button type="button" class="bira-filter" aria-pressed="false" data-filter="<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( $label ); ?></button>
 				<?php endforeach; ?>
 			</div>
-			<p class="text-[0.625rem] tracking-wide text-ink/60 uppercase" aria-live="polite"><span data-filter-count><?php echo count( $projects ); ?></span> Projects / explorations</p>
+			<p class="text-sm tracking-wide text-ink/60 uppercase" aria-live="polite"><span data-filter-count><?php echo count( $projects ); ?></span> Projects / explorations</p>
 		</div>
 
-		<ul class="grid items-start gap-x-12 gap-y-14 md:grid-cols-2">
-			<?php foreach ( $projects as $i => $project ) : ?>
-				<li class="bira-work-grid__item" style="--ratio: <?php echo $i % 2 ? '0.85' : '1.35'; ?>" data-cats="<?php echo esc_attr( implode( ' ', array_keys( bira_project_cats( $project['cats'] ) ) ) ); ?>">
+		<ul class="bira-work-grid">
+			<?php foreach ( $projects as $project ) : ?>
+				<li class="bira-work-grid__item" data-cats="<?php echo esc_attr( implode( ' ', array_keys( bira_project_cats( $project['cats'] ) ) ) ); ?>">
 					<?php get_template_part( 'template-parts/project-card', null, [ 'project' => $project ] ); ?>
 				</li>
 			<?php endforeach; ?>

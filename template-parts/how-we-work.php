@@ -37,7 +37,7 @@ $steps   = bira_items( 'hww_step', [
 			<?php foreach ( $steps as $i => $step ) : ?>
 				<li class="bira-step relative py-8 first:pt-0 last:pb-0 md:py-12<?php echo 0 === $i ? ' is-active' : ''; ?>">
 					<span class="bira-step__dot" aria-hidden="true"></span>
-					<span class="mb-3 block text-[0.625rem] text-sand"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
+					<span class="mb-3 block text-sm text-sand"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
 					<h3 class="bira-step__title text-4xl leading-none font-extrabold tracking-[-0.02em] uppercase md:text-5xl"><?php echo esc_html( $step['title'] ); ?></h3>
 					<p class="mt-4 max-w-sm text-sm leading-relaxed text-cream/75"><?php echo esc_html( $step['text'] ); ?></p>
 				</li>

@@ -17,7 +17,7 @@ $clients = array_map( static fn( string $name, int $i ): array => [ 'name' => $n
 ?>
 <section class="bira-clients border-t border-b border-ink/15 py-9 md:py-12 mt-12" aria-label="<?php esc_attr_e( 'Client logo strip', 'bira' ); ?>">
 	<div class="bira-container">
-		<h2 class="text-[0.6875rem] font-bold tracking-[0.14em] uppercase"><?php echo esc_html( $clients_title ); ?> <span class="ml-1 text-green" aria-hidden="true">✦</span></h2>
+		<h2 class="text-sm font-bold tracking-[0.14em] uppercase"><?php echo esc_html( $clients_title ); ?> <span class="ml-1 text-green" aria-hidden="true">✦</span></h2>
 	</div>
 	<div class="bira-marquee mt-7">
 		<div class="bira-marquee__track bira-marquee__track--clients">

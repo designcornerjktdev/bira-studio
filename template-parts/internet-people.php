@@ -4,8 +4,7 @@
  */
 $title    = bira_text( 'people_title', 'From Indonesia, into the feed' );
 $eyebrow  = bira_text( 'people_eyebrow', 'Meet the internet people' );
-$intro    = bira_text( 'people_intro', 'Bira Studio is a social, content & influence studio based in Indonesia.' );
-$intro_2  = bira_text( 'people_intro_2', 'We bring together strategists, creatives, creators and communities to turn brand ideas into conversations people actually want to join.' );
+$intro    = bira_text( 'people_intro_2', 'We bring together strategists, creatives, creators and communities to turn brand ideas into conversations people actually want to join.' );
 $more_url = bira_text( 'people_more_url', '/about' );
 $people = bira_items( 'people_member', [
 	[ 'photo' => 0, 'name' => '', 'role' => 'Founder & CD' ],
@@ -25,7 +24,7 @@ $people = bira_items( 'people_member', [
 			<h2 id="people-title" class="bira-h2 mt-4"><?php echo esc_html( $title ); ?><span class="text-green">.</span></h2>
 		</header>
 		<div class="self-end lg:col-span-5 lg:col-start-8" data-reveal>
-			<p class="bira-body mt-4 max-w-md text-ink/65"><?php echo esc_html( $intro_2 ); ?></p>
+			<p class="bira-body mt-4 max-w-md whitespace-pre-line text-ink/65"><?php echo esc_html( $intro ); ?></p>
 			<a class="bira-link mt-8 inline-flex min-h-11 items-center gap-2 font-bold tracking-[0.12em] uppercase" href="<?php echo esc_url( home_url( $more_url ) ); ?>">
 				<span class="bira-link__text">A little more about us</span>
 				<?php echo bira_doodle( 'next', 'bira-link__arrow size-3.5' ); ?>

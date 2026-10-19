@@ -11,6 +11,7 @@ import { initSteps } from './steps.js';
 import { initFeed } from './feed.js';
 import { initPaper } from './paper.js';
 import { initFab } from './fab.js';
+import { initWorkFilter } from './work-filter.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initHero();
@@ -24,5 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initFeed();
   initPaper();
   initFab();
+  initWorkFilter();
   initScrollLine();
 });

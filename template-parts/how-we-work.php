@@ -4,8 +4,7 @@
  * Kolom kiri sticky di desktop; langkah aktif + progress bar diatur oleh src/steps.js.
  */
 $eyebrow = bira_text( 'hww_eyebrow', 'Not a formula. A feeling.' );
-$title   = bira_text( 'hww_title', 'How we make' );
-$muted   = bira_text( 'hww_title_2', 'things move' );
+$title   = rtrim( bira_text( 'hww_title', 'How we make things move' ), '. ' ); // titik akhir diganti titik warna sand
 $intro   = bira_text( 'hww_intro', 'From a spark in the group chat to something the whole feed is talking about.' );
 $steps   = bira_items( 'hww_step', [
 	[ 'title' => 'Insight', 'text' => 'Find what people actually care about.' ],
@@ -23,8 +22,7 @@ $steps   = bira_items( 'hww_step', [
 			<div class="md:sticky md:top-36">
 				<span class="bira-eyebrow text-sand">[ <?php echo esc_html( $eyebrow ); ?> ]</span>
 				<h2 id="how-we-work-title" class="bira-h2 bira-h2--static mt-4 text-[clamp(3rem,5.6vw,5.7rem)] leading-none font-extrabold tracking-[-0.02em]">
-					<?php echo esc_html( $title ); ?><br>
-					<?php echo esc_html( $muted ); ?><span class="text-sand">.</span>
+					<?php echo esc_html( $title ); ?><span class="text-sand">.</span>
 				</h2>
 				<p class="mt-7 max-w-xs text-sm leading-relaxed text-cream/55"><?php echo esc_html( $intro ); ?></p>
 				<div class="mt-10 hidden gap-2 md:flex" aria-hidden="true">

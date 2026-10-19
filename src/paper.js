@@ -50,5 +50,35 @@ export function initPaper() {
         gsap.set(cards, { clearProps: 'all' });
       };
     });
+
+    // Tilt 3D mengikuti kursor saat hover, hanya untuk perangkat dengan mouse.
+    gsap.matchMedia().add('(hover: hover) and (prefers-reduced-motion: no-preference)', () => {
+      const offs = cards.map((card) => {
+        const rx = gsap.quickTo(card, 'rotationX', { duration: 0.5, ease: 'power3.out' });
+        const ry = gsap.quickTo(card, 'rotationY', { duration: 0.5, ease: 'power3.out' });
+        const sc = gsap.quickTo(card, 'scale', { duration: 0.5, ease: 'power3.out' });
+        const move = (e) => {
+          const r = card.getBoundingClientRect();
+          const nx = (e.clientX - r.left) / r.width - 0.5; // -0.5 … 0.5
+          const ny = (e.clientY - r.top) / r.height - 0.5;
+          gsap.set(card, { transformPerspective: 900, transformOrigin: '50% 50%' });
+          rx(-ny * 14);
+          ry(nx * 14);
+          sc(1.04);
+        };
+        const leave = () => {
+          rx(0);
+          ry(0);
+          sc(1);
+        };
+        card.addEventListener('pointermove', move);
+        card.addEventListener('pointerleave', leave);
+        return () => {
+          card.removeEventListener('pointermove', move);
+          card.removeEventListener('pointerleave', leave);
+        };
+      });
+      return () => offs.forEach((off) => off());
+    });
   });
 }

@@ -123,9 +123,7 @@ html {
   text-transform: uppercase;
   transition: color 0.2s;
 }
-.bira-menu a:hover,
-.bira-menu .current-menu-item > a,
-.bira-menu .current_page_item > a {
+.bira-menu a:hover {
   color: var(--color-green);
 }
 .bira-mobile-nav .bira-menu {
@@ -1336,4 +1334,43 @@ html {
 .group:hover .bira-work__hook,
 .group:focus-within .bira-work__hook {
   background-size: 100% 0.08em;
+}
+
+/* ---------- Halaman /work (archive-bira_project.php) ---------- */
+@media (min-width: 48rem) {
+  .bira-work-grid__item:nth-child(even of :not([hidden])) {
+    padding-top: 4rem; /* kolom kanan turun sedikit, seperti prototype */
+  }
+}
+.bira-filter {
+  min-height: 44px;
+  padding: 0.625rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 15%, transparent);
+  border-radius: 999px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background-color 0.2s;
+}
+@media (min-width: 48rem) {
+  .bira-filter {
+    padding-inline: 1.5rem;
+  }
+}
+.bira-filter:hover {
+  border-color: var(--color-green);
+  color: var(--color-green);
+}
+.bira-filter[aria-pressed="true"] {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+.bira-filter:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 3px;
 }

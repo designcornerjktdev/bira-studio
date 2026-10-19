@@ -16,15 +16,8 @@ add_action( 'after_setup_theme', function () {
 	] );
 } );
 
-/**
- * Ambil field ACF tanpa fatal error bila plugin ACF nonaktif.
- */
-function bira_field( string $key, $post_id = false ) {
-	return function_exists( 'get_field' ) ? get_field( $key, $post_id ) : null;
-}
-
 require_once get_template_directory() . '/inc/template-tags.php';
-require_once get_template_directory() . '/inc/acf-fields.php';
+require_once get_template_directory() . '/inc/customizer.php'; // konten homepage (Appearance → Customize → Homepage)
 require_once get_template_directory() . '/inc/projects.php';
 
 add_action( 'wp_enqueue_scripts', function () {

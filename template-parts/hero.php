@@ -1,31 +1,28 @@
 <?php
 /**
- * 01 Hero — konten dari field ACF di halaman Home.
+ * 01 Hero — konten dari Customizer (Homepage → Hero).
  * Struktur mengikuti prototype (bira-preview), token warna/font mengikuti guideline.
  */
-$id     = (int) get_option( 'page_on_front' );
-$title  = bira_field( 'hero_headline', $id ) ?: "We make\nbrands part\nof the\nconversation.";
-$accent = bira_field( 'hero_accent_word', $id ) ?: 'conversation';
-$desc_raw = (string) bira_field( 'hero_description', $id );
+$title    = bira_text( 'hero_headline', "We make\nbrands part\nof the\nconversation." );
+$accent   = bira_text( 'hero_accent_word', 'conversation' );
+$desc_raw = bira_text( 'hero_description' );
 $desc     = $desc_raw ?: 'Built for brands that want people to actually talk about them.';
 // Kalimat pembuka default hanya dipakai bila Description juga masih default (hindari teks ganda).
 $lead     = bira_text( 'hero_lead', $desc_raw ? '' : 'Social, content & influence from Indonesia.' );
-$label  = bira_field( 'hero_cta_label', $id ) ?: 'See our work';
-$url    = bira_field( 'hero_cta_url', $id ) ?: '#made-for-the-feed';
+$label  = bira_text( 'hero_cta_label', 'See our work' );
+$url    = bira_text( 'hero_cta_url', '#made-for-the-feed' );
 $label2 = bira_text( 'hero_cta2_label', 'Let’s make something' );
 $url2   = bira_text( 'hero_cta2_url', '#contact' );
-$symbol = (int) bira_field( 'hero_symbol', $id );
+$symbol = (int) bira_text( 'hero_symbol', '0' );
 
 // Baris baru di headline jadi pemenggalan baris; kata aksen hanya kemunculan pertama.
 $title_html = nl2br( bira_accent( $title, $accent, 'bira-hero__accent text-green' ), false );
 
-// Kartu mockup memakai grup ACF hero_post_1 / hero_post_2 (image, handle, caption).
-$card = static function ( int $n ) use ( $id ): array {
-	$g = bira_field( 'hero_post_' . $n, $id );
-	return is_array( $g ) ? array_filter( $g ) : [];
-};
-$a = $card( 1 ) + [ 'image' => 0, 'handle' => '@madeforthefeed', 'caption' => 'Main character energy' ];
-$b = $card( 2 ) + [ 'image' => 0, 'handle' => 'Creator culture', 'caption' => 'a little behind the scenes.' ];
+// Kartu mockup: hero_post_1_* / hero_post_2_* (image, handle, caption).
+[ $a, $b ] = bira_items( 'hero_post', [
+	[ 'image' => 0, 'handle' => '@madeforthefeed', 'caption' => 'Main character energy' ],
+	[ 'image' => 0, 'handle' => 'Creator culture', 'caption' => 'a little behind the scenes.' ],
+] );
 
 $card_img = static function ( $att ) {
 	if ( $att ) {

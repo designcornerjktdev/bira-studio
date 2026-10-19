@@ -3,9 +3,10 @@
  * Final CTA — "Got something weird in mind?" (struktur dari prototype).
  */
 $status = bira_text( 'cta_status', 'Open for good conversations' );
-$line_1 = bira_text( 'cta_line_1', 'Got something' );
+$title  = bira_text( 'cta_title', "Got something\nWeird in mind?" );
 $accent = bira_text( 'cta_accent', 'Weird' );
-$line_2 = bira_text( 'cta_line_2', 'in mind?' );
+// Sama seperti headline hero: Enter = pindah baris, kata aksen (kemunculan pertama) jadi hijau.
+$title_html = nl2br( bira_accent( $title, $accent, 'text-green' ), false );
 $label  = bira_text( 'cta_label', 'Talk to BIRA' );
 $url    = bira_text( 'cta_url', '/contact' );
 $note   = bira_text( 'cta_note', 'Good.' );
@@ -21,8 +22,7 @@ $note_2 = bira_text( 'cta_note_2', 'Let’s make it happen.' );
 
 		<div class="relative mt-10 flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
 			<h2 id="cta-title" class="bira-h2 max-w-4xl text-[clamp(3.1rem,7vw,7rem)] leading-[0.97] font-extrabold tracking-[-0.02em]">
-				<?php echo esc_html( $line_1 ); ?><br>
-				<span class="text-green"><?php echo esc_html( $accent ); ?></span> <?php echo esc_html( $line_2 ); ?>
+				<?php echo wp_kses( $title_html, [ 'span' => [ 'class' => [] ], 'br' => [] ] ); ?>
 			</h2>
 			<a class="bira-cta__circle group" href="<?php echo esc_url( home_url( $url ) ); ?>" data-reveal>
 				<?php echo esc_html( $label ); ?>

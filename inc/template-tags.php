@@ -4,24 +4,25 @@
  */
 
 /**
- * Teks dari field ACF di halaman depan, dengan fallback bila kosong.
+ * Teks dari Customizer (Appearance → Customize → Homepage), dengan fallback bila kosong.
  */
 function bira_text( string $key, string $default = '' ): string {
-	$value = bira_field( $key, (int) get_option( 'page_on_front' ) );
-	return is_string( $value ) && '' !== trim( $value ) ? $value : $default;
+	$value = get_theme_mod( $key, '' );
+	return is_scalar( $value ) && '' !== trim( (string) $value ) ? (string) $value : $default;
 }
 
 /**
- * Grup ACF bernomor (mis. wwd_item_1 ... wwd_item_4) sebagai array item.
- * Item yang semua isinya kosong memakai fallback pada indeks yang sama.
+ * Item bernomor (mis. wwd_item_1_title ... wwd_item_4_tags) sebagai array item.
+ * Sub field yang kosong memakai fallback pada indeks yang sama.
  */
 function bira_items( string $prefix, array $defaults ): array {
-	$id    = (int) get_option( 'page_on_front' );
 	$items = [];
 	foreach ( $defaults as $i => $default ) {
-		$group   = bira_field( $prefix . '_' . ( $i + 1 ), $id );
-		$group   = is_array( $group ) ? array_filter( $group ) : [];
-		$items[] = $group + $default;
+		$item = [];
+		foreach ( $default as $sub => $fallback ) {
+			$item[ $sub ] = bira_text( "{$prefix}_" . ( $i + 1 ) . "_{$sub}", (string) $fallback );
+		}
+		$items[] = $item;
 	}
 	return $items;
 }

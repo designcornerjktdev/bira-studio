@@ -3,13 +3,17 @@
  * Strip logo klien: wordmark teks dengan gaya berbeda-beda (placeholder sampai logo asli tersedia).
  */
 $clients_title = bira_text( 'clients_title', 'Brands we’ve made some noise with' );
-$clients       = bira_items( 'client', [
-	[ 'name' => 'Relaxa', 'style' => 'italic font-extrabold tracking-tighter' ],
-	[ 'name' => 'ABC', 'style' => 'font-black tracking-tighter' ],
-	[ 'name' => 'Your Brand', 'style' => 'font-bold tracking-tighter' ],
-	[ 'name' => 'Next Up', 'style' => 'font-black italic tracking-tight' ],
-	[ 'name' => 'Watch This Space', 'style' => 'font-semibold tracking-tighter' ],
-] );
+// Satu textarea dipisah koma → array nama brand.
+$names = array_values( array_filter( array_map( 'trim', explode( ',', bira_text( 'clients_list', 'Relaxa, ABC, Your Brand, Next Up, Watch This Space' ) ) ) ) );
+// Gaya wordmark bergantian supaya strip tetap terlihat seperti deretan logo berbeda.
+$styles  = [
+	'italic font-extrabold tracking-tighter',
+	'font-black tracking-tighter',
+	'font-bold tracking-tighter',
+	'font-black italic tracking-tight',
+	'font-semibold tracking-tighter',
+];
+$clients = array_map( static fn( string $name, int $i ): array => [ 'name' => $name, 'style' => $styles[ $i % count( $styles ) ] ], $names, array_keys( $names ) );
 ?>
 <section class="bira-clients border-t border-b border-ink/15 py-9 md:py-12 mt-12" aria-label="<?php esc_attr_e( 'Client logo strip', 'bira' ); ?>">
 	<div class="bira-container">

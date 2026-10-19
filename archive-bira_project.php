@@ -12,14 +12,18 @@ $filters = [];
 foreach ( $projects as $project ) {
 	$filters += bira_project_cats( $project['cats'] );
 }
+
+// Teks hero dari Customizer → Work Page. Enter = pindah baris, kata aksen (kemunculan pertama) jadi hijau.
+$headline = bira_text( 'work_page_headline', "Good work.\nGreat conversations." );
+$accent   = bira_text( 'work_page_accent', 'Great conversations.' );
+$intro    = bira_text( 'work_page_intro', "Different brands. Different briefs. The same obsession:\nmaking something people want to be part of." );
 ?>
-<section class="bira-container pt-16 pb-12 md:pt-24 md:pb-16">
-	<span class="bira-eyebrow mb-7 text-green" data-reveal>[ Our corner of the internet ]</span>
+<section class="bira-work-hero bira-container pt-16 pb-12 md:pt-24 md:pb-16">
+	<span class="bira-eyebrow mb-7 text-green" data-reveal>[ <?php echo esc_html( bira_text( 'work_page_eyebrow', 'Our corner of the internet' ) ); ?> ]</span>
 	<h1 class="m-0 text-[9.2vw] sm:text-[clamp(3.7rem,9vw,9rem)] leading-[0.95] font-extrabold tracking-[-0.04em] uppercase">
-		Good work.<br>
-		<span class="text-green">Great conversations.</span>
+		<?php echo wp_kses( nl2br( bira_accent( $headline, $accent, 'text-green' ), false ), [ 'span' => [ 'class' => [] ], 'br' => [] ] ); ?>
 	</h1>
-	<p class="mt-8 max-w-md text-sm leading-relaxed text-ink/65" data-reveal>Different brands. Different briefs. The same obsession:<br>making something people want to be part of.</p>
+	<p class="mt-8 max-w-md text-sm leading-relaxed text-ink/65" data-reveal><?php echo nl2br( esc_html( $intro ), false ); ?></p>
 </section>
 
 <div class="bira-container pb-24" data-work-filter>
@@ -31,7 +35,7 @@ foreach ( $projects as $project ) {
 					<button type="button" class="bira-filter" aria-pressed="false" data-filter="<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( $label ); ?></button>
 				<?php endforeach; ?>
 			</div>
-			<p class="text-sm tracking-wide text-ink/60 uppercase" aria-live="polite"><span data-filter-count><?php echo count( $projects ); ?></span> Projects / explorations</p>
+			<p class="text-sm tracking-wide text-ink/60 uppercase" aria-live="polite"><span data-filter-count><?php echo count( $projects ); ?></span> <?php echo esc_html( bira_text( 'work_page_count', 'Projects / explorations' ) ); ?></p>
 		</div>
 
 		<ul class="bira-work-grid">

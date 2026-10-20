@@ -20,7 +20,7 @@ $intro    = bira_text( 'work_page_intro', "Different brands. Different briefs. T
 ?>
 <section class="bira-work-hero bira-container pt-16 pb-12 md:pt-24 md:pb-16">
 	<span class="bira-eyebrow mb-7 text-green" data-reveal>[ <?php echo esc_html( bira_text( 'work_page_eyebrow', 'Our corner of the internet' ) ); ?> ]</span>
-	<h1 class="m-0 text-[9.2vw] sm:text-[clamp(3.7rem,9vw,9rem)] leading-[0.95] font-extrabold tracking-[-0.04em] uppercase">
+	<h1 data-shine class="m-0 text-[9.2vw] sm:text-[clamp(3.7rem,9vw,9rem)] leading-[0.95] font-extrabold tracking-[-0.04em] uppercase">
 		<?php echo wp_kses( nl2br( bira_accent( $headline, $accent, 'text-green' ), false ), [ 'span' => [ 'class' => [] ], 'br' => [] ] ); ?>
 	</h1>
 	<p class="mt-8 max-w-md text-sm leading-relaxed text-ink/65" data-reveal><?php echo nl2br( esc_html( $intro ), false ); ?></p>

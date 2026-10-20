@@ -12,9 +12,19 @@ import { initFeed } from './feed.js';
 import { initPaper } from './paper.js';
 import { initFab } from './fab.js';
 import { initWorkFilter } from './work-filter.js';
+import { initIntroHeadings } from './intro-heading.js';
+import { initScrollText } from './scroll-text.js';
+import { initTilt } from './tilt.js';
+import { initShine } from './shine.js';
+import { initFlip } from './flip.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initHero();
+  initIntroHeadings();
+  initScrollText();
+  initTilt();
+  initShine();
+  initFlip();
   initMockup();
   initReveal();
   initNav();

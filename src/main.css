@@ -1411,3 +1411,46 @@ html {
 .bira-case__next {
   --ratio: 1.85; /* kartu "Up next" melebar, seperti prototype */
 }
+
+/* Judul [data-intro] disembunyikan sampai animasi masuk siap (src/intro-heading.js); pengaman 3 detik jika JS gagal. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-intro] {
+    visibility: hidden;
+    animation: bira-intro-failsafe 0s 3s forwards;
+  }
+}
+@keyframes bira-intro-failsafe {
+  to {
+    visibility: visible;
+  }
+}
+
+/* Scroll text reveal (src/scroll-text.js): huruf abu-abu, jadi warna teks penuh saat terlewati scroll. */
+.bira-scroll-char {
+  color: color-mix(in srgb, currentColor 25%, transparent);
+}
+.bira-scroll-char.is-on {
+  color: inherit;
+}
+
+/* Kilau per huruf (src/shine.js): satu kilau diagonal berpindah huruf demi huruf saat [data-shine] di-hover.
+   Durasi per huruf hampir sama dengan jeda antar huruf, jadi yang terlihat hanya satu kilau yang berjalan.
+   Warna huruf tetap dari currentColor (hitam / hijau); kilau hanya di dalam huruf. */
+.bira-shine__c {
+  /* Kotak latar diperlebar sedikit: huruf menjorok keluar karena letter-spacing negatif. */
+  padding-inline: 0.08em;
+  margin-inline: -0.08em;
+  background-image:
+    linear-gradient(110deg, transparent 38%, rgb(255 255 255 / 0.85) 50%, transparent 62%),
+    linear-gradient(currentColor, currentColor);
+  background-size: 300% 100%, 100% 100%;
+  background-position: 100% 0, 0 0; /* kilau parkir di luar kiri */
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+[data-shine]:hover .bira-shine__c {
+  background-position: 0 0, 0 0; /* menyapu ke kanan */
+  transition: background-position 0.14s linear calc(var(--i) * 0.07s);
+}

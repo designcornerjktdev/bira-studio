@@ -34,7 +34,7 @@ $kses = [ 'span' => [ 'class' => [] ], 'br' => [] ];
 ?>
 <section class="bira-about-hero bira-container pt-16 pb-16 md:pt-24 md:pb-24">
 	<span class="bira-eyebrow mb-8 text-green">[ <?php echo esc_html( bira_text( 'about_eyebrow', 'Independent minds. Shared internet brain.' ) ); ?> ]</span>
-	<h1 class="m-0 text-[clamp(3.4rem,8.5vw,8.5rem)] leading-[0.98] font-extrabold tracking-[-0.04em] uppercase">
+	<h1 data-intro class="m-0 text-[clamp(3.4rem,8.5vw,8.5rem)] leading-[0.98] font-extrabold tracking-[-0.04em] uppercase">
 		<?php echo wp_kses( nl2br( bira_accent( $headline, bira_text( 'about_accent', 'internet' ), 'text-green' ), false ), $kses ); ?><span class="text-green">.</span>
 	</h1>
 	<div class="mt-12 grid gap-7 md:grid-cols-2" data-reveal>
@@ -48,7 +48,7 @@ $kses = [ 'span' => [ 'class' => [] ], 'br' => [] ];
 
 <section class="bira-about-who bira-case__tint py-20 md:py-28">
 	<div class="bira-container grid gap-12 md:grid-cols-2 md:gap-24">
-		<div class="relative aspect-[0.95] overflow-hidden bg-sand">
+		<div class="relative aspect-[0.95] overflow-hidden bg-sand" data-tilt="8">
 			<?php
 			if ( $who_img ) {
 				echo wp_get_attachment_image( $who_img, 'large', false, [ 'class' => 'absolute inset-0 size-full object-cover', 'loading' => 'lazy' ] );
@@ -76,7 +76,7 @@ $kses = [ 'span' => [ 'class' => [] ], 'br' => [] ];
 		<?php foreach ( $beliefs as $i => $belief ) : ?>
 			<li class="grid gap-4 border-t border-ink/15 py-8 md:grid-cols-[50px_1.5fr_1fr] md:gap-10 md:py-10" data-reveal>
 				<span class="pt-1 text-sm text-green"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
-				<h3 class="max-w-lg text-3xl leading-tight font-bold tracking-[-0.045em]"><?php echo esc_html( $belief['title'] ); ?></h3>
+				<h3 data-flip class="max-w-lg text-3xl leading-tight font-bold tracking-[-0.045em]"><?php echo esc_html( $belief['title'] ); ?></h3>
 				<p class="max-w-sm text-sm leading-relaxed text-ink/65"><?php echo esc_html( $belief['text'] ); ?></p>
 			</li>
 		<?php endforeach; ?>
@@ -86,7 +86,7 @@ $kses = [ 'span' => [ 'class' => [] ], 'br' => [] ];
 <section class="bira-about-think bira-case__tint py-20 text-ink md:py-28">
 	<div class="bira-container">
 		<span class="bira-eyebrow mb-8 text-green">[ <?php echo esc_html( bira_text( 'about_think_eyebrow', 'How we think' ) ); ?> ]</span>
-		<h2 class="max-w-5xl text-[clamp(3rem,7vw,7rem)] leading-[1.02] font-extrabold tracking-[-0.04em] uppercase"><?php echo nl2br( esc_html( bira_text( 'about_think_headline', "We don’t ask\n“What should\nthe brand say?”" ) ), false ); ?></h2>
+		<h2 data-scroll-text class="max-w-5xl text-[clamp(3rem,7vw,7rem)] leading-[1.02] font-extrabold tracking-[-0.04em] uppercase"><?php echo nl2br( esc_html( bira_text( 'about_think_headline', "We don’t ask\n“What should\nthe brand say?”" ) ), false ); ?></h2>
 		<p class="mt-10 flex max-w-3xl flex-wrap items-center gap-4 text-2xl font-semibold tracking-tight text-green md:text-4xl" data-reveal>
 			<?php echo esc_html( bira_text( 'about_think_line', 'We ask “why would anyone care?”' ) ); ?>
 			<?php echo bira_doodle( 'star', 'bira-drift size-8 md:size-10' ); ?>

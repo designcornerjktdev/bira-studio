@@ -10,13 +10,14 @@
 
 /**
  * Skema: section => [ panel (default bira_home), title, partial selector, fields ].
- * Field: key => [ label, type, extra ]. Type: text | textarea | url | image.
+ * Field: key => [ label, type, extra ]. Type: text | textarea | url | image | gallery (banyak gambar, ID dipisah koma).
  * Item berulang: 'repeat' => [ prefix, label, jumlah, [ sub => [ label, type ] ] ].
  */
 function bira_content_schema(): array {
 	return [
 		'hero'    => [
 			'title'    => 'Hero',
+			'desc'     => 'Stack card 1 is at the bottom of the pile, Stack card 5 on top. On hover the pile fans out. Animated GIFs are supported.',
 			'selector' => '.bira-hero',
 			'part'     => 'hero',
 			'fields'   => [
@@ -30,10 +31,21 @@ function bira_content_schema(): array {
 				'hero_cta2_url'    => [ 'Secondary CTA — URL', 'text', [ 'placeholder' => '#contact' ] ],
 				'hero_symbol'      => [ 'BIRA symbol (mockup background)', 'image', [ 'desc' => 'Transparent PNG. Leave empty to use the outline frame.' ] ],
 			],
-			'repeat'   => [ 'hero_post', 'Mockup card', 2, [
+			'repeat'   => [ 'hero_post', 'Stack card', 5, [
 				'image'   => [ 'Image', 'image', [ 'desc' => 'A ratio close to 4:3 or square works best.' ] ],
 				'handle'  => [ 'Handle', 'text', [ 'placeholder' => '@madeforthefeed' ] ],
 				'caption' => [ 'Caption', 'text', [ 'desc' => 'One line; longer text is cut off with “…”.' ] ],
+			] ],
+		],
+		'trust'   => [
+			'title'    => 'Trust',
+			'desc'     => 'Numbers shown above the brand strip. The last number is green.',
+			'selector' => '.bira-trust',
+			'part'     => 'trust',
+			'fields'   => [],
+			'repeat'   => [ 'trust_stat', 'Stat', 3, [
+				'number' => [ 'Number', 'text', [ 'placeholder' => 'e.g. 50M+' ] ],
+				'label'  => [ 'Label', 'text', [ 'placeholder' => 'e.g. Views' ] ],
 			] ],
 		],
 		'clients' => [
@@ -42,7 +54,8 @@ function bira_content_schema(): array {
 			'part'     => 'clients',
 			'fields'   => [
 				'clients_title' => [ 'Strip title', 'text', [ 'placeholder' => 'Brands we’ve made some noise with' ] ],
-				'clients_list'  => [ 'Brand names', 'textarea', [ 'placeholder' => 'Relaxa, ABC, Your Brand, Next Up, Watch This Space', 'desc' => 'Separate brands with commas. Each brand gets an alternating text style automatically.' ] ],
+				'clients_logos' => [ 'Brand logos', 'gallery', [ 'desc' => 'Select as many logos as you like (transparent PNG works best). Order follows your selection. When empty, the brand names below are shown as text.' ] ],
+				'clients_list'  => [ 'Brand names (fallback)', 'textarea', [ 'placeholder' => 'Relaxa, ABC, Your Brand, Next Up, Watch This Space', 'desc' => 'Only used when no logos are selected. Separate brands with commas.' ] ],
 			],
 		],
 		'work'    => [
@@ -290,6 +303,7 @@ add_action( 'customize_register', function ( WP_Customize_Manager $wp_customize 
 				'textarea' => 'sanitize_textarea_field',
 				'url'      => 'esc_url_raw',
 				'image'    => 'absint',
+				'gallery'  => 'bira_sanitize_ids',
 			][ $type ] ?? 'sanitize_text_field';
 
 			$wp_customize->add_setting( $key, [ 'default' => '', 'sanitize_callback' => $sanitize ] );
@@ -298,6 +312,8 @@ add_action( 'customize_register', function ( WP_Customize_Manager $wp_customize 
 			$args = [ 'label' => $label, 'description' => $extra['desc'] ?? '', 'section' => $section_id ];
 			if ( 'image' === $type ) {
 				$wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, $key, $args + [ 'mime_type' => 'image' ] ) );
+			} elseif ( 'gallery' === $type ) {
+				$wp_customize->add_control( new Bira_Gallery_Control( $wp_customize, $key, $args ) );
 			} else {
 				$wp_customize->add_control( $key, $args + [
 					'type'        => $type,
@@ -342,4 +358,61 @@ add_action( 'init', function () {
 		}
 	}
 	update_option( 'bira_content_migrated', 1 );
+} );
+
+/**
+ * "12,5,9" → "12,5,9" (hanya ID attachment yang valid, urutan dipertahankan).
+ */
+function bira_sanitize_ids( $value ): string {
+	$ids = array_filter( array_map( 'absint', explode( ',', (string) $value ) ) );
+	return implode( ',', array_unique( $ids ) );
+}
+
+/**
+ * Daftar ID gambar dari field gallery.
+ */
+function bira_gallery( string $key ): array {
+	return array_values( array_filter( array_map( 'absint', explode( ',', bira_text( $key ) ) ), 'wp_attachment_is_image' ) );
+}
+
+/**
+ * Kontrol Customizer untuk banyak gambar sekaligus (pengganti ACF Gallery yang hanya ada di versi Pro).
+ * Nilai disimpan sebagai ID dipisah koma; logika pemilih ada di admin/gallery-control.js.
+ */
+add_action( 'customize_register', function () {
+	class Bira_Gallery_Control extends WP_Customize_Control {
+		public $type = 'bira_gallery';
+
+		public function render_content() {
+			?>
+			<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+			<?php if ( $this->description ) : ?>
+				<span class="description customize-control-description"><?php echo esc_html( $this->description ); ?></span>
+			<?php endif; ?>
+			<div class="bira-gallery" data-bira-gallery>
+				<input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( $this->value() ); ?>">
+				<ul class="bira-gallery__list">
+					<?php foreach ( array_filter( array_map( 'absint', explode( ',', (string) $this->value() ) ) ) as $id ) : ?>
+						<li><?php echo wp_get_attachment_image( $id, 'thumbnail' ); ?></li>
+					<?php endforeach; ?>
+				</ul>
+				<button type="button" class="button bira-gallery__select">Select logos</button>
+				<button type="button" class="button-link bira-gallery__clear">Remove all</button>
+			</div>
+			<?php
+		}
+	}
+}, 1 );
+
+add_action( 'customize_controls_enqueue_scripts', function () {
+	wp_enqueue_media();
+	$file = get_template_directory() . '/admin/gallery-control.js';
+	wp_enqueue_script( 'bira-gallery-control', get_template_directory_uri() . '/admin/gallery-control.js', [ 'customize-controls', 'jquery' ], filemtime( $file ), true );
+	wp_add_inline_style( 'customize-controls', '
+		.bira-gallery__list{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0;padding:0;list-style:none}
+		.bira-gallery__list:empty{display:none}
+		.bira-gallery__list li{margin:0;aspect-ratio:1;background:#f0f0f1;border:1px solid #dcdcde;border-radius:3px;display:grid;place-items:center;overflow:hidden}
+		.bira-gallery__list img{max-width:90%;max-height:90%;width:auto;height:auto;object-fit:contain}
+		.bira-gallery__clear{margin-left:8px;color:#b32d2e}
+	' );
 } );

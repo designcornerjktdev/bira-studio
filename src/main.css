@@ -381,22 +381,29 @@ html {
   box-shadow: 0 2cqw 5cqw -1.5cqw
     color-mix(in srgb, var(--color-ink) 30%, transparent);
 }
-.bira-mock__card--a {
-  left: 18.5%;
-  top: 5%;
-  width: 48%;
-  aspect-ratio: 4 / 5;
-  transform: rotate(6deg);
+/* 7 kartu bertumpuk di tengah; urutan DOM = urutan tumpukan (kartu terakhir paling atas).
+   Poros jauh di bawah kartu, jadi saat hover (data-spread di mockup.js) kartu mengembang seperti kipas. */
+.bira-mock__card {
+  left: 32%;
+  top: 4%;
+  width: 36%;
+  aspect-ratio: 9 / 16; /* rasio Reels / TikTok */
+  transform-origin: 50% 115%;
   z-index: 2;
+  /* scale & translate terpisah dari transform (dipegang GSAP), jadi aman dianimasikan CSS */
+  transition:
+    scale 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.bira-mock__card--b {
-  left: 54%;
-  top: 41%;
-  width: 37%;
-  aspect-ratio: 9 / 10;
-  transform: rotate(-1deg);
-  z-index: 3;
+/* Kartu yang di-hover naik ke depan tumpukan. */
+@media (hover: hover) {
+  .bira-mock__card:hover {
+    z-index: 6;
+    scale: 1.08;
+    translate: 0 -4%;
+  }
 }
+/* Kemiringan acak tiap kartu diatur inline di hero.php ($tilt), supaya sudut kipas bisa dihitung rata. */
 
 .bira-mock__card img {
   position: absolute;
@@ -454,21 +461,6 @@ html {
   line-height: 1.2;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-.bira-mock__label {
-  margin: 0 0 1cqw;
-  font-size: clamp(8px, 1.4cqw, 12px);
-}
-.bira-mock__chat {
-  position: absolute;
-  z-index: 1;
-  right: 7%;
-  bottom: 6%;
-  width: max(14px, 2.4cqw);
-}
-.bira-mock__chat svg {
-  display: block;
-  width: 100%;
 }
 
 /* Stiker hijau */
@@ -1453,4 +1445,18 @@ html {
 [data-shine]:hover .bira-shine__c {
   background-position: 0 0, 0 0; /* menyapu ke kanan */
   transition: background-position 0.14s linear calc(var(--i) * 0.07s);
+}
+
+/* Logo klien di strip marquee: tinggi seragam, warna asli logo. */
+.bira-clients__logo {
+  width: auto;
+  height: 2.5rem;
+  max-width: 10rem;
+  object-fit: contain;
+}
+@media (min-width: 48rem) {
+  .bira-clients__logo {
+    height: 3rem;
+    max-width: 12rem;
+  }
 }

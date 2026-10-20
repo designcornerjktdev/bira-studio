@@ -1,11 +1,12 @@
 <?php
 /**
  * Homepage — urutan section mengikuti BIRA Website Guideline:
- * Hero → Clients → The Good Stuff → What We Do → How We Work → Made for the Feed → BIRA POV → Internet People → CTA
+ * Hero → Trust → Clients → The Good Stuff → What We Do → How We Work → Made for the Feed → BIRA POV → Internet People → CTA
  */
 get_header();
 
 get_template_part( 'template-parts/hero' );
+get_template_part( 'template-parts/trust' );
 get_template_part( 'template-parts/clients' );
 get_template_part( 'template-parts/selected-work' );
 get_template_part( 'template-parts/what-we-do' );

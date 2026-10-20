@@ -69,3 +69,24 @@ add_action( 'wp_enqueue_scripts', function () {
 		);
 	}
 } );
+
+/*
+ * GIF animasi: WordPress membuat ukuran kecil (medium, large, …) yang hanya berisi frame pertama.
+ * Untuk GIF, selalu pakai file asli dan matikan srcset, supaya animasinya tetap jalan di semua tempat
+ * (kartu hero, Made for the Feed, project, dll).
+ */
+function bira_is_gif( int $id ): bool {
+	return 'image/gif' === get_post_mime_type( $id );
+}
+
+add_filter( 'wp_get_attachment_image_src', function ( $image, $id, $size ) {
+	if ( $image && 'full' !== $size && bira_is_gif( (int) $id ) ) {
+		$full = wp_get_attachment_image_src( $id, 'full' );
+		return $full ?: $image;
+	}
+	return $image;
+}, 10, 3 );
+
+add_filter( 'wp_calculate_image_srcset', function ( $sources, $size_array, $src, $meta, $id ) {
+	return bira_is_gif( (int) $id ) ? false : $sources;
+}, 10, 5 );

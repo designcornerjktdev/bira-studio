@@ -1,8 +1,10 @@
 <?php
 /**
- * Strip logo klien: wordmark teks dengan gaya berbeda-beda (placeholder sampai logo asli tersedia).
+ * Strip logo klien. Pakai logo dari Customizer (Clients → Brand logos); kalau kosong,
+ * nama brand tampil sebagai wordmark teks dengan gaya berbeda-beda.
  */
 $clients_title = bira_text( 'clients_title', 'Brands we’ve made some noise with' );
+$logos         = bira_gallery( 'clients_logos' );
 // Satu textarea dipisah koma → array nama brand.
 $names = array_values( array_filter( array_map( 'trim', explode( ',', bira_text( 'clients_list', 'Relaxa, ABC, Your Brand, Next Up, Watch This Space' ) ) ) ) );
 // Gaya wordmark bergantian supaya strip tetap terlihat seperti deretan logo berbeda.
@@ -22,7 +24,16 @@ $clients = array_map( static fn( string $name, int $i ): array => [ 'name' => $n
 	<div class="bira-marquee mt-7">
 		<div class="bira-marquee__track bira-marquee__track--clients">
 			<?php for ( $copy = 0; $copy < 2; $copy++ ) : ?>
-				<?php foreach ( $clients as $client ) : ?>
+				<?php foreach ( $logos as $logo ) : ?>
+					<span class="flex shrink-0 items-center gap-14 md:gap-24"<?php echo $copy ? ' aria-hidden="true"' : ''; ?>>
+						<?php
+						$alt = trim( (string) get_post_meta( $logo, '_wp_attachment_image_alt', true ) ) ?: get_the_title( $logo );
+						echo wp_get_attachment_image( $logo, 'medium', false, [ 'class' => 'bira-clients__logo', 'alt' => $copy ? '' : $alt, 'loading' => 'lazy' ] );
+						?>
+						<?php echo bira_doodle( 'star', 'size-4 text-green/55' ); ?>
+					</span>
+				<?php endforeach; ?>
+				<?php foreach ( $logos ? [] : $clients as $client ) : ?>
 					<span class="flex shrink-0 items-center gap-14 whitespace-nowrap text-2xl uppercase text-ink/45 md:gap-24 md:text-3xl <?php echo esc_attr( $client['style'] ); ?>"<?php echo $copy ? ' aria-hidden="true"' : ''; ?>>
 						<?php echo esc_html( $client['name'] ); ?>
 						<?php echo bira_doodle( 'star', 'size-4 text-green/55' ); ?>

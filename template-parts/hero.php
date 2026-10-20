@@ -18,11 +18,23 @@ $symbol = (int) bira_text( 'hero_symbol', '0' );
 // Baris baru di headline jadi pemenggalan baris; kata aksen hanya kemunculan pertama.
 $title_html = nl2br( bira_accent( $title, $accent, 'bira-hero__accent text-green' ), false );
 
-// Kartu mockup: hero_post_1_* / hero_post_2_* (image, handle, caption).
-[ $a, $b ] = bira_items( 'hero_post', [
+// 5 kartu bertumpuk (hero_post_1_* … hero_post_5_*: image, handle, caption). Kartu 1 paling bawah, kartu 5 paling atas.
+$cards = bira_items( 'hero_post', [
 	[ 'image' => 0, 'handle' => '@madeforthefeed', 'caption' => 'Main character energy' ],
 	[ 'image' => 0, 'handle' => 'Creator culture', 'caption' => 'a little behind the scenes.' ],
+	[ 'image' => 0, 'handle' => '@birastudio', 'caption' => 'POV: the group chat approved.' ],
+	[ 'image' => 0, 'handle' => 'Street notes', 'caption' => 'not made to blend in.' ],
+	[ 'image' => 0, 'handle' => 'Content mood', 'caption' => 'a little sweet. a little extra.' ],
 ] );
+// Tumpukan: tiap kartu sedikit miring acak (seperti foto ditaruh tangan).
+$tilt = [ -6, 5, -4, 4, -1 ];
+// Kipas saat hover (data-spread di mockup.js: geser x %, geser y %, tambahan putar °).
+// Sudut kipas dibuat rata (t × 10°, t = -2 … 2); tambahan putar = sudut kipas − miring acak,
+// jadi saat terbuka semua kartu berjarak sama tanpa sisa kemiringan acak.
+$fan = static function ( int $i, int $count ) use ( $tilt ): string {
+	$t = $i - ( $count - 1 ) / 2;
+	return sprintf( '%s %s %s', round( $t * 10, 1 ), round( $t * $t * 1.2, 1 ), round( $t * 10 - $tilt[ $i % count( $tilt ) ], 1 ) );
+};
 
 $card_img = static function ( $att ) {
 	if ( $att ) {
@@ -60,27 +72,20 @@ $card_img = static function ( $att ) {
 					<span class="bira-mock__frame" data-mock-frame data-spread="0 0 6" aria-hidden="true"></span>
 				<?php endif; ?>
 
-				<article class="bira-mock__card bira-mock__card--a" data-mock-item data-depth="0.5" data-spread="-9 -6 -5">
-					<?php $card_img( $a['image'] ); ?>
-					<span class="bira-mock__arrow" aria-hidden="true">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-					</span>
-					<div class="bira-mock__meta">
-						<p class="bira-mock__handle"><?php echo esc_html( $a['handle'] ); ?></p>
-						<p class="bira-mock__caption"><?php echo esc_html( $a['caption'] ); ?></p>
-					</div>
-				</article>
-
-				<article class="bira-mock__card bira-mock__card--b" data-mock-item data-depth="0.9" data-spread="9 6 5">
-					<?php $card_img( $b['image'] ); ?>
-					<div class="bira-mock__meta">
-						<p class="bira-mock__label"><?php echo esc_html( $b['handle'] ); ?></p>
-						<p class="bira-mock__caption"><?php echo esc_html( $b['caption'] ); ?></p>
-					</div>
-					<span class="bira-mock__chat" aria-hidden="true">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.6A8 8 0 1 1 21 12Z"/></svg>
-					</span>
-				</article>
+				<?php foreach ( $cards as $i => $card ) : ?>
+					<article class="bira-mock__card" style="transform: rotate(<?php echo (int) $tilt[ $i % count( $tilt ) ]; ?>deg)" data-mock-item data-depth="<?php echo esc_attr( round( 0.4 + $i * 0.1, 2 ) ); ?>" data-spread="<?php echo esc_attr( $fan( $i, count( $cards ) ) ); ?>">
+						<?php $card_img( $card['image'] ); ?>
+						<?php if ( $i === count( $cards ) - 1 ) : ?>
+							<span class="bira-mock__arrow" aria-hidden="true">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+							</span>
+						<?php endif; ?>
+						<div class="bira-mock__meta">
+							<p class="bira-mock__handle"><?php echo esc_html( $card['handle'] ); ?></p>
+							<p class="bira-mock__caption"><?php echo esc_html( $card['caption'] ); ?></p>
+						</div>
+					</article>
+				<?php endforeach; ?>
 
 				<div class="bira-mock__sticker" data-mock-item data-depth="1.2" data-spread="7 -7 18">
 					<div class="bira-mock__sticker-inner">

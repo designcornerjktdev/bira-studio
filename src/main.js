@@ -17,6 +17,7 @@ import { initScrollText } from './scroll-text.js';
 import { initTilt } from './tilt.js';
 import { initShine } from './shine.js';
 import { initFlip } from './flip.js';
+import { initCount } from './count.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initHero();
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTilt();
   initShine();
   initFlip();
+  initCount();
   initMockup();
   initReveal();
   initNav();

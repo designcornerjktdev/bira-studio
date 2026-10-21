@@ -3,14 +3,23 @@
 <?php
 // Footer ala web agency:
 // 1. Atas: logo + tagline besar (kiri), ajakan kontak + email besar (kanan).
-// 2. Kolom info berlabel: Office, Follow, Family.
-// 3. Baris legal: copyright + menu footer.
+// 2. Kolom info: logo + Family, Menu, Follow, Office.
+// 3. Baris legal: copyright.
 $tagline = bira_text( 'footer_tagline', "Born in Indonesia.\nBuilt for the internet." );
 $legal   = bira_text( 'footer_legal', 'A little different. On purpose.' );
 $family  = bira_text( 'footer_family', 'Bira is part of the ID Ads family, along with our siblings Gili Social and Moyo Technologies.' );
 $office  = bira_text( 'footer_office', 'Bira Studio Office' );
 $address = bira_text( 'footer_address', "AD Premier Office Park 9th Floor, Jl. TB Simatupang No.5\nJakarta Selatan 12550" );
 [ 'email' => $email, 'socials' => $socials ] = bira_contact_links();
+// Menu footer: dari Appearance → Menus (lokasi "Footer Menu"); kalau belum diatur, link ke section homepage.
+$menu_fallback = [
+	'#services' => __( 'Services', 'bira' ),
+	'#process'  => __( 'Process', 'bira' ),
+	'#work'     => __( 'Work', 'bira' ),
+	'#team'     => __( 'Team', 'bira' ),
+	'#about'    => __( 'About', 'bira' ),
+	'#contact'  => __( 'Contact', 'bira' ), // membuka pop-up kontak
+];
 ?>
 <footer class="bira-footer bira-pov-section relative isolate overflow-clip"><?php // latar sand muda, sama dengan section POV ?>
 	<?php echo bira_bg_doodles( [ [ 'sparkle', 'top-[22%] right-[22%] size-7 rotate-[10deg]' ] ] ); ?>
@@ -49,6 +58,26 @@ $address = bira_text( 'footer_address', "AD Premier Office Park 9th Floor, Jl. T
 				</div>
 			<?php endif; ?>
 
+			<nav class="bira-footer__menu md:col-span-2 md:pt-4" aria-label="<?php esc_attr_e( 'Footer', 'bira' ); ?>">
+				<h2 class="bira-eyebrow mb-4 text-ink/50">Link</h2>
+				<?php
+				if ( has_nav_menu( 'footer' ) ) {
+					wp_nav_menu( [
+						'theme_location' => 'footer',
+						'container'      => false,
+						'menu_class'     => 'grid gap-1',
+						'depth'          => 1,
+					] );
+				} else {
+					echo '<ul class="grid gap-1">';
+					foreach ( $menu_fallback as $hash => $label ) {
+						printf( '<li><a href="%s">%s</a></li>', esc_url( home_url( '/' ) . $hash ), esc_html( $label ) );
+					}
+					echo '</ul>';
+				}
+				?>
+			</nav>
+
 			<?php if ( $socials ) : ?>
 				<div class="md:col-span-3 pt-0 md:pt-4">
 					<h2 class="bira-eyebrow mb-4 text-ink/50">Follow</h2>
@@ -66,7 +95,7 @@ $address = bira_text( 'footer_address', "AD Premier Office Park 9th Floor, Jl. T
 			<?php endif; ?>
 
 			<?php if ( $office || $address ) : ?>
-				<div class="md:col-span-5 pt-0 md:pt-4">
+				<div class="md:col-span-3 pt-0 md:pt-4">
 					<h2 class="bira-eyebrow mb-4 text-ink/50">Office</h2>
 					<address class="text-sm leading-relaxed text-ink/75 not-italic">
 						<?php if ( $office ) : ?>
@@ -79,20 +108,8 @@ $address = bira_text( 'footer_address', "AD Premier Office Park 9th Floor, Jl. T
 		</div>
 
 		<?php // 3. Baris legal ?>
-		<div class="flex flex-col justify-between gap-2 border-t border-ink/15 py-5 text-sm tracking-wider text-ink/55 uppercase sm:flex-row">
+		<div class="border-t border-ink/15 py-5 text-sm tracking-wider text-ink/55 uppercase">
 			<span>&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>. <?php echo esc_html( $legal ); ?></span>
-			<?php if ( has_nav_menu( 'footer' ) ) : ?>
-				<nav aria-label="<?php esc_attr_e( 'Footer', 'bira' ); ?>">
-					<?php
-					wp_nav_menu( [
-						'theme_location' => 'footer',
-						'container'      => false,
-						'menu_class'     => 'flex gap-6',
-						'depth'          => 1,
-					] );
-					?>
-				</nav>
-			<?php endif; ?>
 		</div>
 	</div>
 </footer>

@@ -1324,3 +1324,22 @@ html.is-contact-open {
     opacity: 0;
   }
 }
+
+/* Menu footer (wp_nav_menu atau fallback) — gaya sama dengan link Follow, hijau saat hover. */
+.bira-footer__menu a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.bira-footer__menu a:hover {
+  color: var(--color-green);
+}
+.bira-footer__menu a:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 3px;
+}

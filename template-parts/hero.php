@@ -13,7 +13,6 @@ $label  = bira_text( 'hero_cta_label', 'See our work' );
 $url    = bira_text( 'hero_cta_url', '#work' );
 $label2 = bira_text( 'hero_cta2_label', 'Let’s make something' );
 $url2   = bira_text( 'hero_cta2_url', '#cta' );
-$symbol = (int) bira_text( 'hero_symbol', '0' );
 
 // Baris baru di headline jadi pemenggalan baris; kata aksen hanya kemunculan pertama.
 $title_html = nl2br( bira_accent( $title, $accent, 'bira-hero__accent text-green' ), false );
@@ -66,11 +65,7 @@ $card_img = static function ( $att ) {
 			</div>
 
 			<div class="bira-mock lg:col-span-5 lg:col-start-8" data-hero-mockup>
-				<?php if ( $symbol ) : ?>
-					<span class="bira-mock__symbol" data-mock-frame data-spread="0 0 6" aria-hidden="true"><?php echo wp_get_attachment_image( $symbol, 'large', false, [ 'alt' => '', 'loading' => 'eager' ] ); ?></span>
-				<?php else : ?>
-					<span class="bira-mock__frame" data-mock-frame data-spread="0 0 6" aria-hidden="true"></span>
-				<?php endif; ?>
+				<span class="bira-mock__frame" data-mock-frame data-spread="0 0 6" aria-hidden="true"></span>
 
 				<?php foreach ( $cards as $i => $card ) : ?>
 					<article class="bira-mock__card" style="transform: rotate(<?php echo (int) $tilt[ $i % count( $tilt ) ]; ?>deg)" data-mock-item data-depth="<?php echo esc_attr( round( 0.4 + $i * 0.1, 2 ) ); ?>" data-spread="<?php echo esc_attr( $fan( $i, count( $cards ) ) ); ?>">

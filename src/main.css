@@ -319,20 +319,6 @@ html {
   z-index: 0;
 }
 
-/* Simbol BIRA (opsional, menggantikan bingkai garis) */
-.bira-mock__symbol {
-  left: 29%;
-  top: 8%;
-  height: 90%;
-  rotate: -28deg;
-  z-index: 0;
-  pointer-events: none;
-}
-.bira-mock__symbol img {
-  height: 100%;
-  width: auto;
-}
-
 /* Kartu */
 .bira-mock__card {
   overflow: hidden;

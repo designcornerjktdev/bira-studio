@@ -29,10 +29,9 @@ function bira_content_schema(): array {
 				'hero_cta_url'     => [ 'Primary CTA — URL', 'text', [ 'placeholder' => '#work' ] ],
 				'hero_cta2_label'  => [ 'Secondary CTA — label', 'text', [ 'placeholder' => 'Let’s make something' ] ],
 				'hero_cta2_url'    => [ 'Secondary CTA — URL', 'text', [ 'placeholder' => '#cta' ] ],
-				'hero_symbol'      => [ 'BIRA symbol (mockup background)', 'image', [ 'desc' => 'Transparent PNG. Leave empty to use the outline frame.' ] ],
 			],
 			'repeat'   => [ 'hero_post', 'Stack card', 5, [
-				'image'   => [ 'Image', 'image', [ 'desc' => 'A ratio close to 4:3 or square works best.' ] ],
+				'image'   => [ 'Image or GIF', 'image', [ 'desc' => 'Animated GIF recommended (plays automatically, like a Reel). Use a 9:16 portrait at about 540 × 960 px, 2–6 seconds, under ~2 MB. A still image (JPG/PNG) also works.' ] ],
 				'handle'  => [ 'Handle', 'text', [ 'placeholder' => '@madeforthefeed' ] ],
 				'caption' => [ 'Caption', 'text', [ 'desc' => 'One line; longer text is cut off with “…”.' ] ],
 			] ],

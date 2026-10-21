@@ -24,7 +24,7 @@ $note_2 = bira_text( 'cta_note_2', 'Let’s make it happen.' );
 			<h2 id="cta-title" class="bira-h2 max-w-4xl text-[clamp(3.1rem,7vw,7rem)] leading-[0.97] font-extrabold tracking-[-0.02em]">
 				<?php echo wp_kses( $title_html, [ 'span' => [ 'class' => [] ], 'br' => [] ] ); ?>
 			</h2>
-			<a class="bira-cta__circle group" href="<?php echo esc_url( home_url( $url ) ); ?>" data-reveal>
+			<a class="bira-cta__circle bira-contact-open group" href="<?php echo esc_url( home_url( $url ) ); ?>" data-reveal>
 				<?php echo esc_html( $label ); ?>
 			</a>
 		</div>

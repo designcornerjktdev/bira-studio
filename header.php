@@ -48,7 +48,7 @@ $bira_talk_url = home_url( '/' ) . '#cta';
 
 		<nav class="hidden items-center gap-10 md:flex" aria-label="<?php esc_attr_e( 'Primary', 'bira' ); ?>">
 			<?php wp_nav_menu( $bira_menu_args ); ?>
-			<?php echo bira_button( __( 'Let’s talk', 'bira' ), $bira_talk_url ); ?>
+			<?php echo bira_button( __( 'Let’s talk', 'bira' ), $bira_talk_url, 'bira-contact-open' ); ?>
 		</nav>
 
 		<button class="flex size-11 items-center justify-center md:hidden" type="button" aria-label="<?php esc_attr_e( 'Open navigation', 'bira' ); ?>" aria-expanded="false" aria-controls="mobile-navigation" data-nav-toggle>
@@ -59,7 +59,7 @@ $bira_talk_url = home_url( '/' ) . '#cta';
 	<nav id="mobile-navigation" class="bira-mobile-nav border-t border-ink/15 md:hidden" aria-label="<?php esc_attr_e( 'Mobile', 'bira' ); ?>" hidden>
 		<div class="bira-container flex flex-col items-start gap-2 py-6">
 			<?php wp_nav_menu( $bira_menu_args ); ?>
-			<?php echo bira_button( __( 'Let’s talk', 'bira' ), $bira_talk_url, 'mt-4' ); ?>
+			<?php echo bira_button( __( 'Let’s talk', 'bira' ), $bira_talk_url, 'bira-contact-open mt-4' ); ?>
 		</div>
 	</nav>
 </header>

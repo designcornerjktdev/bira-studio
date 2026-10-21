@@ -1261,3 +1261,66 @@ html {
   letter-spacing: 0.08em;
   color: color-mix(in srgb, var(--color-ink) 70%, var(--color-green));
 }
+
+/* ---------- Pop-up kontak (template-parts/contact-modal.php, src/contact.js) ---------- */
+html.is-contact-open {
+  overflow: hidden; /* halaman di belakang tidak ikut ter-scroll */
+}
+.bira-contact {
+  width: min(100% - 2rem, 38rem);
+  max-height: calc(100dvh - 2rem);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.45);
+}
+.bira-contact::backdrop {
+  background: color-mix(in srgb, var(--color-ink) 70%, transparent);
+}
+.bira-contact__panel {
+  position: relative;
+  padding: clamp(2rem, 6vw, 3.75rem);
+}
+.bira-contact__close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  color: var(--color-ink);
+  transition: background-color 0.2s;
+}
+.bira-contact__close:hover {
+  background: color-mix(in srgb, var(--color-ink) 8%, transparent);
+}
+.bira-contact__close:focus-visible,
+.bira-contact a:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bira-contact[open] {
+    animation: bira-contact-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .bira-contact[open]::backdrop {
+    animation: bira-contact-fade 0.35s ease;
+  }
+}
+@keyframes bira-contact-in {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+    scale: 0.97;
+  }
+}
+@keyframes bira-contact-fade {
+  from {
+    opacity: 0;
+  }
+}

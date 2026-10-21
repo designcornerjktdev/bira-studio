@@ -159,16 +159,33 @@ function bira_content_schema(): array {
 				'cta_note_2' => [ 'Handwritten note (grey)', 'text', [ 'placeholder' => 'Let’s make it happen.' ] ],
 			],
 		],
+		'contact' => [
+			'title'    => 'Contact pop-up',
+			'desc'     => 'Opens from "Let’s talk" (header) and "Talk to BIRA" (CTA), or any link to #contact. The contact rows use the email and social links from Footer.',
+			'selector' => '#contact',
+			'part'     => null,
+			'fields'   => [
+				'contact_eyebrow' => [ 'Eyebrow', 'text', [ 'placeholder' => 'Something good starts here.' ] ],
+				'contact_title'   => [ 'Title', 'textarea', [ 'placeholder' => "Let’s make\nsome noise", 'desc' => 'Press Enter for a new line. A green period is added at the end.' ] ],
+				'contact_intro'   => [ 'Intro', 'textarea', [ 'placeholder' => 'Have a brand, an idea, or a beautifully weird brief? We’d love to hear it.' ] ],
+				'contact_back'    => [ 'Close button label', 'text', [ 'placeholder' => 'Back to exploring' ] ],
+			],
+		],
 		'footer'  => [
 			'title'    => 'Footer',
 			'selector' => '.bira-footer',
 			'part'     => null, // footer.php memuat wp_footer(), jadi tidak bisa dirender ulang sebagian
 			'fields'   => [
 				'footer_tagline'   => [ 'Tagline', 'textarea', [ 'placeholder' => "Born in Indonesia.\nBuilt for the internet." ] ],
+				'footer_family'    => [ 'Group note (under the logo)', 'textarea', [ 'placeholder' => 'Bira is part of the ID Ads family, along with our siblings Gili Social and Moyo Technologies.' ] ],
+				'footer_office'    => [ 'Office name', 'text', [ 'placeholder' => 'Bira Studio Office' ] ],
+				'footer_address'   => [ 'Office address', 'textarea', [ 'placeholder' => "AD Premier Office Park 9th Floor, Jl. TB Simatupang No.5\nJakarta Selatan 12550", 'desc' => 'Press Enter for a new line.' ] ],
 				'footer_legal'     => [ 'Copyright text', 'text', [ 'placeholder' => 'A little different. On purpose.' ] ],
 				'footer_email'     => [ 'Email (mailto:)', 'text', [ 'placeholder' => 'mailto:hello@birastudio.co' ] ],
-				'footer_instagram' => [ 'Instagram URL', 'url' ],
-				'footer_tiktok'    => [ 'TikTok URL', 'url' ],
+				'footer_instagram'         => [ 'Instagram URL', 'url', [ 'placeholder' => 'https://www.instagram.com/idads.co/' ] ],
+				'footer_linkedin'          => [ 'LinkedIn URL', 'url', [ 'placeholder' => 'https://www.linkedin.com/company/id-ads/' ] ],
+				'footer_instagram_2'       => [ 'Second Instagram URL', 'url', [ 'placeholder' => 'https://www.instagram.com/lifeatmoyo/' ] ],
+				'footer_instagram_2_label' => [ 'Second Instagram label', 'text', [ 'placeholder' => 'Life at Moyo' ] ],
 			],
 		],
 	];

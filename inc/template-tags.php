@@ -96,3 +96,39 @@ function bira_button( string $label, string $url, string $class = '' ): string {
 		bira_doodle( 'next', 'bira-btn__arrow' )
 	);
 }
+
+/**
+ * Link kontak dari Customizer (Homepage → Footer), dipakai footer dan pop-up kontak.
+ * Hasil: [ 'email' => 'mailto:…', 'socials' => [ label => url, … ] ]. Yang kosong dibuang.
+ */
+function bira_contact_links(): array {
+	return [
+		'email'   => bira_text( 'footer_email', 'mailto:hello@birastudio.co' ),
+		'socials' => array_filter( [
+			'Instagram' => bira_text( 'footer_instagram', 'https://www.instagram.com/idads.co/' ),
+			'LinkedIn'  => bira_text( 'footer_linkedin', 'https://www.linkedin.com/company/id-ads/' ),
+			// Instagram kedua dengan label sendiri (default: akun Moyo).
+			bira_text( 'footer_instagram_2_label', 'Life at Moyo' ) => bira_text( 'footer_instagram_2', 'https://www.instagram.com/lifeatmoyo/' ),
+		] ),
+	];
+}
+
+/**
+ * Teks tampilan sebuah link: "mailto:hi@x.co" → "hi@x.co", "https://www.instagram.com/idads.co/" → "instagram.com/idads.co".
+ */
+function bira_link_label( string $url ): string {
+	return rtrim( (string) preg_replace( [ '#^mailto:#i', '#^https?://(www\.)?#i' ], '', $url ), '/' );
+}
+
+/**
+ * Panah diagonal "swipe" seperti di kartu Work: saat induk .group di-hover/fokus, panah keluar ke
+ * kanan atas dan salinannya masuk dari kiri bawah (CSS .bira-swipe-arrow). Induknya wajib punya class "group".
+ */
+function bira_swipe_arrow( string $size = 'size-3.5', string $class = '' ): string {
+	return sprintf(
+		'<span class="bira-swipe-arrow relative inline-flex shrink-0 items-center justify-center overflow-hidden %s" aria-hidden="true">%s%s</span>',
+		esc_attr( $class ),
+		bira_doodle( 'arrow', "bira-swipe-arrow__out {$size}" ),
+		bira_doodle( 'arrow', "bira-swipe-arrow__in absolute {$size}" )
+	);
+}

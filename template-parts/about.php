@@ -1,0 +1,57 @@
+<?php
+/**
+ * About — asal nama BIRA (Pulau Bira, Kepulauan Seribu).
+ * Gambar di kiri, cerita singkat + headline besar di kanan. Konten dari Customizer → Homepage → About.
+ */
+$image    = (int) bira_text( 'origin_image', '0' );
+$caption  = bira_text( 'origin_caption' );
+$intro    = bira_text( 'origin_intro', 'We borrowed our name from Pulau Bira in Kepulauan Seribu. Small on the map, but that’s kind of the point.' );
+$headline = rtrim( bira_text( 'origin_headline', 'You don’t have to be the biggest to make waves' ), '. ' );
+// Penanda peta di bawah gambar: nama tulisan tangan + panah, nama wilayah, koordinat.
+$pin_name   = bira_text( 'origin_pin_name', 'Bira' );
+$pin_region = bira_text( 'origin_pin_region', 'Kepulauan Seribu' );
+$pin_coords = array_filter( array_map( 'trim', explode( ',', bira_text( 'origin_pin_coords', '5.7300° S, 106.6275° E' ) ) ) );
+?>
+<section id="about" class="bira-section" aria-labelledby="about-title">
+	<div class="bira-container grid items-center gap-10 md:grid-cols-2 md:gap-16 md:pb-40 lg:gap-24"><?php // pb: ruang untuk penanda yang menggantung di bawah gambar ?>
+		<figure class="relative m-0" data-reveal>
+			<?php
+			// Gambar tampil apa adanya (ukuran & rasio asli, tanpa latar/potong), cocok untuk PNG transparan.
+			if ( $image ) {
+				echo wp_get_attachment_image( $image, 'large', false, [ 'class' => 'block h-auto w-full', 'loading' => 'lazy' ] );
+			}
+			?>
+			<?php if ( $caption || $pin_name || $pin_region || $pin_coords ) : ?>
+				<?php // Desktop: baris ini di luar alur (absolute) supaya gambar saja yang sejajar tengah dengan teks. ?>
+				<div class="mt-5 flex items-start justify-between gap-6 md:absolute md:inset-x-0 md:top-full">
+					<?php if ( $caption ) : ?>
+						<figcaption class="text-sm text-ink/55"><?php echo esc_html( $caption ); ?></figcaption>
+					<?php endif; ?>
+					<?php if ( $pin_name || $pin_region || $pin_coords ) : ?>
+						<?php // Penanda peta di luar gambar; panah menunjuk ke atas, ke pulau di gambar. ?>
+						<div class="bira-pin" aria-hidden="true">
+							<?php if ( $pin_name ) : ?>
+								<svg class="bira-pin__arrow" viewBox="0 0 70 80" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+									<path d="M64 74C38 70 16 52 10 8"/>
+									<path d="M2 20 10 6l11 12"/>
+								</svg>
+								<span class="bira-pin__name"><?php echo esc_html( $pin_name ); ?></span>
+							<?php endif; ?>
+							<?php if ( $pin_region ) : ?>
+								<span class="bira-pin__region"><?php echo esc_html( $pin_region ); ?></span>
+							<?php endif; ?>
+							<?php if ( $pin_coords ) : ?>
+								<span class="bira-pin__coords"><?php echo implode( '<br>', array_map( 'esc_html', $pin_coords ) ); ?></span>
+							<?php endif; ?>
+						</div>
+					<?php endif; ?>
+				</div>
+			<?php endif; ?>
+		</figure>
+
+		<div data-reveal>
+			<p class="max-w-lg text-base leading-relaxed text-ink/75 md:text-lg"><?php echo esc_html( $intro ); ?></p>
+			<h2 id="about-title" class="bira-h2 mt-8 text-[clamp(2.5rem,4.6vw,4.75rem)] leading-[0.98] font-extrabold tracking-[-0.02em]"><?php echo esc_html( $headline ); ?><span class="text-green">.</span></h2>
+		</div>
+	</div>
+</section>

@@ -1,7 +1,7 @@
 <?php
 /**
  * Homepage — urutan section mengikuti BIRA Website Guideline:
- * hero → trust → clients → services → process → work → team → pov → cta (nama file template-parts = id section)
+ * hero → trust → clients → services → process → work → team → pov → about → cta (nama file template-parts = id section)
  */
 get_header();
 
@@ -13,6 +13,7 @@ get_template_part( 'template-parts/process' ); // berisi garis scroll SVG (src/s
 get_template_part( 'template-parts/work' );
 get_template_part( 'template-parts/team' );
 get_template_part( 'template-parts/pov' );
+get_template_part( 'template-parts/about' );
 get_template_part( 'template-parts/cta' );
 
 get_footer();

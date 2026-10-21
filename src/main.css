@@ -1207,27 +1207,6 @@ html {
   --ratio: 1.85; /* kartu "Up next" melebar, seperti prototype */
 }
 
-/* Judul [data-intro] disembunyikan sampai animasi masuk siap (src/intro-heading.js); pengaman 3 detik jika JS gagal. */
-@media (prefers-reduced-motion: no-preference) {
-  .js [data-intro] {
-    visibility: hidden;
-    animation: bira-intro-failsafe 0s 3s forwards;
-  }
-}
-@keyframes bira-intro-failsafe {
-  to {
-    visibility: visible;
-  }
-}
-
-/* Scroll text reveal (src/scroll-text.js): huruf abu-abu, jadi warna teks penuh saat terlewati scroll. */
-.bira-scroll-char {
-  color: color-mix(in srgb, currentColor 25%, transparent);
-}
-.bira-scroll-char.is-on {
-  color: inherit;
-}
-
 /* Logo klien di strip marquee: tinggi seragam, warna asli logo. */
 .bira-clients__logo {
   width: auto;
@@ -1240,4 +1219,45 @@ html {
     height: 3rem;
     max-width: 12rem;
   }
+}
+
+/* About: penanda peta di bawah gambar Pulau Bira (rata kanan) — nama tulisan tangan dengan
+   panah ke atas menunjuk pulau, nama wilayah (huruf renggang bergaris bawah) dan koordinat. */
+.bira-pin {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  margin-left: auto;
+  padding-left: clamp(2.5rem, 5vw, 4rem); /* ruang untuk panah di kiri nama */
+  color: var(--color-green);
+}
+.bira-pin__name {
+  font-family: var(--font-hand);
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-weight: 700;
+  line-height: 0.9;
+  rotate: -6deg;
+}
+.bira-pin__arrow {
+  position: absolute;
+  top: -1.5rem;
+  left: 0;
+  width: clamp(2.5rem, 5vw, 4rem);
+}
+.bira-pin__region {
+  margin-top: 0.6rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid currentColor;
+  font-size: 0.875rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  rotate: -6deg;
+}
+.bira-pin__coords {
+  margin-top: 0.9rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--color-ink) 70%, var(--color-green));
 }

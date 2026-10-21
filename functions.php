@@ -90,3 +90,12 @@ add_filter( 'wp_get_attachment_image_src', function ( $image, $id, $size ) {
 add_filter( 'wp_calculate_image_srcset', function ( $sources, $size_array, $src, $meta, $id ) {
 	return bira_is_gif( (int) $id ) ? false : $sources;
 }, 10, 5 );
+
+// Halaman About sudah tidak ada (kontennya jadi section #about di homepage): alihkan /about ke sana.
+add_action( 'template_redirect', function () {
+	$path = static fn( string $url ): string => trim( (string) wp_parse_url( $url, PHP_URL_PATH ), '/' );
+	if ( $path( home_url( '/about' ) ) === $path( $_SERVER['REQUEST_URI'] ?? '' ) && ( is_404() || is_page( 'about' ) ) ) {
+		wp_safe_redirect( home_url( '/#about' ), 301 );
+		exit;
+	}
+} );

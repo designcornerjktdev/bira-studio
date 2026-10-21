@@ -1,6 +1,6 @@
 <?php
 /**
- * Konten situs di Appearance → Customize (live preview): panel Homepage dan About Page.
+ * Konten homepage di Appearance → Customize → Homepage (live preview).
  * Satu skema di bawah dipakai untuk: section & control Customizer, sanitasi,
  * dan bira_text()/bira_items()/bira_gallery() di template.
  *
@@ -130,6 +130,21 @@ function bira_content_schema(): array {
 				'pov_body'    => [ 'Supporting text', 'textarea' ],
 			],
 		],
+		'about'   => [
+			'title'    => 'About (Pulau Bira)',
+			'desc'     => 'Where the name comes from. Shown after POV.',
+			'selector' => '#about',
+			'part'     => 'about',
+			'fields'   => [
+				'origin_image'    => [ 'Image', 'image', [ 'desc' => 'Shown at its original size and ratio, without a background. A transparent PNG (e.g. an aerial cut-out of Pulau Bira) works best.' ] ],
+				'origin_caption'  => [ 'Image caption (optional)', 'text' ],
+				'origin_pin_name'   => [ 'Map label — handwritten name', 'text', [ 'placeholder' => 'Bira', 'desc' => 'Green handwritten name with an arrow pointing at the island.' ] ],
+				'origin_pin_region' => [ 'Map label — region', 'text', [ 'placeholder' => 'Kepulauan Seribu' ] ],
+				'origin_pin_coords' => [ 'Map label — coordinates', 'text', [ 'placeholder' => '5.7300° S, 106.6275° E', 'desc' => 'Separate latitude and longitude with a comma (each on its own line).' ] ],
+				'origin_intro'    => [ 'Intro', 'textarea', [ 'placeholder' => 'We borrowed our name from Pulau Bira in Kepulauan Seribu. Small on the map, but that’s kind of the point.' ] ],
+				'origin_headline' => [ 'Headline', 'text', [ 'placeholder' => 'You don’t have to be the biggest to make waves', 'desc' => 'A green period is added at the end.' ] ],
+			],
+		],
 		'cta'     => [
 			'title'    => 'CTA',
 			'selector' => '#cta',
@@ -154,73 +169,6 @@ function bira_content_schema(): array {
 				'footer_email'     => [ 'Email (mailto:)', 'text', [ 'placeholder' => 'mailto:hello@birastudio.co' ] ],
 				'footer_instagram' => [ 'Instagram URL', 'url' ],
 				'footer_tiktok'    => [ 'TikTok URL', 'url' ],
-			],
-		],
-
-		// ---------- Halaman About (page-about.php) ----------
-		'about_hero'     => [
-			'panel'    => 'bira_about',
-			'title'    => 'Hero',
-			'selector' => '.bira-about-hero',
-			'part'     => null,
-			'fields'   => [
-				'about_eyebrow'      => [ 'Eyebrow', 'text', [ 'placeholder' => 'Independent minds. Shared internet brain.' ] ],
-				'about_headline'     => [ 'Headline', 'textarea', [ 'placeholder' => "Small studio.\nBig internet\nenergy", 'desc' => 'Press Enter for a new line. A green period is added at the end.' ] ],
-				'about_accent'       => [ 'Accent word (green)', 'text', [ 'placeholder' => 'internet' ] ],
-				'about_intro'        => [ 'Intro', 'textarea', [ 'placeholder' => 'We’re Bira. A social, content & influence studio based in Indonesia. We spend a lot of time on the internet.' ] ],
-				'about_intro_muted'  => [ 'Intro — last line (grey)', 'text', [ 'placeholder' => 'And we know how to make that useful.' ] ],
-			],
-		],
-		'about_who'      => [
-			'panel'    => 'bira_about',
-			'title'    => 'Who We Are',
-			'selector' => '.bira-about-who',
-			'part'     => null,
-			'fields'   => [
-				'about_who_image'   => [ 'Image', 'image', [ 'desc' => 'Close to square works best.' ] ],
-				'about_who_caption' => [ 'Image caption (optional)', 'text', [ 'placeholder' => 'Studio moodboard' ] ],
-				'about_who_eyebrow' => [ 'Eyebrow', 'text', [ 'placeholder' => 'Who we are' ] ],
-				'about_who_title'   => [ 'Title', 'textarea', [ 'placeholder' => "Good people.\nGood instincts.\nGreat group chat.", 'desc' => 'Press Enter for a new line.' ] ],
-				'about_who_text'    => [ 'Text', 'textarea', [ 'desc' => 'An empty line starts a new paragraph.' ] ],
-			],
-		],
-		'about_believe'  => [
-			'panel'    => 'bira_about',
-			'title'    => 'What We Believe',
-			'selector' => '.bira-about-believe',
-			'part'     => null,
-			'fields'   => [
-				'about_believe_eyebrow' => [ 'Eyebrow', 'text', [ 'placeholder' => 'What we believe' ] ],
-			],
-			'repeat'   => [ 'about_belief', 'Belief', 3, [
-				'title' => [ 'Title', 'text' ],
-				'text'  => [ 'Text', 'textarea' ],
-			] ],
-		],
-		'about_think'    => [
-			'panel'    => 'bira_about',
-			'title'    => 'How We Think',
-			'selector' => '.bira-about-think',
-			'part'     => null,
-			'fields'   => [
-				'about_think_eyebrow'  => [ 'Eyebrow', 'text', [ 'placeholder' => 'How we think' ] ],
-				'about_think_headline' => [ 'Headline', 'textarea', [ 'placeholder' => "We don’t ask\n“What should\nthe brand say?”", 'desc' => 'Press Enter for a new line.' ] ],
-				'about_think_line'     => [ 'Answer line', 'text', [ 'placeholder' => 'We ask “why would anyone care?”' ] ],
-			],
-		],
-		'about_approach' => [
-			'panel'    => 'bira_about',
-			'title'    => 'Approach & People',
-			'selector' => '.bira-about-approach',
-			'part'     => null,
-			'fields'   => [
-				'about_approach_eyebrow' => [ 'Approach — eyebrow', 'text', [ 'placeholder' => 'Our approach' ] ],
-				'about_approach_title'   => [ 'Approach — title', 'textarea', [ 'placeholder' => "Listen close.\nThink big.\nMake it human." ] ],
-				'about_approach_text'    => [ 'Approach — text', 'textarea' ],
-				'about_people_eyebrow'   => [ 'People — eyebrow', 'text', [ 'placeholder' => 'Our people' ] ],
-				'about_people_title'     => [ 'People — title', 'textarea', [ 'placeholder' => "Many brains.\nOne good feeling." ] ],
-				'about_people_text'      => [ 'People — text', 'textarea' ],
-				'about_people_note'      => [ 'People — small note (optional)', 'text', [ 'placeholder' => 'Real team portraits and introductions coming soon.' ] ],
 			],
 		],
 	];
@@ -248,11 +196,6 @@ add_action( 'customize_register', function ( WP_Customize_Manager $wp_customize 
 		'title'       => 'Homepage',
 		'description' => 'Content for each homepage section. Empty fields use the default text shown as placeholder.',
 		'priority'    => 30,
-	] );
-	$wp_customize->add_panel( 'bira_about', [
-		'title'       => 'About Page',
-		'description' => 'Content for the About page (a Page with the slug "about"). Open that page in the preview to see changes. Empty fields use the default text.',
-		'priority'    => 32,
 	] );
 
 	$priority = 0;

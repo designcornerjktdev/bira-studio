@@ -1277,6 +1277,12 @@ html.is-contact-open {
   color: var(--color-ink);
   box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.45);
 }
+/* Mobile: tombol "Back to exploring" disembunyikan; pop-up ditutup lewat tombol × (atau Esc / klik di luar). */
+@media (max-width: 47.99rem) {
+  .bira-contact .bira-btn {
+    display: none;
+  }
+}
 .bira-contact::backdrop {
   background: color-mix(in srgb, var(--color-ink) 70%, transparent);
 }
@@ -1342,4 +1348,190 @@ html.is-contact-open {
 .bira-footer__menu a:focus-visible {
   outline: 2px solid var(--color-green);
   outline-offset: 3px;
+}
+
+/* ---------- Arsip post / blog (index.php, template-parts/post-card.php) ---------- */
+.bira-post__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--color-sand) 55%, var(--color-cream));
+}
+.bira-post__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .bira-post__img {
+  scale: 1.04;
+}
+.bira-post__body {
+  padding-top: 1.25rem;
+}
+/* Post terbaru: gambar lebar di kiri, teks di kanan (desktop). */
+@media (min-width: 64rem) {
+  .bira-post--featured .bira-post {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 3rem;
+    align-items: center;
+  }
+  .bira-post--featured .bira-post__media {
+    aspect-ratio: 16 / 10;
+  }
+  .bira-post--featured .bira-post__body {
+    padding-top: 0;
+  }
+}
+
+/* Pill filter kategori */
+.bira-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 15%, transparent);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background-color 0.2s;
+}
+.bira-pill:hover {
+  border-color: var(--color-green);
+  color: var(--color-green);
+}
+.bira-pill.is-active {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+.bira-pill:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 3px;
+}
+
+/* Paginasi angka bulat */
+.bira-pagination {
+  margin-top: 4rem;
+}
+.bira-pagination .nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.bira-pagination .page-numbers {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.75rem;
+  height: 2.75rem;
+  padding-inline: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 15%, transparent);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background-color 0.2s;
+}
+.bira-pagination a.page-numbers:hover {
+  border-color: var(--color-green);
+  color: var(--color-green);
+}
+.bira-pagination .page-numbers.current {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+.bira-pagination .page-numbers.dots {
+  border-color: transparent;
+}
+
+/* ---------- Detail post (single.php) ---------- */
+/* Garis progres baca di atas layar, digerakkan scroll (CSS scroll-driven animation; browser lama: tidak tampil). */
+.bira-read-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  height: 3px;
+  background: var(--color-green);
+  transform-origin: 0 50%;
+  scale: 0 1;
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .bira-read-progress {
+      animation: bira-read-progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+@keyframes bira-read-progress {
+  to {
+    scale: 1 1;
+  }
+}
+
+/* Tipografi isi artikel: kolom baca nyaman, ukuran lebih besar dari body biasa. */
+.bira-content--article {
+  max-width: 52rem;
+  font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  line-height: 1.75;
+  color: color-mix(in srgb, var(--color-ink) 85%, transparent);
+}
+.bira-content--article > :first-child {
+  margin-top: 0;
+}
+.bira-content--article h2,
+.bira-content--article h3 {
+  color: var(--color-ink);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.bira-content--article h2 {
+  font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+}
+.bira-content--article blockquote {
+  margin-block: 2.5rem;
+  padding-left: 1.5rem;
+  border-left-width: 4px;
+  font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+.bira-content--article figure {
+  margin-block: 2.5rem;
+}
+.bira-content--article figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+}
+.bira-content--article hr {
+  margin-block: 3rem;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-ink) 15%, transparent);
+}
+.bira-content--article a:hover {
+  color: var(--color-ink);
+}
+/* Gambar "lebar" dari editor blok boleh melebihi kolom baca. */
+@media (min-width: 64rem) {
+  .bira-content--article .alignwide {
+    width: calc(100% + 8rem);
+    max-width: none;
+    margin-inline: -4rem;
+  }
 }

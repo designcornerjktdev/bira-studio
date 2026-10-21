@@ -51,7 +51,7 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 		</p>
 	<?php endif; ?>
 
-	<h1 class="mt-6 max-w-6xl text-[clamp(3rem,7.5vw,7.5rem)] leading-[0.99] font-extrabold tracking-[-0.04em]"><?php echo esc_html( rtrim( get_the_title(), '. ' ) ); ?><span class="text-green">.</span></h1>
+	<h1 class="mt-6 max-w-6xl text-[clamp(2.25rem,9vw,7.5rem)] leading-[0.99] break-words hyphens-auto font-extrabold tracking-[-0.04em]"><?php echo esc_html( rtrim( get_the_title(), '. ' ) ); ?><span class="text-green">.</span></h1>
 
 	<?php if ( $meta( 'lede' ) ) : ?>
 		<p class="mt-7 max-w-xl text-base leading-relaxed text-ink/65" data-reveal><?php echo esc_html( $meta( 'lede' ) ); ?></p>
@@ -76,7 +76,7 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 			<?php echo wp_get_attachment_image( (int) $project['image'], 'full', false, [ 'class' => 'absolute inset-0 size-full object-cover', 'sizes' => '100vw', 'loading' => 'eager' ] ); ?>
 			<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
 			<?php if ( $project['brand'] ) : ?>
-				<p class="absolute bottom-7 left-7 text-[clamp(3rem,8vw,8rem)] leading-none font-extrabold tracking-[-0.06em] text-white uppercase" aria-hidden="true"><?php echo esc_html( $project['brand'] ); ?></p>
+				<p class="absolute right-5 bottom-5 left-5 truncate text-[clamp(2rem,10vw,8rem)] leading-none md:right-7 md:bottom-7 md:left-7 font-extrabold tracking-[-0.06em] text-white uppercase" aria-hidden="true"><?php echo esc_html( $project['brand'] ); ?></p>
 			<?php endif; ?>
 		</div>
 	</div>
@@ -88,7 +88,7 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 			<?php if ( $text ) : ?>
 				<div data-reveal>
 					<?php echo $label( $n, $heading ); ?>
-					<h2 class="text-2xl leading-snug font-bold tracking-[-0.04em] md:text-3xl"><?php echo esc_html( $text ); ?></h2>
+					<h2 class="text-xl leading-snug font-bold tracking-[-0.04em] break-words sm:text-2xl md:text-3xl"><?php echo esc_html( $text ); ?></h2>
 				</div>
 			<?php endif; ?>
 		<?php endforeach; ?>
@@ -99,7 +99,7 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 	<section class="bira-case__tint py-20 md:py-28">
 		<div class="bira-container">
 			<?php echo $label( '03', 'The Idea', 'mb-7' ); ?>
-			<h2 class="max-w-5xl text-[clamp(2.8rem,5.3vw,5.5rem)] leading-[1.06] font-extrabold tracking-[-0.04em]" data-reveal><?php echo esc_html( $meta( 'idea' ) ); ?></h2>
+			<h2 class="max-w-5xl text-[clamp(1.875rem,7vw,5.5rem)] leading-[1.06] break-words hyphens-auto font-extrabold tracking-[-0.04em]" data-reveal><?php echo esc_html( $meta( 'idea' ) ); ?></h2>
 		</div>
 	</section>
 <?php endif; ?>
@@ -110,7 +110,7 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 			<?php if ( $meta( 'execution_title' ) || $exec_text ) : ?>
 				<?php echo $label( '04', 'The Execution' ); ?>
 				<?php if ( $meta( 'execution_title' ) ) : ?>
-					<h2 class="text-4xl leading-[1.04] font-extrabold tracking-tighter uppercase md:text-5xl"><?php echo nl2br( esc_html( $meta( 'execution_title' ) ), false ); ?></h2>
+					<h2 class="text-3xl leading-[1.04] font-extrabold tracking-tighter break-words uppercase sm:text-4xl md:text-5xl"><?php echo nl2br( esc_html( $meta( 'execution_title' ) ), false ); ?></h2>
 				<?php endif; ?>
 				<?php if ( $exec_text ) : ?>
 					<p class="mt-7 text-sm leading-[1.85] whitespace-pre-line text-ink/70"><?php echo esc_html( $exec_text ); ?></p>
@@ -133,7 +133,7 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 	<section class="border-t border-ink/15 py-16">
 		<div class="bira-container flex flex-col justify-between gap-8 md:flex-row">
 			<h2 class="text-sm font-bold tracking-widest text-green uppercase">06 / The People</h2>
-			<p class="max-w-2xl text-2xl leading-snug font-semibold tracking-tight" data-reveal><?php echo esc_html( $meta( 'people' ) ); ?></p>
+			<p class="max-w-2xl text-xl leading-snug font-semibold tracking-tight break-words md:text-2xl" data-reveal><?php echo esc_html( $meta( 'people' ) ); ?></p>
 		</div>
 	</section>
 <?php endif; ?>
@@ -146,7 +146,7 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 				<?php foreach ( $stats as $stat ) : ?>
 					<?php [ $num, $what ] = array_pad( explode( ' ', $stat, 2 ), 2, '' ); ?>
 					<div data-reveal>
-						<p class="text-[clamp(5rem,13vw,12rem)] leading-none font-extrabold tracking-[-0.06em]"><?php echo esc_html( $num ); ?></p>
+						<p class="text-[clamp(3rem,16vw,12rem)] leading-none break-words font-extrabold tracking-[-0.06em]"><?php echo esc_html( $num ); ?></p>
 						<?php if ( $what ) : ?>
 							<p class="mt-4 text-sm font-bold tracking-widest text-green uppercase"><?php echo esc_html( $what ); ?></p>
 						<?php endif; ?>
@@ -164,7 +164,7 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 	<section class="bira-container grid items-center gap-10 py-20 md:grid-cols-2 md:py-28">
 		<div>
 			<p class="mb-5 text-sm font-bold tracking-widest text-green uppercase">Keep the conversation going</p>
-			<h2 class="text-5xl leading-none font-extrabold tracking-tighter uppercase md:text-6xl">Up next<span class="text-green">.</span></h2>
+			<h2 class="text-4xl leading-none font-extrabold tracking-tighter uppercase sm:text-5xl md:text-6xl">Up next<span class="text-green">.</span></h2>
 			<a class="bira-link mt-8 inline-flex min-h-11 items-center gap-6 border-b border-ink/15 pb-2 text-sm font-bold tracking-[0.12em] uppercase" href="<?php echo esc_url( home_url( '/#work' ) ); ?>">
 				<span class="bira-link__text">All work</span>
 				<?php echo bira_doodle( 'next', 'bira-link__arrow size-3.5' ); ?>

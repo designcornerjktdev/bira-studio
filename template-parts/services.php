@@ -20,9 +20,9 @@ $items = bira_items( 'wwd_item', [
 			<div class="relative">
 				<?php echo bira_doodle( 'sparkle', 'bira-drift absolute -top-3 -right-12 hidden size-9 rotate-[14deg] text-green md:block [&_path]:stroke-[1.8]' ); ?>
 				<?php // data-split="center": baris 1 naik dari garis tengah, baris 2 turun (lihat split-heading.js). ?>
-				<h2 id="services-title" class="bira-h2 text-[clamp(2.5rem,5.2vw,5.3rem)] leading-[1.02] font-extrabold tracking-[-0.02em]" data-split="center">
-					<span class="bira-split-mask"><span class="block" data-split-line="up"><?php echo esc_html( $title ); ?></span></span>
-					<span class="bira-split-mask"><span class="block text-ink/45" data-split-line="down"><?php echo esc_html( $muted ); ?></span></span>
+				<h2 id="services-title" class="bira-h2 text-[9vw] leading-[1.02] sm:text-[clamp(2.5rem,5.2vw,5.3rem)] font-extrabold tracking-[-0.02em]" data-split="center">
+					<span class="bira-split-mask"><span class="block text-balance" data-split-line="up"><?php echo esc_html( $title ); ?></span></span>
+					<span class="bira-split-mask"><span class="block text-balance text-ink/45" data-split-line="down"><?php echo esc_html( $muted ); ?></span></span>
 				</h2>
 			</div>
 			<p class="max-w-[230px] text-sm leading-[1.8] whitespace-pre-line text-ink/65" data-reveal><?php echo esc_html( $intro ); ?></p>

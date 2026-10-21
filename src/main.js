@@ -13,12 +13,14 @@ import { initFab } from './fab.js';
 import { initCount } from './count.js';
 import { initSmoothAnchors } from './smooth-anchor.js';
 import { initContact } from './contact.js';
+import { initShare } from './share.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initHero();
   initCount();
   initContact(); // sebelum smooth anchor: klik "Let’s talk" membuka pop-up, bukan scroll ke #cta
   initSmoothAnchors();
+  initShare();
   initMockup();
   initReveal();
   initNav();

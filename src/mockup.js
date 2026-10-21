@@ -33,11 +33,10 @@ export function initMockup() {
         0.1
       );
 
-      // ---------- Parallax kursor + berpencar saat hover (aktif setelah intro, hanya mouse) ----------
-      // Keduanya digabung ke setter x/y/rotation yang sama, karena GSAP memegang transform elemen.
+      // ---------- Kipas kartu (aktif setelah intro) ----------
+      // Mouse: parallax kursor + berpencar saat hover. Layar sentuh: berpencar mengikuti scroll.
+      // Semua digabung ke setter x/y/rotation yang sama, karena GSAP memegang transform elemen.
       tl.call(() => {
-        if (!fine) return;
-
         const state = { spread: 0 };
         let nx = 0;
         let ny = 0;
@@ -62,6 +61,19 @@ export function initMockup() {
             m.r(m.rot + state.spread * m.sr);
           });
         };
+
+        // Layar sentuh (tanpa hover): kipas terbuka saat mockup naik ke tengah layar,
+        // menutup lagi saat di-scroll kembali ke atas.
+        if (!fine) {
+          const scroll = gsap.to(state, {
+            spread: 1,
+            ease: 'none',
+            onUpdate: apply,
+            scrollTrigger: { trigger: mock, start: 'top 85%', end: 'center 45%', scrub: 0.6 },
+          });
+          cleanup = () => scroll.scrollTrigger?.kill();
+          return;
+        }
 
         const onMove = (e) => {
           const r = root.getBoundingClientRect();

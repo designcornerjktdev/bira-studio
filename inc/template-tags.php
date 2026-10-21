@@ -132,3 +132,11 @@ function bira_swipe_arrow( string $size = 'size-3.5', string $class = '' ): stri
 		bira_doodle( 'arrow', "bira-swipe-arrow__in absolute {$size}" )
 	);
 }
+
+/**
+ * Perkiraan waktu baca post (menit, ±200 kata/menit). Dipakai kartu arsip dan detail post.
+ */
+function bira_read_minutes( ?int $post_id = null ): int {
+	$words = str_word_count( wp_strip_all_tags( (string) get_post_field( 'post_content', $post_id ?? get_the_ID() ) ) );
+	return max( 1, (int) round( $words / 200 ) );
+}

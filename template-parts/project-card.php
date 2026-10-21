@@ -17,12 +17,12 @@ $url     = str_starts_with( $project['url'], 'http' ) ? $project['url'] : home_u
 			}
 			?>
 			<div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-black/15"></div>
-			<div class="absolute inset-x-0 top-0 flex items-start justify-between p-5 md:p-7">
-				<span class="text-xl font-extrabold tracking-[-0.07em] text-white uppercase"><?php echo esc_html( $project['brand'] ); ?></span>
-				<span class="rounded-full border border-white/60 bg-black/15 px-2.5 py-1 text-sm font-semibold tracking-wider text-white uppercase"><?php echo esc_html( $project['tag'] ); ?></span>
+			<div class="absolute inset-x-0 top-0 flex items-start justify-between gap-3 p-5 md:p-7">
+				<span class="min-w-0 truncate text-xl font-extrabold tracking-[-0.07em] text-white uppercase"><?php echo esc_html( $project['brand'] ); ?></span>
+				<span class="shrink-0 rounded-full border border-white/60 bg-black/15 px-2.5 py-1 text-sm font-semibold tracking-wider text-white uppercase"><?php echo esc_html( $project['tag'] ); ?></span>
 			</div>
 			<div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white md:p-7">
-				<span class="max-w-[90%] whitespace-pre-line"><span class="bira-work__hook text-[clamp(2rem,3.4vw,4rem)] leading-[0.97] font-extrabold tracking-[-0.065em]"><?php echo esc_html( $project['hook'] ); ?></span></span>
+				<span class="max-w-[90%] min-w-0 break-words whitespace-pre-line"><span class="bira-work__hook text-[clamp(2rem,3.4vw,4rem)] leading-[0.97] font-extrabold tracking-[-0.065em]"><?php echo esc_html( $project['hook'] ); ?></span></span>
 				<span class="bira-swipe-arrow relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-cream text-ink transition-colors group-hover:bg-green group-hover:text-white md:size-12">
 					<?php echo bira_doodle( 'arrow', 'bira-swipe-arrow__out size-5' ); ?>
 					<?php echo bira_doodle( 'arrow', 'bira-swipe-arrow__in absolute size-5' ); ?>

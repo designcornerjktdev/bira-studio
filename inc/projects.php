@@ -1,7 +1,8 @@
 <?php
 /**
- * Post type Project (menu "Projects" di admin). URL: /work/{slug}, arsip: /work.
- * Project yang dicentang "Featured" tampil di section The Good Stuff di homepage.
+ * Post type Project (menu "Projects" di admin). URL detail: /work/{slug}.
+ * Semua project tampil di section Work di homepage (#work), dimuat bertahap (lazy load).
+ * Tidak ada halaman arsip: /work dialihkan ke /#work.
  */
 
 add_action( 'init', function () {
@@ -29,7 +30,7 @@ add_action( 'init', function () {
 			'item_updated'          => 'Project updated.',
 		],
 		'public'        => true,
-		'has_archive'   => 'work',
+		'has_archive'   => false, // daftar project ada di section Work homepage
 		'rewrite'       => [ 'slug' => 'work', 'with_front' => false ],
 		'menu_icon'     => 'dashicons-portfolio',
 		'menu_position' => 5,
@@ -49,7 +50,7 @@ add_action( 'init', function () {
 			'update_item'                => 'Update Category',
 			'add_new_item'               => 'Add New Category',
 			'new_item_name'              => 'New Category Name',
-			'separate_items_with_commas' => 'Separate categories with commas. Each category becomes a filter on the Work page.',
+			'separate_items_with_commas' => 'Separate categories with commas. Shown on the project card and detail page.',
 			'add_or_remove_items'        => 'Add or remove categories',
 			'choose_from_most_used'      => 'Choose from the most used categories',
 			'not_found'                  => 'No categories found.',
@@ -64,21 +65,10 @@ add_action( 'init', function () {
 		'rewrite'           => false,
 	] );
 
-	// Sekali: pindahkan isi field teks lama "Social / Content / …" ke kategori.
-	if ( ! get_option( 'bira_project_cats_migrated' ) ) {
-		foreach ( get_posts( [ 'post_type' => 'bira_project', 'post_status' => 'any', 'posts_per_page' => -1, 'fields' => 'ids' ] ) as $id ) {
-			$names = array_values( bira_project_cats( (string) get_post_meta( $id, 'cats', true ) ) );
-			if ( $names && ! has_term( '', 'bira_project_cat', $id ) ) {
-				wp_set_object_terms( $id, $names, 'bira_project_cat' );
-			}
-		}
-		update_option( 'bira_project_cats_migrated', 1 );
-	}
-
-	// Flush rewrite sekali setiap versi ini berubah, supaya /work langsung jalan.
-	if ( get_option( 'bira_project_rewrite' ) !== '1' ) {
+	// Flush rewrite sekali setiap versi ini berubah (2 = arsip /work dihapus).
+	if ( get_option( 'bira_project_rewrite' ) !== '2' ) {
 		flush_rewrite_rules( false );
-		update_option( 'bira_project_rewrite', '1' );
+		update_option( 'bira_project_rewrite', '2' );
 	}
 } );
 
@@ -97,7 +87,6 @@ add_action( 'acf/include_fields', function () {
 		'key'      => 'group_bira_project',
 		'title'    => 'Project Details',
 		'fields'   => [
-			$f( 'featured', 'Featured ★', 'true_false', [ 'ui' => 1, 'instructions' => 'Show in The Good Stuff on the homepage.' ] ),
 			$f( 'brand', 'Brand', 'text', [ 'placeholder' => 'Relaxa', 'instructions' => 'Shown at the top left of the card.' ] ),
 			$f( 'tag', 'Badge', 'text', [ 'placeholder' => 'Sample campaign', 'instructions' => 'Small pill at the top right of the card.' ] ),
 			$f( 'hook', 'Hook (big text on image)', 'textarea', [ 'rows' => 2, 'new_lines' => '', 'instructions' => 'Press Enter for a new line.' ] ),
@@ -139,32 +128,61 @@ add_action( 'acf/include_fields', function () {
 	] );
 } );
 
-// Kolom ★ di daftar Projects.
-add_filter( 'manage_bira_project_posts_columns', function ( array $cols ): array {
-	return array_slice( $cols, 0, 1, true ) + [ 'bira_featured' => '★' ] + $cols;
-} );
-add_action( 'manage_bira_project_posts_custom_column', function ( string $col, int $id ) {
-	if ( 'bira_featured' === $col ) {
-		echo get_post_meta( $id, 'featured', true ) ? '<span style="color:#1f7a3a;font-size:18px" title="Featured">★</span>' : '<span style="color:#ccc;font-size:18px">☆</span>';
-	}
-}, 10, 2 );
-add_action( 'admin_head', function () {
-	echo '<style>.column-bira_featured{width:2.5em;text-align:center}</style>';
-} );
+/** Jumlah kartu per muatan di section Work (awal halaman dan setiap lazy load). */
+const BIRA_WORK_BATCH = 3;
 
 /**
- * Project featured untuk homepage, dalam format kartu The Good Stuff.
+ * Sebagian project untuk section Work, urut Order lalu terbaru.
+ * Hasil: [ 'items' => data kartu, 'total' => jumlah semua project ].
  */
-function bira_featured_projects(): array {
-	$posts = get_posts( [
+function bira_projects( int $offset, int $count ): array {
+	$q = new WP_Query( [
 		'post_type'      => 'bira_project',
-		'posts_per_page' => -1,
-		'meta_key'       => 'featured',
-		'meta_value'     => '1',
+		'post_status'    => 'publish',
+		'posts_per_page' => $count,
+		'offset'         => $offset,
 		'orderby'        => [ 'menu_order' => 'ASC', 'date' => 'DESC' ],
 	] );
-	return array_map( 'bira_project_data', $posts );
+	return [ 'items' => array_map( 'bira_project_data', $q->posts ), 'total' => (int) $q->found_posts ];
 }
+
+/**
+ * HTML satu kartu di baris Work (<li> + kartu). Dipakai template dan endpoint lazy load.
+ */
+function bira_work_item_html( array $project ): string {
+	ob_start();
+	echo '<li class="bira-work__item">';
+	get_template_part( 'template-parts/project-card', null, [ 'project' => $project ] );
+	echo '</li>';
+	return (string) ob_get_clean();
+}
+
+// Lazy load: GET /wp-json/bira/v1/work?offset=3 → kartu berikutnya (HTML) + apakah masih ada sisa.
+add_action( 'rest_api_init', function () {
+	register_rest_route( 'bira/v1', '/work', [
+		'methods'             => 'GET',
+		'permission_callback' => '__return_true',
+		'args'                => [ 'offset' => [ 'type' => 'integer', 'minimum' => 0, 'default' => 0 ] ],
+		'callback'            => function ( WP_REST_Request $req ) {
+			$offset = (int) $req['offset'];
+			$batch  = bira_projects( $offset, BIRA_WORK_BATCH );
+			return [
+				'html' => implode( '', array_map( 'bira_work_item_html', $batch['items'] ) ),
+				'next' => $offset + count( $batch['items'] ) < $batch['total'] ? $offset + count( $batch['items'] ) : null,
+			];
+		},
+	] );
+} );
+
+// Arsip lama /work sudah tidak ada: alihkan ke section Work di homepage.
+add_action( 'template_redirect', function () {
+	$path = static fn( string $url ): string => trim( (string) wp_parse_url( $url, PHP_URL_PATH ), '/' );
+	// Dibandingkan dengan path home_url('/work'), jadi tetap jalan bila WordPress di subfolder (mis. /bira/work).
+	if ( is_404() && $path( home_url( '/work' ) ) === $path( $_SERVER['REQUEST_URI'] ?? '' ) ) {
+		wp_safe_redirect( home_url( '/#work' ), 301 );
+		exit;
+	}
+} );
 
 /**
  * Data satu project dalam format kartu (template-parts/project-card.php).
@@ -195,14 +213,6 @@ function bira_project_cats( string $cats ): array {
 	return $out;
 }
 
-// Arsip /work menampilkan semua project sekaligus (filter kategori jalan di browser).
-add_action( 'pre_get_posts', function ( WP_Query $q ) {
-	if ( ! is_admin() && $q->is_main_query() && $q->is_post_type_archive( 'bira_project' ) ) {
-		$q->set( 'posts_per_page', -1 );
-		$q->set( 'orderby', [ 'menu_order' => 'ASC', 'date' => 'DESC' ] );
-	}
-} );
-
 // Field Stats sebagai tag input (admin/stats-tags.js), hanya di layar edit Project.
 add_action( 'admin_enqueue_scripts', function ( string $hook ) {
 	if ( ! in_array( $hook, [ 'post.php', 'post-new.php' ], true ) || 'bira_project' !== get_current_screen()->post_type ) {
@@ -224,7 +234,7 @@ add_action( 'admin_enqueue_scripts', function ( string $hook ) {
 } );
 
 /**
- * Project berikutnya (urutan sama dengan /work), kembali ke awal setelah yang terakhir.
+ * Project berikutnya (urutan sama dengan section Work), kembali ke awal setelah yang terakhir.
  */
 function bira_next_project( int $id ): ?WP_Post {
 	$ids = get_posts( [

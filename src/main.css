@@ -288,40 +288,6 @@ html {
   will-change: transform;
 }
 
-/* @media (prefers-reduced-motion: no-preference) {
-  .js [data-hero-title] {
-    visibility: hidden;
-    animation: bira-failsafe 0s 4s forwards;
-  }
-}
-@keyframes bira-failsafe { to { visibility: visible; } } */
-
-.bira-hero__stage {
-  --hero-card-bg: var(--color-white);
-  --hero-card-ink: var(--color-ink);
-}
-.bira-hero__stage canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.8s ease;
-}
-.bira-hero__stage.is-3d canvas {
-  opacity: 1;
-}
-.bira-hero__stage.is-3d .bira-hero__stage-fallback {
-  opacity: 0;
-}
-
-.bira-hero.is-3d-cards .bira-hero__mockup {
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.6s ease,
-    visibility 0s 0.6s;
-}
-
 /* ---------- Mockup hero (komposisi seperti BIRA Studio) ---------- */
 .bira-mock {
   --mock-ink: var(--color-ink);
@@ -695,10 +661,11 @@ html {
   width: min(82vw, calc(var(--work-h, 62vw) * var(--ratio)));
   scroll-snap-align: start;
 }
-.bira-work__item:nth-child(2) {
+/* Proporsi berulang tiap 3 kartu, jadi kartu yang dimuat belakangan (lazy load) tetap berirama. */
+.bira-work__item:nth-child(3n + 2) {
   --ratio: 1.85;
 }
-.bira-work__item:nth-child(3) {
+.bira-work__item:nth-child(3n + 3) {
   --ratio: 0.85;
 }
 .bira-work__item--outro {
@@ -750,118 +717,6 @@ html {
   }
 }
 
-/* ---------- Made for the Feed: kolase editorial ---------- */
-.bira-feed {
-  display: grid;
-  gap: 24px;
-}
-.bira-feed__tile {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 4 / 3;
-  background: var(--color-ink);
-  box-shadow: 0 18px 40px -24px
-    color-mix(in srgb, var(--color-ink) 60%, transparent);
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.bira-feed__tile--2 {
-  background: var(--color-green);
-}
-.bira-feed__tile--3 {
-  background: var(--color-white);
-}
-.bira-feed__tile--4 {
-  background: var(--color-sand);
-}
-.bira-feed__img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.bira-feed__tag {
-  position: absolute;
-  left: 1rem;
-  bottom: 1rem;
-  padding: 0.45em 0.8em;
-  background: var(--color-cream);
-  color: var(--color-ink);
-  font-size: 0.875rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-@media (min-width: 64rem) {
-  /* 8 kolom di dalam grid utama; tile sengaja tidak rata (rhythm over symmetry) */
-  .bira-feed {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    grid-auto-rows: clamp(6rem, 9vw, 8rem);
-  }
-  .bira-feed__tile {
-    aspect-ratio: auto;
-  }
-  .bira-feed__tile--1 {
-    grid-column: 1 / 5;
-    grid-row: 1 / 5;
-    rotate: -2deg;
-  }
-  .bira-feed__tile--2 {
-    grid-column: 5 / 9;
-    grid-row: 1 / 3;
-    rotate: 1.5deg;
-  }
-  .bira-feed__tile--3 {
-    grid-column: 5 / 8;
-    grid-row: 3 / 6;
-    rotate: -1deg;
-  }
-  .bira-feed__tile--4 {
-    grid-column: 2 / 5;
-    grid-row: 5 / 7;
-    rotate: 2deg;
-  }
-  .bira-feed__tile--5 {
-    grid-column: 5 / 9;
-    grid-row: 6 / 8;
-    rotate: -1.5deg;
-  }
-}
-@media (hover: hover) {
-  .bira-feed__tile:hover {
-    transform: rotate(-1.5deg) scale(1.02);
-  }
-}
-
-/* ---------- Internet People ---------- */
-.bira-person__photo {
-  position: relative;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  aspect-ratio: 4 / 5;
-  background: var(--color-sand);
-}
-.bira-person__photo img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ---------- Aksen ---------- */
-/* Aksen handwritten di CTA (satu-satunya di section ini) */
-.bira-cta__accent {
-  display: inline-block;
-  font-family: var(--font-hand);
-  font-size: 1.15em;
-  font-weight: 700;
-  letter-spacing: 0;
-  text-transform: none;
-  rotate: -4deg;
-}
-
 /* Link besar: garis bawah dan panah bergerak saat hover ATAU focus */
 .bira-link__text {
   background: linear-gradient(currentColor, currentColor) 0 100% / 0 3px
@@ -902,9 +757,6 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .bira-marquee__track {
     animation: none;
-  }
-  .bira-feed__tile {
-    transition: none;
   }
 }
 
@@ -1019,7 +871,7 @@ html {
   }
 }
 
-/* ---------- Made for the Feed: kartu moodboard bergaya post sosial ---------- */
+/* ---------- Team: kartu anggota tim bergaya post sosial (template-parts/team.php) ---------- */
 .bira-pov-section {
   background: color-mix(in srgb, var(--color-sand) 22%, var(--color-cream));
 }
@@ -1347,61 +1199,6 @@ html {
   background-size: 100% 0.08em;
 }
 
-/* ---------- Halaman /work (archive-bira_project.php) ---------- */
-/* Grid 2 kolom bergaya masonry: tinggi kartu mengikuti rasio asli gambarnya
-   (landscape → pendek, portrait → tinggi). Kartu tanpa gambar memakai rasio 1.35. */
-.bira-work-grid__item {
-  --ratio: 1.35;
-  break-inside: avoid;
-  margin-bottom: 3.5rem;
-}
-@media (min-width: 48rem) {
-  .bira-work-grid {
-    columns: 2;
-    column-gap: 3rem;
-  }
-}
-.bira-work-grid .bira-work__media:has(.bira-work__img) {
-  aspect-ratio: auto;
-}
-.bira-work-grid .bira-work__img {
-  position: static;
-  display: block;
-  height: auto;
-}
-.bira-filter {
-  min-height: 44px;
-  padding: 0.625rem 1rem;
-  border: 1px solid color-mix(in srgb, var(--color-ink) 15%, transparent);
-  border-radius: 999px;
-  font-size: 0.875rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transition:
-    color 0.2s,
-    border-color 0.2s,
-    background-color 0.2s;
-}
-@media (min-width: 48rem) {
-  .bira-filter {
-    padding-inline: 1.5rem;
-  }
-}
-.bira-filter:hover {
-  border-color: var(--color-green);
-  color: var(--color-green);
-}
-.bira-filter[aria-pressed="true"] {
-  border-color: var(--color-ink);
-  background: var(--color-ink);
-  color: var(--color-cream);
-}
-.bira-filter:focus-visible {
-  outline: 2px solid var(--color-green);
-  outline-offset: 3px;
-}
-
 /* ---------- Detail project (single-bira_project.php) ---------- */
 .bira-case__tint {
   background: color-mix(in srgb, var(--color-sand) 22%, var(--color-cream));
@@ -1429,28 +1226,6 @@ html {
 }
 .bira-scroll-char.is-on {
   color: inherit;
-}
-
-/* Kilau per huruf (src/shine.js): satu kilau diagonal berpindah huruf demi huruf saat [data-shine] di-hover.
-   Durasi per huruf hampir sama dengan jeda antar huruf, jadi yang terlihat hanya satu kilau yang berjalan.
-   Warna huruf tetap dari currentColor (hitam / hijau); kilau hanya di dalam huruf. */
-.bira-shine__c {
-  /* Kotak latar diperlebar sedikit: huruf menjorok keluar karena letter-spacing negatif. */
-  padding-inline: 0.08em;
-  margin-inline: -0.08em;
-  background-image:
-    linear-gradient(110deg, transparent 38%, rgb(255 255 255 / 0.85) 50%, transparent 62%),
-    linear-gradient(currentColor, currentColor);
-  background-size: 300% 100%, 100% 100%;
-  background-position: 100% 0, 0 0; /* kilau parkir di luar kiri */
-  background-repeat: no-repeat;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-[data-shine]:hover .bira-shine__c {
-  background-position: 0 0, 0 0; /* menyapu ke kanan */
-  transition: background-position 0.14s linear calc(var(--i) * 0.07s);
 }
 
 /* Logo klien di strip marquee: tinggi seragam, warna asli logo. */

@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 
-// [data-tilt]: elemen miring 3D mengikuti kursor saat hover (rasa sama dengan kartu Internet People).
+// [data-tilt]: elemen miring 3D mengikuti kursor saat hover.
 // Hanya untuk perangkat dengan mouse dan tanpa reduce motion. data-tilt="10" = sudut maksimal (default 10°).
 export function initTilt() {
   const els = gsap.utils.toArray('[data-tilt]');

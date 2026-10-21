@@ -32,7 +32,7 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 );
 ?>
 <section class="bira-container pt-12 pb-12 md:pt-16 md:pb-16">
-	<a class="inline-flex min-h-11 items-center gap-2 text-sm font-bold tracking-[0.12em] text-ink/65 uppercase transition-colors hover:text-green" href="<?php echo esc_url( get_post_type_archive_link( 'bira_project' ) ); ?>">
+	<a class="inline-flex min-h-11 items-center gap-2 text-sm font-bold tracking-[0.12em] text-ink/65 uppercase transition-colors hover:text-green" href="<?php echo esc_url( home_url( '/#work' ) ); ?>">
 		<?php echo bira_doodle( 'next', 'size-3.5 rotate-180' ); ?>
 		<span>Back to work</span>
 	</a>
@@ -165,7 +165,7 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 		<div>
 			<p class="mb-5 text-sm font-bold tracking-widest text-green uppercase">Keep the conversation going</p>
 			<h2 class="text-5xl leading-none font-extrabold tracking-tighter uppercase md:text-6xl">Up next<span class="text-green">.</span></h2>
-			<a class="bira-link mt-8 inline-flex min-h-11 items-center gap-6 border-b border-ink/15 pb-2 text-sm font-bold tracking-[0.12em] uppercase" href="<?php echo esc_url( get_post_type_archive_link( 'bira_project' ) ); ?>">
+			<a class="bira-link mt-8 inline-flex min-h-11 items-center gap-6 border-b border-ink/15 pb-2 text-sm font-bold tracking-[0.12em] uppercase" href="<?php echo esc_url( home_url( '/#work' ) ); ?>">
 				<span class="bira-link__text">All work</span>
 				<?php echo bira_doodle( 'next', 'bira-link__arrow size-3.5' ); ?>
 			</a>

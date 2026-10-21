@@ -73,7 +73,7 @@ add_action( 'wp_enqueue_scripts', function () {
 /*
  * GIF animasi: WordPress membuat ukuran kecil (medium, large, …) yang hanya berisi frame pertama.
  * Untuk GIF, selalu pakai file asli dan matikan srcset, supaya animasinya tetap jalan di semua tempat
- * (kartu hero, Made for the Feed, project, dll).
+ * (kartu hero, foto tim, project, dll).
  */
 function bira_is_gif( int $id ): bool {
 	return 'image/gif' === get_post_mime_type( $id );

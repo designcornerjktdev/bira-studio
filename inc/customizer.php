@@ -1,11 +1,11 @@
 <?php
 /**
- * Konten homepage di Appearance → Customize → Homepage (live preview).
+ * Konten situs di Appearance → Customize (live preview): panel Homepage dan About Page.
  * Satu skema di bawah dipakai untuk: section & control Customizer, sanitasi,
- * migrasi sekali dari field ACF lama, dan bira_text()/bira_items() di template.
+ * dan bira_text()/bira_items()/bira_gallery() di template.
  *
- * Nilai disimpan sebagai theme_mod dengan nama sama seperti meta ACF lama
- * (mis. hero_headline, wwd_item_1_title). Kosong = template memakai teks default.
+ * Nilai disimpan sebagai theme_mod (mis. hero_headline, wwd_item_1_title).
+ * Kosong = template memakai teks default.
  */
 
 /**
@@ -90,13 +90,12 @@ function bira_content_schema(): array {
 		],
 		'work'    => [
 			'title'    => 'Work (The Good Stuff)',
-			'desc'     => 'Projects are managed in the Projects menu. Projects marked Featured ★ appear here.',
+			'desc'     => 'All published projects appear here (Projects menu), ordered by Order then newest. The first 3 load with the page; the rest load as visitors scroll.',
 			'selector' => '#work',
 			'part'     => 'work',
 			'fields'   => [
 				'work_eyebrow' => [ 'Eyebrow', 'text', [ 'placeholder' => 'The good stuff' ] ],
 				'work_title'   => [ 'Title', 'text', [ 'placeholder' => 'Stuff we’re proud of' ] ],
-				'work_all_url' => [ 'URL "All work"', 'text', [ 'placeholder' => '/work' ] ],
 			],
 		],
 		'team'    => [
@@ -131,23 +130,6 @@ function bira_content_schema(): array {
 				'pov_body'    => [ 'Supporting text', 'textarea' ],
 			],
 		],
-		'people'  => [
-			'title'    => 'People (hidden)',
-			'desc'     => 'This section is not shown on the homepage right now. Content is kept in case it comes back.',
-			'selector' => '#people',
-			'part'     => 'people',
-			'fields'   => [
-				'people_eyebrow'  => [ 'Eyebrow', 'text', [ 'placeholder' => 'Meet the internet people' ] ],
-				'people_title'    => [ 'Title', 'text', [ 'placeholder' => 'From Indonesia, into the feed' ] ],
-				'people_intro_2'  => [ 'Intro', 'textarea', [ 'desc' => 'Press Enter for a new line; an empty line starts a new paragraph.' ] ],
-				'people_more_url' => [ 'URL "A little more about us"', 'text', [ 'placeholder' => '/about' ] ],
-			],
-			'repeat'   => [ 'people_member', 'Person', 5, [
-				'photo' => [ 'Photo', 'image' ],
-				'name'  => [ 'Name', 'text' ],
-				'role'  => [ 'Role', 'text' ],
-			] ],
-		],
 		'cta'     => [
 			'title'    => 'CTA',
 			'selector' => '#cta',
@@ -172,22 +154,6 @@ function bira_content_schema(): array {
 				'footer_email'     => [ 'Email (mailto:)', 'text', [ 'placeholder' => 'mailto:hello@birastudio.co' ] ],
 				'footer_instagram' => [ 'Instagram URL', 'url' ],
 				'footer_tiktok'    => [ 'TikTok URL', 'url' ],
-			],
-		],
-
-		// ---------- Halaman Work (archive-bira_project.php) ----------
-		'work_page'      => [
-			'panel'    => 'bira_work',
-			'title'    => 'Hero',
-			'desc'     => 'The project grid below the hero is managed in the Projects menu.',
-			'selector' => '.bira-work-hero',
-			'part'     => null,
-			'fields'   => [
-				'work_page_eyebrow'  => [ 'Eyebrow', 'text', [ 'placeholder' => 'Our corner of the internet' ] ],
-				'work_page_headline' => [ 'Headline', 'textarea', [ 'placeholder' => "Good work.\nGreat conversations.", 'desc' => 'Press Enter for a new line.' ] ],
-				'work_page_accent'   => [ 'Accent words (green)', 'text', [ 'placeholder' => 'Great conversations.', 'desc' => 'The word or phrase in the headline shown in green.' ] ],
-				'work_page_intro'    => [ 'Intro', 'textarea', [ 'placeholder' => "Different brands. Different briefs. The same obsession:\nmaking something people want to be part of.", 'desc' => 'Press Enter for a new line.' ] ],
-				'work_page_count'    => [ 'Count label', 'text', [ 'placeholder' => 'Projects / explorations', 'desc' => 'Shown after the number of projects, next to the filters.' ] ],
 			],
 		],
 
@@ -283,11 +249,6 @@ add_action( 'customize_register', function ( WP_Customize_Manager $wp_customize 
 		'description' => 'Content for each homepage section. Empty fields use the default text shown as placeholder.',
 		'priority'    => 30,
 	] );
-	$wp_customize->add_panel( 'bira_work', [
-		'title'       => 'Work Page',
-		'description' => 'Content for the Work page (/work). Open that page in the preview to see changes. Empty fields use the default text.',
-		'priority'    => 31,
-	] );
 	$wp_customize->add_panel( 'bira_about', [
 		'title'       => 'About Page',
 		'description' => 'Content for the About page (a Page with the slug "about"). Open that page in the preview to see changes. Empty fields use the default text.',
@@ -341,28 +302,6 @@ add_action( 'customize_register', function ( WP_Customize_Manager $wp_customize 
 			] );
 		}
 	}
-} );
-
-/**
- * Migrasi sekali: salin isi field ACF lama (meta halaman depan) ke theme_mod.
- * Tidak menimpa nilai yang sudah ada di Customizer.
- */
-add_action( 'init', function () {
-	if ( get_option( 'bira_content_migrated' ) ) {
-		return;
-	}
-	$front = (int) get_option( 'page_on_front' );
-	if ( $front ) {
-		foreach ( bira_content_schema() as $section ) {
-			foreach ( array_keys( bira_content_fields( $section ) ) as $key ) {
-				$value = get_post_meta( $front, $key, true );
-				if ( is_string( $value ) && '' !== trim( $value ) && '' === (string) get_theme_mod( $key, '' ) ) {
-					set_theme_mod( $key, $value );
-				}
-			}
-		}
-	}
-	update_option( 'bira_content_migrated', 1 );
 } );
 
 /**

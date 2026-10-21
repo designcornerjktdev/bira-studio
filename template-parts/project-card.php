@@ -1,6 +1,6 @@
 <?php
 /**
- * Kartu project — dipakai The Good Stuff (homepage) dan arsip /work.
+ * Kartu project — dipakai section Work (homepage) dan "Up next" di halaman detail project.
  * $args['project']: data dari bira_project_data() atau contoh statis.
  * 'tone' (green/sand/ink) hanya dipakai kartu contoh; project asli tanpa gambar berlatar hijau.
  */

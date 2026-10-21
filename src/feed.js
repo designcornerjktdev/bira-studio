@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Made for the Feed (desktop): section di-pin, kartu naik dari bawah dalam tumpukan,
+// Team (desktop): section di-pin, kartu naik dari bawah dalam tumpukan,
 // lalu menyebar membentuk busur setengah lingkaran (titik pusat di bawah layar).
 // Mobile / reduced motion: tetap swipe biasa (CSS).
 export function initFeed() {

@@ -10,10 +10,10 @@
 <a class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2" href="#main"><?php esc_html_e( 'Skip to content', 'bira' ); ?></a>
 
 <?php
-// Menu tanpa lokasi terpasang: halaman Work & About, plus section What We Do di homepage.
+// Menu tanpa lokasi terpasang: section Work & What We Do di homepage, plus halaman About.
 $bira_menu_fallback = static function () {
 	$links = [
-		'work/'        => __( 'Work', 'bira' ),
+		'#work'        => __( 'Work', 'bira' ),
 		'#services'    => __( 'What we do', 'bira' ),
 		'about/'       => __( 'About', 'bira' ),
 	];

@@ -51,5 +51,5 @@ $intro    = bira_text( 'work_page_intro', "Different brands. Different briefs. T
 </div>
 
 <?php
-get_template_part( 'template-parts/final-cta' );
+get_template_part( 'template-parts/cta' );
 get_footer();

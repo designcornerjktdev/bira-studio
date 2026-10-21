@@ -177,5 +177,5 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 <?php endif; ?>
 
 <?php
-get_template_part( 'template-parts/final-cta' );
+get_template_part( 'template-parts/cta' );
 get_footer();

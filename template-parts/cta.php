@@ -12,7 +12,7 @@ $url    = bira_text( 'cta_url', '/contact' );
 $note   = bira_text( 'cta_note', 'Good.' );
 $note_2 = bira_text( 'cta_note_2', 'Let’s make it happen.' );
 ?>
-<section id="contact" class="bira-section relative isolate scroll-mt-24 overflow-hidden" aria-labelledby="cta-title">
+<section id="cta" class="bira-section relative isolate scroll-mt-24 overflow-hidden" aria-labelledby="cta-title">
 	<?php echo bira_bg_doodles( [ [ 'crown', 'top-[14%] right-[12%] size-10 rotate-[10deg]' ], [ 'sparkle', 'bottom-[14%] left-[48%] size-8 rotate-[-12deg]' ] ] ); ?>
 	<div class="bira-container relative">
 		<p class="flex items-center gap-2 text-sm font-bold tracking-[0.13em] uppercase">

@@ -14,7 +14,7 @@ $people = bira_items( 'people_member', [
 	[ 'photo' => 0, 'name' => '', 'role' => 'Production' ],
 ] );
 ?>
-<section id="internet-people" class="bira-section relative overflow-clip" aria-labelledby="people-title">
+<section id="people" class="bira-section relative overflow-clip" aria-labelledby="people-title">
 	<svg class="bira-watermark" viewBox="0 0 320 1000" aria-hidden="true" focusable="false">
 		<text x="160" y="500" transform="rotate(-90 160 500)" text-anchor="middle" dominant-baseline="central">BIR<tspan dx="28">A</tspan></text>
 	</svg>

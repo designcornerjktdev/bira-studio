@@ -10,9 +10,9 @@ $desc     = $desc_raw ?: 'Built for brands that want people to actually talk abo
 // Kalimat pembuka default hanya dipakai bila Description juga masih default (hindari teks ganda).
 $lead     = bira_text( 'hero_lead', $desc_raw ? '' : 'Social, content & influence from Indonesia.' );
 $label  = bira_text( 'hero_cta_label', 'See our work' );
-$url    = bira_text( 'hero_cta_url', '#made-for-the-feed' );
+$url    = bira_text( 'hero_cta_url', '#work' );
 $label2 = bira_text( 'hero_cta2_label', 'Let’s make something' );
-$url2   = bira_text( 'hero_cta2_url', '#contact' );
+$url2   = bira_text( 'hero_cta2_url', '#cta' );
 $symbol = (int) bira_text( 'hero_symbol', '0' );
 
 // Baris baru di headline jadi pemenggalan baris; kata aksen hanya kemunculan pertama.
@@ -42,7 +42,7 @@ $card_img = static function ( $att ) {
 	}
 };
 ?>
-<section class="bira-hero relative isolate overflow-clip bg-cream" data-hero>
+<section id="hero" class="bira-hero relative isolate overflow-clip bg-cream" data-hero>
 	<?php echo bira_bg_doodles( [ [ 'sparkle', 'top-[16%] left-[44%] size-8 rotate-[12deg]' ], [ 'wave', 'bottom-[10%] left-[3%] w-16 rotate-[-8deg]' ] ] ); ?>
 	<div class="bira-container">
 		<div class="bira-grid items-center gap-y-8 pt-[clamp(2.5rem,6vw,4.75rem)] lg:min-h-[min(80svh,640px)]">

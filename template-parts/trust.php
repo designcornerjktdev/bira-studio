@@ -10,7 +10,7 @@ $stats = bira_items( 'trust_stat', [
 ] );
 $last  = count( $stats ) - 1;
 ?>
-<section class="bira-trust bira-container mt-12" aria-label="<?php esc_attr_e( 'BIRA in numbers', 'bira' ); ?>">
+<section id="trust" class="bira-trust bira-container mt-12" aria-label="<?php esc_attr_e( 'BIRA in numbers', 'bira' ); ?>">
 	<dl class="grid gap-8 py-10 sm:grid-cols-3 md:py-12">
 		<?php foreach ( $stats as $i => $stat ) : ?>
 			<div class="flex flex-col-reverse gap-2" data-reveal>

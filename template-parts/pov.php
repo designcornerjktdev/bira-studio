@@ -7,9 +7,9 @@ $title   = bira_text( 'pov_title', "Don’t interrupt\nthe culture.\nJoin it." )
 $accent  = bira_text( 'pov_accent', 'Join it.' );
 // Sama seperti headline hero: Enter = pindah baris, kata aksen (kemunculan pertama) jadi hijau.
 $title_html = nl2br( bira_accent( $title, $accent, 'text-green' ), false );
-$body    = bira_text( 'pov_body', "People don’t open social media looking for ads.\n\nSo we make brands feel like part of what they’re already watching, sharing and talking about." );
+$body    = bira_text( 'pov_body', "Nobody opens TikTok thinking ‘omg I hope I see an ad today.’ so we make brands show up like part of the feed, not a pop-up in it." );
 ?>
-<section id="bira-pov" class="relative isolate flex min-h-[660px] items-center overflow-hidden bira-pov-section py-24 text-ink md:min-h-[820px] md:py-32" aria-labelledby="pov-title">
+<section id="pov" class="relative isolate flex min-h-[660px] items-center overflow-hidden bira-pov-section py-24 text-ink md:min-h-[820px] md:py-32" aria-labelledby="pov-title">
 	<?php echo bira_bg_doodles( [ [ 'diamond', 'bottom-[10%] left-[6%] size-11 rotate-[8deg]' ], [ 'sparkle', 'top-[18%] right-[30%] size-8' ] ], 'text-green' ); ?>
 	<svg class="pointer-events-none absolute -top-1/3 -right-1/4 w-full rotate-12 text-ink/15" viewBox="0 0 680 640" fill="none" aria-hidden="true" focusable="false">
 		<path d="M-100 110C100-45 660 15 550 190C455 340 48 167 103 360C151 527 606 315 701 557" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>

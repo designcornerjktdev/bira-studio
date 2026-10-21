@@ -1062,6 +1062,9 @@ html {
 .bira-feed-card:nth-child(4) {
   --tilt: 5deg;
 }
+.bira-feed-card:nth-child(5) {
+  --tilt: -3deg;
+}
 .bira-feed-card:hover,
 .bira-feed-card:focus-visible {
   z-index: 30;
@@ -1087,6 +1090,9 @@ html {
 }
 .bira-feed-card:nth-child(4) .bira-feed-card__media {
   background: color-mix(in srgb, var(--color-green) 70%, var(--color-ink));
+}
+.bira-feed-card:nth-child(5) .bira-feed-card__media {
+  background: color-mix(in srgb, var(--color-sand) 60%, var(--color-ink));
 }
 .bira-feed-card__more {
   max-height: 0;

@@ -108,5 +108,5 @@ $kses = [ 'span' => [ 'class' => [] ], 'br' => [] ];
 </section>
 
 <?php
-get_template_part( 'template-parts/final-cta' );
+get_template_part( 'template-parts/cta' );
 get_footer();

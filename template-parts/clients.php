@@ -17,7 +17,7 @@ $styles  = [
 ];
 $clients = array_map( static fn( string $name, int $i ): array => [ 'name' => $name, 'style' => $styles[ $i % count( $styles ) ] ], $names, array_keys( $names ) );
 ?>
-<section class="bira-clients border-t border-b border-ink/15 py-9 md:py-12 mt-12" aria-label="<?php esc_attr_e( 'Client logo strip', 'bira' ); ?>">
+<section id="clients" class="bira-clients border-t border-b border-ink/15 py-9 md:py-12 mt-12" aria-label="<?php esc_attr_e( 'Client logo strip', 'bira' ); ?>">
 	<div class="bira-container">
 		<h2 class="text-sm font-bold tracking-[0.14em] uppercase"><?php echo esc_html( $clients_title ); ?> <span class="ml-1 text-green" aria-hidden="true">✦</span></h2>
 	</div>

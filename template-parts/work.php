@@ -47,7 +47,7 @@ $projects = bira_featured_projects() ?: [
 	],
 ];
 ?>
-<section id="selected-work" class="bira-work bira-section relative isolate" aria-labelledby="work-title" data-work data-reveal-once>
+<section id="work" class="bira-work bira-section relative isolate" aria-labelledby="work-title" data-work data-reveal-once>
 	<?php echo bira_bg_doodles( [ [ 'star', 'top-[9%] right-[7%] size-9 rotate-[10deg]' ], [ 'wave', 'bottom-[6%] left-[38%] w-16' ] ] ); ?>
 	<div class="bira-container">
 		<header class="mb-12 flex flex-col justify-between gap-6 sm:flex-row sm:items-end" data-reveal>

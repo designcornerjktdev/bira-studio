@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 // lalu menyebar membentuk busur setengah lingkaran (titik pusat di bawah layar).
 // Mobile / reduced motion: tetap swipe biasa (CSS).
 export function initFeed() {
-  const section = document.querySelector('#made-for-the-feed');
+  const section = document.querySelector('#team');
   const list = section?.querySelector('.bira-feed-cards');
   if (!list) return;
   const cards = gsap.utils.toArray('.bira-feed-card', list);

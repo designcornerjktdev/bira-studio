@@ -10,16 +10,16 @@
 <a class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2" href="#main"><?php esc_html_e( 'Skip to content', 'bira' ); ?></a>
 
 <?php
-// Menu tanpa lokasi terpasang: tautan ke section homepage.
+// Menu tanpa lokasi terpasang: halaman Work & About, plus section What We Do di homepage.
 $bira_menu_fallback = static function () {
 	$links = [
-		'#what-we-do'      => __( 'What we do', 'bira' ),
-		'#how-we-work'     => __( 'How we work', 'bira' ),
-		'#internet-people' => __( 'About', 'bira' ),
+		'work/'        => __( 'Work', 'bira' ),
+		'#services'    => __( 'What we do', 'bira' ),
+		'about/'       => __( 'About', 'bira' ),
 	];
 	echo '<ul class="bira-menu">';
-	foreach ( $links as $hash => $label ) {
-		printf( '<li><a href="%s">%s</a></li>', esc_url( home_url( '/' ) . $hash ), esc_html( $label ) );
+	foreach ( $links as $path => $label ) {
+		printf( '<li><a href="%s">%s</a></li>', esc_url( home_url( '/' ) . $path ), esc_html( $label ) );
 	}
 	echo '</ul>';
 };
@@ -30,7 +30,7 @@ $bira_menu_args = [
 	'depth'          => 1,
 	'fallback_cb'    => $bira_menu_fallback,
 ];
-$bira_talk_url = home_url( '/' ) . '#contact';
+$bira_talk_url = home_url( '/' ) . '#cta';
 ?>
 
 <header class="bira-header sticky top-0 z-40 border-b border-ink/15 bg-cream" data-nav>

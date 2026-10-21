@@ -7,21 +7,20 @@ $title = bira_text( 'wwd_title', 'We do internet things.' );
 $muted = bira_text( 'wwd_title_muted', 'But with a plan.' );
 $intro = bira_text( 'wwd_intro', "A good idea doesn’t live in one format.\nNeither do we." );
 $items = bira_items( 'wwd_item', [
-	[ 'title' => 'Social', 'text' => 'Less broadcasting. More back-and-forth.', 'desc' => 'We run social like a conversation, not a billboard. Strategy, campaigns and always-on posting that give people a reason to reply, share and come back.', 'tags' => 'Social strategy, Social campaigns, Always-on content, Conversation strategy' ],
-	[ 'title' => 'Content', 'text' => 'For the watch-it-again kind of feeling.', 'desc' => 'Ideas shaped for the scroll from day one. We direct, shoot and cut short-form content that feels native to every platform it lands on.', 'tags' => 'Social-first content, Creative direction, Short-form video, Content production' ],
-	[ 'title' => 'Influence', 'text' => 'The right people. Not just the big numbers.', 'desc' => 'We match brands with creators and communities who actually fit, then give them briefs they genuinely want to make. Reach that feels earned, not bought.', 'tags' => 'Creator campaigns, Influencer activation, Community activation, Creator seeding' ],
-	[ 'title' => 'Culture', 'text' => 'Read the room. Then become part of it.', 'desc' => 'We listen to what the internet is already talking about, spot the moments worth joining, and help your brand show up like it belongs there.', 'tags' => 'Social listening, Trend activation, Community conversations, Cultural moments' ],
+	[ 'title' => 'Social', 'text' => 'Less broadcasting. More back-and-forth.', 'desc' => 'Social is a group chat, not a billboard. we make the posts people reply to, send to their bestie, and come back for.', 'tags' => 'Social strategy, Social campaigns, Always-on content, Conversation strategy' ],
+	[ 'title' => 'Content', 'text' => 'For the watch-it-again kind of feeling.', 'desc' => 'Made for the scroll from day one. we direct, shoot and cut short-form that feels native to every platform, never like an ad.', 'tags' => 'Social-first content, Creative direction, Short-form video, Content production' ],
+	[ 'title' => 'Influence', 'text' => 'The right people. Not just the big numbers.', 'desc' => 'No random creator roulette. we find the ones who actually get your brand and hand them briefs they’re lowkey obsessed with.', 'tags' => 'Creator campaigns, Influencer activation, Community activation, Creator seeding' ],
+	[ 'title' => 'Culture', 'text' => 'Read the room. Then become part of it.', 'desc' => 'We know the trends, the memes, and the lore. we spot what’s worth jumping on and help your brand join and not cringeworthy.', 'tags' => 'Social listening, Trend activation, Community conversations, Cultural moments' ],
 ] );
 ?>
-<section id="what-we-do" class="bira-section relative isolate overflow-clip border-b border-ink/15" aria-labelledby="what-we-do-title">
+<section id="services" class="bira-section relative isolate overflow-clip border-b border-ink/15" aria-labelledby="services-title">
 	<?php echo bira_bg_doodles( [ [ 'diamond', 'bottom-[7%] right-[5%] size-10 rotate-[-8deg]' ] ] ); ?>
 	<div class="bira-container">
 		<header class="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
 			<div class="relative">
 				<?php echo bira_doodle( 'sparkle', 'bira-drift absolute -top-3 -right-12 hidden size-9 rotate-[14deg] text-green md:block [&_path]:stroke-[1.8]' ); ?>
-				<span class="bira-eyebrow text-green">[ What we do ]</span>
 				<?php // data-split="center": baris 1 naik dari garis tengah, baris 2 turun (lihat split-heading.js). ?>
-				<h2 id="what-we-do-title" class="bira-h2 mt-4 text-[clamp(2.5rem,5.2vw,5.3rem)] leading-[1.02] font-extrabold tracking-[-0.02em]" data-split="center">
+				<h2 id="services-title" class="bira-h2 text-[clamp(2.5rem,5.2vw,5.3rem)] leading-[1.02] font-extrabold tracking-[-0.02em]" data-split="center">
 					<span class="bira-split-mask"><span class="block" data-split-line="up"><?php echo esc_html( $title ); ?></span></span>
 					<span class="bira-split-mask"><span class="block text-ink/45" data-split-line="down"><?php echo esc_html( $muted ); ?></span></span>
 				</h2>

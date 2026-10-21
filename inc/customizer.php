@@ -18,7 +18,7 @@ function bira_content_schema(): array {
 		'hero'    => [
 			'title'    => 'Hero',
 			'desc'     => 'Stack card 1 is at the bottom of the pile, Stack card 5 on top. On hover the pile fans out. Animated GIFs are supported.',
-			'selector' => '.bira-hero',
+			'selector' => '#hero',
 			'part'     => 'hero',
 			'fields'   => [
 				'hero_headline'    => [ 'Headline', 'textarea', [ 'placeholder' => "We make\nbrands part\nof the\nconversation.", 'desc' => 'Press Enter for a new line in the headline.' ] ],
@@ -26,9 +26,9 @@ function bira_content_schema(): array {
 				'hero_lead'        => [ 'Lead sentence (bold)', 'text', [ 'placeholder' => 'Social, content & influence from Indonesia.', 'desc' => 'Shown in bold above the description.' ] ],
 				'hero_description' => [ 'Description', 'textarea', [ 'placeholder' => 'Built for brands that want people to actually talk about them.' ] ],
 				'hero_cta_label'   => [ 'Primary CTA — label', 'text', [ 'placeholder' => 'See our work' ] ],
-				'hero_cta_url'     => [ 'Primary CTA — URL', 'text', [ 'placeholder' => '#made-for-the-feed' ] ],
+				'hero_cta_url'     => [ 'Primary CTA — URL', 'text', [ 'placeholder' => '#work' ] ],
 				'hero_cta2_label'  => [ 'Secondary CTA — label', 'text', [ 'placeholder' => 'Let’s make something' ] ],
-				'hero_cta2_url'    => [ 'Secondary CTA — URL', 'text', [ 'placeholder' => '#contact' ] ],
+				'hero_cta2_url'    => [ 'Secondary CTA — URL', 'text', [ 'placeholder' => '#cta' ] ],
 				'hero_symbol'      => [ 'BIRA symbol (mockup background)', 'image', [ 'desc' => 'Transparent PNG. Leave empty to use the outline frame.' ] ],
 			],
 			'repeat'   => [ 'hero_post', 'Stack card', 5, [
@@ -40,7 +40,7 @@ function bira_content_schema(): array {
 		'trust'   => [
 			'title'    => 'Trust',
 			'desc'     => 'Numbers shown above the brand strip. The last number is green.',
-			'selector' => '.bira-trust',
+			'selector' => '#trust',
 			'part'     => 'trust',
 			'fields'   => [],
 			'repeat'   => [ 'trust_stat', 'Stat', 3, [
@@ -50,7 +50,7 @@ function bira_content_schema(): array {
 		],
 		'clients' => [
 			'title'    => 'Clients',
-			'selector' => '.bira-clients',
+			'selector' => '#clients',
 			'part'     => 'clients',
 			'fields'   => [
 				'clients_title' => [ 'Strip title', 'text', [ 'placeholder' => 'Brands we’ve made some noise with' ] ],
@@ -58,21 +58,10 @@ function bira_content_schema(): array {
 				'clients_list'  => [ 'Brand names (fallback)', 'textarea', [ 'placeholder' => 'Relaxa, ABC, Your Brand, Next Up, Watch This Space', 'desc' => 'Only used when no logos are selected. Separate brands with commas.' ] ],
 			],
 		],
-		'work'    => [
-			'title'    => 'The Good Stuff',
-			'desc'     => 'Projects are managed in the Projects menu. Projects marked Featured ★ appear here.',
-			'selector' => '#selected-work',
-			'part'     => 'selected-work',
-			'fields'   => [
-				'work_eyebrow' => [ 'Eyebrow', 'text', [ 'placeholder' => 'The good stuff' ] ],
-				'work_title'   => [ 'Title', 'text', [ 'placeholder' => 'Stuff we’re proud of' ] ],
-				'work_all_url' => [ 'URL "All work"', 'text', [ 'placeholder' => '/work' ] ],
-			],
-		],
-		'wwd'     => [
-			'title'    => 'What We Do',
-			'selector' => '#what-we-do',
-			'part'     => 'what-we-do',
+		'services' => [
+			'title'    => 'Services (What We Do)',
+			'selector' => '#services',
+			'part'     => 'services',
 			'fields'   => [
 				'wwd_title'       => [ 'Title line 1', 'text', [ 'placeholder' => 'We do internet things.' ] ],
 				'wwd_title_muted' => [ 'Title line 2 (grey)', 'text', [ 'placeholder' => 'But with a plan.' ] ],
@@ -85,10 +74,10 @@ function bira_content_schema(): array {
 				'tags'  => [ 'Sub-services, separated by commas', 'text' ],
 			] ],
 		],
-		'hww'     => [
-			'title'    => 'How We Work',
-			'selector' => '#how-we-work',
-			'part'     => 'how-we-work',
+		'process' => [
+			'title'    => 'Process (How We Work)',
+			'selector' => '#process',
+			'part'     => 'process',
 			'fields'   => [
 				'hww_eyebrow' => [ 'Eyebrow', 'text', [ 'placeholder' => 'Not a formula. A feeling.' ] ],
 				'hww_title'   => [ 'Title', 'text', [ 'placeholder' => 'How we make things move', 'desc' => 'Wraps automatically. A sand-colored period is added at the end.' ] ],
@@ -99,27 +88,42 @@ function bira_content_schema(): array {
 				'text'  => [ 'Description', 'textarea' ],
 			] ],
 		],
-		'feed'    => [
-			'title'    => 'Made for the Feed',
-			'selector' => '#made-for-the-feed',
-			'part'     => 'made-for-the-feed',
+		'work'    => [
+			'title'    => 'Work (The Good Stuff)',
+			'desc'     => 'Projects are managed in the Projects menu. Projects marked Featured ★ appear here.',
+			'selector' => '#work',
+			'part'     => 'work',
 			'fields'   => [
-				'feed_eyebrow' => [ 'Eyebrow', 'text', [ 'placeholder' => 'Less skip. More send.' ] ],
-				'feed_intro'   => [ 'Intro', 'textarea' ],
-				'feed_sticker' => [ 'Round sticker', 'textarea', [ 'placeholder' => "Less polished.\nMore human." ] ],
-				'feed_comment' => [ 'Comment bubble', 'text', [ 'placeholder' => '“this lives in my head rent free”' ] ],
+				'work_eyebrow' => [ 'Eyebrow', 'text', [ 'placeholder' => 'The good stuff' ] ],
+				'work_title'   => [ 'Title', 'text', [ 'placeholder' => 'Stuff we’re proud of' ] ],
+				'work_all_url' => [ 'URL "All work"', 'text', [ 'placeholder' => '/work' ] ],
 			],
-			'repeat'   => [ 'feed_item', 'Card', 4, [
-				'image' => [ 'Image', 'image' ],
-				'label' => [ 'Label', 'text' ],
-				'title' => [ 'Title', 'text' ],
-				'text'  => [ 'Hover text', 'text' ],
+		],
+		'team'    => [
+			'title'    => 'Team (The Group Chat Admins)',
+			'desc'     => 'Team cards.',
+			'selector' => '#team',
+			'part'     => 'team',
+			'fields'   => [
+				'feed_eyebrow'  => [ 'Eyebrow', 'text', [ 'placeholder' => 'Straight from group chat.' ] ],
+				'feed_headline' => [ 'Headline', 'textarea', [ 'placeholder' => "The group\nchat admins.", 'desc' => 'Press Enter for a new line.' ] ],
+				'feed_accent'   => [ 'Accent word (green)', 'text', [ 'placeholder' => 'admins.', 'desc' => 'The word or phrase in the headline shown in green.' ] ],
+				'feed_intro'    => [ 'Intro', 'textarea', [ 'placeholder' => 'A few of the people behind the ideas, conversations, and occasional group chat chaos.' ] ],
+				'feed_sticker'  => [ 'Round sticker', 'textarea', [ 'placeholder' => "24/7\nAlways online" ] ],
+				'feed_comment'  => [ 'Comment bubble', 'text', [ 'placeholder' => '“the ones who sent the photos on time.”' ] ],
+			],
+			'repeat'   => [ 'team_member', 'Member', 5, [
+				'photo'  => [ 'Photo', 'image', [ 'desc' => 'Portrait works best (about 2:3).' ] ],
+				'name'   => [ 'Name', 'text' ],
+				'role'   => [ 'Role', 'text', [ 'placeholder' => 'e.g. Creative Director' ] ],
+				'fun'    => [ 'Fun fact (shown on hover)', 'text', [ 'placeholder' => 'e.g. Pitches ideas in voice notes.' ] ],
+				'handle' => [ 'Social handle (optional)', 'text', [ 'placeholder' => '@username', 'desc' => 'Shown at the bottom of the card. Empty = "BIRA team".' ] ],
 			] ],
 		],
 		'pov'     => [
-			'title'    => 'BIRA POV',
-			'selector' => '#bira-pov',
-			'part'     => 'bira-pov',
+			'title'    => 'POV (A Friendly Reminder)',
+			'selector' => '#pov',
+			'part'     => 'pov',
 			'fields'   => [
 				'pov_eyebrow' => [ 'Eyebrow', 'text', [ 'placeholder' => 'A friendly reminder' ] ],
 				'pov_title'   => [ 'Headline', 'textarea', [ 'placeholder' => "Don’t interrupt\nthe culture.\nJoin it.", 'desc' => 'Press Enter for a new line in the headline.' ] ],
@@ -128,9 +132,10 @@ function bira_content_schema(): array {
 			],
 		],
 		'people'  => [
-			'title'    => 'Internet People',
-			'selector' => '#internet-people',
-			'part'     => 'internet-people',
+			'title'    => 'People (hidden)',
+			'desc'     => 'This section is not shown on the homepage right now. Content is kept in case it comes back.',
+			'selector' => '#people',
+			'part'     => 'people',
 			'fields'   => [
 				'people_eyebrow'  => [ 'Eyebrow', 'text', [ 'placeholder' => 'Meet the internet people' ] ],
 				'people_title'    => [ 'Title', 'text', [ 'placeholder' => 'From Indonesia, into the feed' ] ],
@@ -144,9 +149,9 @@ function bira_content_schema(): array {
 			] ],
 		],
 		'cta'     => [
-			'title'    => 'Final CTA',
-			'selector' => '#contact',
-			'part'     => 'final-cta',
+			'title'    => 'CTA',
+			'selector' => '#cta',
+			'part'     => 'cta',
 			'fields'   => [
 				'cta_status' => [ 'Status', 'text', [ 'placeholder' => 'Open for good conversations' ] ],
 				'cta_title'  => [ 'Headline', 'textarea', [ 'placeholder' => "Got something\nWeird in mind?", 'desc' => 'Press Enter for a new line in the headline.' ] ],

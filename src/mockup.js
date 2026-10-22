@@ -24,6 +24,24 @@ export function initMockup() {
 
       let cleanup = () => {};
 
+      // Hero di-pin (seperti Team): halaman tertahan sampai kipas terbuka penuh, baru lanjut
+      // ke section berikutnya. Dibuat sekarang (bukan setelah intro) supaya pin-spacer sudah
+      // ada saat trigger lain di halaman diukur.
+      const HOLD = '+=80%';
+      // Yang di-pin: pembungkus hero + trust (front-page.php), supaya layar tidak kosong di bawah hero.
+      // Mulai dari scroll 0 (bukan 'top top') karena header sticky; bila pembungkus lebih tinggi
+      // dari layar, scroll dulu sampai bagian bawahnya (angka trust) terlihat, baru ditahan.
+      const block = root.closest('[data-hero-pin]') || root;
+      const pin = ScrollTrigger.create({
+        id: 'hero-pin',
+        trigger: block,
+        start: () => Math.max(0, block.offsetTop + block.offsetHeight - window.innerHeight),
+        end: HOLD,
+        pin: true,
+        invalidateOnRefresh: true,
+      });
+      ScrollTrigger.sort();
+
       // ---------- Intro ----------
       const tl = gsap.timeline({ delay: 0.4 });
       tl.fromTo(frame, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out' }).fromTo(
@@ -34,7 +52,7 @@ export function initMockup() {
       );
 
       // ---------- Kipas kartu (aktif setelah intro) ----------
-      // Mouse: parallax kursor + berpencar saat hover. Layar sentuh: berpencar mengikuti scroll.
+      // Kipas berpencar mengikuti scroll; mouse menambah parallax kursor.
       // Semua digabung ke setter x/y/rotation yang sama, karena GSAP memegang transform elemen.
       tl.call(() => {
         const state = { spread: 0 };
@@ -62,19 +80,21 @@ export function initMockup() {
           });
         };
 
-        // Layar sentuh (tanpa hover): kipas terbuka saat mockup naik ke tengah layar,
+        // Kipas mengikuti scroll selama hero di-pin: tertutup di awal, terbuka penuh di ujung pin,
         // menutup lagi saat di-scroll kembali ke atas.
+        const scroll = gsap.to(state, {
+          spread: 1,
+          ease: 'none',
+          onUpdate: apply,
+          scrollTrigger: { start: () => pin.start, end: () => pin.end, scrub: 0.6 },
+        });
+
         if (!fine) {
-          const scroll = gsap.to(state, {
-            spread: 1,
-            ease: 'none',
-            onUpdate: apply,
-            scrollTrigger: { trigger: mock, start: 'top 85%', end: 'center 45%', scrub: 0.6 },
-          });
           cleanup = () => scroll.scrollTrigger?.kill();
           return;
         }
 
+        // Mouse: parallax kursor tetap aktif di atas kipas scroll.
         const onMove = (e) => {
           const r = root.getBoundingClientRect();
           nx = ((e.clientX - r.left) / r.width) * 2 - 1;
@@ -82,21 +102,14 @@ export function initMockup() {
           apply();
         };
         const onLeave = () => { nx = 0; ny = 0; apply(); };
-        const spreadTo = (v) => gsap.to(state, { spread: v, duration: 0.7, ease: v ? 'back.out(1.7)' : 'power3.inOut', overwrite: true, onUpdate: apply });
-        const onEnterMock = () => spreadTo(1);
-        const onLeaveMock = () => spreadTo(0);
 
         root.addEventListener('pointermove', onMove);
         root.addEventListener('pointerleave', onLeave);
-        mock.addEventListener('pointerenter', onEnterMock);
-        mock.addEventListener('pointerleave', onLeaveMock);
-        if (mock.matches(':hover')) onEnterMock();
 
         cleanup = () => {
+          scroll.scrollTrigger?.kill();
           root.removeEventListener('pointermove', onMove);
           root.removeEventListener('pointerleave', onLeave);
-          mock.removeEventListener('pointerenter', onEnterMock);
-          mock.removeEventListener('pointerleave', onLeaveMock);
         };
       });
 
@@ -104,10 +117,14 @@ export function initMockup() {
       gsap.to(mock, {
         yPercent: -6,
         ease: 'none',
-        scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: true },
+        // Baru jalan setelah pin selesai, supaya mockup diam selama kipas terbuka.
+        scrollTrigger: { start: () => pin.end, end: () => pin.end + root.offsetHeight, scrub: true },
       });
 
-      return () => cleanup();
+      return () => {
+        cleanup();
+        pin.kill();
+      };
     }
   );
 }

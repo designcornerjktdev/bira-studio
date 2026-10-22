@@ -27,7 +27,7 @@ $cards = bira_items( 'hero_post', [
 ] );
 // Tumpukan: tiap kartu sedikit miring acak (seperti foto ditaruh tangan).
 $tilt = [ -6, 5, -4, 4, -1 ];
-// Kipas saat hover (data-spread di mockup.js: geser x %, geser y %, tambahan putar °).
+// Kipas saat scroll (data-spread di mockup.js: geser x %, geser y %, tambahan putar °).
 // Sudut kipas dibuat rata (t × 10°, t = -2 … 2); tambahan putar = sudut kipas − miring acak,
 // jadi saat terbuka semua kartu berjarak sama tanpa sisa kemiringan acak.
 $fan = static function ( int $i, int $count ) use ( $tilt ): string {

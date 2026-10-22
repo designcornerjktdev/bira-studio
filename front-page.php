@@ -5,8 +5,11 @@
  */
 get_header();
 
+// Hero + trust di-pin bersama saat kipas mockup terbuka (src/mockup.js).
+echo '<div class="bg-cream" data-hero-pin>';
 get_template_part( 'template-parts/hero' );
 get_template_part( 'template-parts/trust' );
+echo '</div>';
 get_template_part( 'template-parts/clients' );
 get_template_part( 'template-parts/services' );
 get_template_part( 'template-parts/process' ); // berisi garis scroll SVG (src/scroll-line.js)

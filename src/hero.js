@@ -79,7 +79,12 @@ export function initHero() {
         yPercent: -14,
         opacity: 0.15,
         ease: 'none',
-        scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: true },
+        // Mulai setelah pin hero (mockup.js) selesai, supaya judul tetap utuh selama kipas terbuka.
+        scrollTrigger: {
+          start: () => ScrollTrigger.getById('hero-pin')?.end ?? 0,
+          end: (self) => self.start + root.offsetHeight,
+          scrub: true,
+        },
       });
 
       // ---------- Huruf bereaksi pada kursor ----------

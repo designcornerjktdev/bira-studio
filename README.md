@@ -51,14 +51,15 @@ Sections render in this order (see `front-page.php`):
 
 | Section | Template | Behavior |
 |---|---|---|
-| Hero + Trust | `hero.php`, `trust.php` | Pinned together; the mockup cards fan open with scroll (`src/mockup.js`). Title letters react to the cursor (`src/hero.js`). Trust numbers count up (`src/count.js`). |
-| Clients | `clients.php` | Logo marquee |
+| Hero | `hero.php` | Pinned; the mockup cards fan out across the full hero width with scroll (`src/mockup.js`) while the headline shrinks and the text fades away. Title letters react to the cursor (`src/hero.js`). |
+| About | `about.php` | Bira Island image + map marker |
 | Services (What We Do) | `services.php` | Accordion (`src/accordion.js`) |
 | Process (How We Work) | `process.php` | Sticky step timeline (`src/steps.js`) + scroll-drawn line (`src/scroll-line.js`) |
+| Trust | `trust.php` | Numbers count up (`src/count.js`) |
+| Clients | `clients.php` | Logo marquee |
 | Work (The Good Stuff) | `work.php` | Desktop: pinned horizontal scroll; mobile: native swipe. Lazy-loads more projects (`src/work.js`) |
 | Team | `team.php` | Desktop: pinned, cards spread into an arc (`src/feed.js`) |
 | POV | `pov.php` | Manifesto |
-| About | `about.php` | Bira Island image + map marker |
 | CTA | `cta.php` | Final call to action |
 
 The contact pop-up (`template-parts/contact-modal.php`, `src/contact.js`) is loaded on every page and opens from any `#contact` link, the header "Let's talk" button and the CTA button.
@@ -88,7 +89,7 @@ While no project is published, the Work section shows sample cards.
 ## Front-end notes
 
 - **Animation:** GSAP + ScrollTrigger + SplitText. Each module in `src/` exports an `init*()` function called from `src/main.js`. **The init order matters:** pinned sections must be created before triggers that measure the page (see the comments in `main.js`).
-- **Pinned sections:** Hero + Trust, Work and Team. After adding or resizing a pin, check that the triggers below it still line up. `ScrollTrigger.sort()` / `refresh()` are already called where pins are created late.
+- **Pinned sections:** Hero, Work and Team. After adding or resizing a pin, check that the triggers below it still line up. `ScrollTrigger.sort()` / `refresh()` are already called where pins are created late.
 - **Reduced motion:** every animation module checks `prefers-reduced-motion` and falls back to static content or native scrolling.
 - **No-JS:** content is hidden by JS, not CSS, so pages stay readable if the bundle fails to load.
 - **Styling:** Tailwind utilities in the templates (scanned via `@source` in `src/main.css`) plus hand-written component CSS in `src/main.css`. Use the color tokens (`bg-cream`, `text-green`, `text-ink`…) rather than raw hex values.

@@ -28,9 +28,9 @@ export function initMockup() {
       // to the next section. Created now (not after the intro) so the pin-spacer exists
       // when other triggers on the page are measured.
       const HOLD = '+=80%';
-      // Pinned element: the hero + trust wrapper (front-page.php), so the screen below the hero isn't empty.
-      // Starts at scroll 0 (not 'top top') because of the sticky header; if the wrapper is taller
-      // than the viewport, scroll until its bottom (trust numbers) is visible, then hold.
+      // Pinned element: a [data-hero-pin] wrapper when present, otherwise the hero itself.
+      // Starts at scroll 0 (not 'top top') because of the sticky header; if the block is taller
+      // than the viewport, scroll until its bottom is visible, then hold.
       const block = root.closest('[data-hero-pin]') || root;
       const pin = ScrollTrigger.create({
         id: 'hero-pin',
@@ -64,6 +64,7 @@ export function initMockup() {
           return {
             depth: el.hasAttribute('data-mock-frame') ? 0 : parseFloat(el.dataset.depth || '0.5'),
             sx, sy, sr,
+            card: el.classList.contains('bira-mock__card'),
             rot: gsap.getProperty(el, 'rotation'), // base rotation from CSS
             x: gsap.quickTo(el, 'x', { duration: 0.6, ease: 'power3.out' }),
             y: gsap.quickTo(el, 'y', { duration: 0.6, ease: 'power3.out' }),
@@ -71,10 +72,29 @@ export function initMockup() {
           };
         });
 
+        // The open fan spans the whole hero: everything shifts so the mockup center meets the
+        // container center, and card spacing is scaled down (fit) if the container is too narrow.
+        const container = mock.closest('.bira-container') || root;
+        const cards = movers.filter((m) => m.card);
+        const cardSpan = cards.length ? Math.max(...cards.map((m) => m.sx)) - Math.min(...cards.map((m) => m.sx)) : 0;
+        let shift = 0;
+        let fit = 1;
+        const measure = () => {
+          const c = container.getBoundingClientRect();
+          const m = mock.getBoundingClientRect();
+          const cs = getComputedStyle(container);
+          const inner = c.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+          const cardW = mock.querySelector('.bira-mock__card')?.offsetWidth || 0;
+          shift = c.left + c.width / 2 - (m.left + m.width / 2);
+          fit = cardSpan ? Math.min(1, (inner - cardW) / ((cardSpan * mock.offsetWidth) / 100)) : 1;
+        };
+        measure();
+
         const apply = () => {
           const w = mock.offsetWidth / 100; // spread values are % of mockup width
           movers.forEach((m) => {
-            m.x(nx * 18 * m.depth + state.spread * m.sx * w);
+            const sx = m.card ? m.sx * fit : m.sx;
+            m.x(nx * 18 * m.depth + state.spread * (sx * w + shift));
             m.y(ny * 14 * m.depth + state.spread * m.sy * w);
             m.r(m.rot + state.spread * m.sr);
           });
@@ -88,9 +108,14 @@ export function initMockup() {
           onUpdate: apply,
           scrollTrigger: { start: () => pin.start, end: () => pin.end, scrub: 0.6 },
         });
+        const onRefresh = () => { measure(); apply(); };
+        ScrollTrigger.addEventListener('refresh', onRefresh);
 
         if (!fine) {
-          cleanup = () => scroll.scrollTrigger?.kill();
+          cleanup = () => {
+            scroll.scrollTrigger?.kill();
+            ScrollTrigger.removeEventListener('refresh', onRefresh);
+          };
           return;
         }
 
@@ -108,6 +133,7 @@ export function initMockup() {
 
         cleanup = () => {
           scroll.scrollTrigger?.kill();
+          ScrollTrigger.removeEventListener('refresh', onRefresh);
           root.removeEventListener('pointermove', onMove);
           root.removeEventListener('pointerleave', onLeave);
         };

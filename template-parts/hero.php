@@ -28,11 +28,13 @@ $cards = bira_items( 'hero_post', [
 // Stack: each card slightly, randomly tilted (like hand-placed photos).
 $tilt = [ -6, 5, -4, 4, -1 ];
 // Fan on scroll (data-spread in mockup.js: x shift %, y shift %, extra rotation °).
-// Fan angles are even (t × 10°, t = -2 … 2); extra rotation = fan angle − random tilt,
+// Fan angles are even (t × 3°, t = -2 … 2); extra rotation = fan angle − random tilt,
 // so when open all cards are evenly spaced with no leftover random tilt.
+// The x step (38%) is wider than a card (36%), so open cards don't overlap; the fan
+// spans the whole hero (mockup.js also centers it in the container).
 $fan = static function ( int $i, int $count ) use ( $tilt ): string {
 	$t = $i - ( $count - 1 ) / 2;
-	return sprintf( '%s %s %s', round( $t * 10, 1 ), round( $t * $t * 1.2, 1 ), round( $t * 10 - $tilt[ $i % count( $tilt ) ], 1 ) );
+	return sprintf( '%s %s %s', round( $t * 38, 1 ), round( $t * $t * 2, 1 ), round( $t * 3 - $tilt[ $i % count( $tilt ) ], 1 ) );
 };
 
 $card_img = static function ( $att ) {
@@ -41,12 +43,12 @@ $card_img = static function ( $att ) {
 	}
 };
 ?>
-<section id="hero" class="bira-hero relative isolate overflow-clip bg-cream" data-hero>
+<section id="hero" class="bira-hero relative isolate flex min-h-[calc(100svh-var(--header-h))] items-center overflow-clip bg-cream" data-hero>
 	<?php echo bira_bg_doodles( [ [ 'sparkle', 'top-[16%] left-[44%] size-8 rotate-[12deg]' ], [ 'wave', 'bottom-[10%] left-[3%] w-16 rotate-[-8deg]' ] ] ); ?>
-	<div class="bira-container">
-		<div class="bira-grid items-center gap-y-8 pt-[clamp(2.5rem,6vw,4.75rem)] lg:min-h-[min(80svh,640px)]">
-			<div class="bira-hero__text relative z-10 lg:col-span-7">
-				<h1 class="bira-hero__title m-0 font-display text-[length:clamp(2.5rem,6.4vw,6rem)] leading-[0.95] font-bold uppercase" data-hero-title><?php echo wp_kses( $title_html, [ 'span' => [ 'class' => [] ], 'br' => [] ] ); ?></h1>
+	<div class="bira-container w-full">
+		<div class="bira-grid items-center gap-y-8 py-[clamp(2rem,5vw,4rem)]">
+			<div class="bira-hero__text relative z-10 lg:col-span-6">
+				<h1 class="bira-hero__title m-0 font-display text-[length:clamp(2rem,9vw,4.25rem)] lg:text-[length:clamp(2.5rem,4.4vw,4.25rem)] leading-[0.95] font-bold uppercase" data-hero-title><?php echo wp_kses( $title_html, [ 'span' => [ 'class' => [] ], 'br' => [] ] ); ?></h1>
 
 				<div class="bira-body mt-7 max-w-[38ch] text-ink/75">
 					<?php if ( $lead ) : ?>
@@ -64,17 +66,12 @@ $card_img = static function ( $att ) {
 				</div>
 			</div>
 
-			<div class="bira-mock lg:col-span-5 lg:col-start-8" data-hero-mockup>
+			<div class="bira-mock lg:col-span-6 lg:col-start-7" data-hero-mockup>
 				<span class="bira-mock__frame" data-mock-frame data-spread="0 0 6" aria-hidden="true"></span>
 
 				<?php foreach ( $cards as $i => $card ) : ?>
 					<article class="bira-mock__card" style="transform: rotate(<?php echo (int) $tilt[ $i % count( $tilt ) ]; ?>deg)" data-mock-item data-depth="<?php echo esc_attr( round( 0.4 + $i * 0.1, 2 ) ); ?>" data-spread="<?php echo esc_attr( $fan( $i, count( $cards ) ) ); ?>">
 						<?php $card_img( $card['image'] ); ?>
-						<?php if ( $i === count( $cards ) - 1 ) : ?>
-							<span class="bira-mock__arrow" aria-hidden="true">
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-							</span>
-						<?php endif; ?>
 						<div class="bira-mock__meta">
 							<p class="bira-mock__handle"><?php echo esc_html( $card['handle'] ); ?></p>
 							<p class="bira-mock__caption"><?php echo esc_html( $card['caption'] ); ?></p>
@@ -84,7 +81,6 @@ $card_img = static function ( $att ) {
 
 				<div class="bira-mock__sticker" data-mock-item data-depth="1.2" data-spread="7 -7 18">
 					<div class="bira-mock__sticker-inner">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7"/></svg>
 						<p>Not made to be skipped.</p>
 					</div>
 				</div>

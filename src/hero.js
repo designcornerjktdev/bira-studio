@@ -53,7 +53,7 @@ export function initHero() {
       // ---------- Split the title into characters (no entrance animation) ----------
       document.fonts.ready.then(() => {
         split = SplitText.create(title, {
-          type: 'lines,chars',
+          type: 'lines,words,chars', // words keep each word on one line (chars alone can wrap mid-word)
           charsClass: 'split-char',
           autoSplit: true,
           onSplit(self) {
@@ -74,18 +74,23 @@ export function initHero() {
         });
       });
 
-      // ---------- Title scroll parallax ----------
-      gsap.to(title, {
-        yPercent: -14,
-        opacity: 0.15,
-        ease: 'none',
-        // Starts after the hero pin (mockup.js) ends, so the title stays intact while the fan opens.
-        scrollTrigger: {
-          start: () => ScrollTrigger.getById('hero-pin')?.end ?? 0,
-          end: (self) => self.start + root.offsetHeight,
-          scrub: true,
-        },
-      });
+      // ---------- Text gives way to the fan while the hero is pinned (mockup.js) ----------
+      // First half: the title shrinks (scale, so the layout doesn't reflow; character centers
+      // are re-measured so the cursor effect stays aligned). Second half: the whole text block
+      // fades and lifts away, since the open fan spans the full hero width.
+      const pinRange = () => ScrollTrigger.getById('hero-pin');
+      const text = title.closest('.bira-hero__text') || title;
+      gsap
+        .timeline({
+          scrollTrigger: {
+            start: () => pinRange()?.start ?? 0,
+            end: () => pinRange()?.end ?? window.innerHeight * 0.8,
+            scrub: 0.6,
+            onUpdate: () => ready && measure(),
+          },
+        })
+        .to(title, { scale: 0.7, transformOrigin: 'left bottom', ease: 'none', duration: 1 })
+        .to(text, { autoAlpha: 0, y: -60, ease: 'power1.in', duration: 1 }, 0.6);
 
       // ---------- Characters react to the cursor ----------
       let cleanupPointer = () => {};

@@ -97,7 +97,8 @@
 
 /* ---------- Header (structure from the prototype) ---------- */
 html {
-  scroll-padding-top: 88px; /* anchors are not hidden under the sticky header */
+  --header-h: 88px; /* sticky header height; the hero fills the rest of the viewport */
+  scroll-padding-top: var(--header-h); /* anchors are not hidden under the sticky header */
   /* Decorative elements (hero mockup, doodles) must not make the page scroll sideways.
      `hidden` for older browsers (iOS Safari < 16) that do not support `clip`. */
   overflow-x: hidden;
@@ -295,7 +296,6 @@ html {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 44rem;
   justify-self: end;
   aspect-ratio: 1 / 1;
   container-type: inline-size; /* font sizes and spacing follow the mockup width (cqw) */
@@ -305,6 +305,13 @@ html {
 .bira-mock > * {
   position: absolute;
   margin: 0;
+}
+/* Desktop: bleed into the right page margin so the open fan has room. */
+@media (min-width: 64rem) {
+  .bira-mock {
+    width: calc(100% + var(--bira-margin) * 0.75);
+    margin-right: calc(var(--bira-margin) * -0.75);
+  }
 }
 
 /* Thin tilted outline frame */
@@ -372,8 +379,8 @@ html {
   background: linear-gradient(
     to top,
     color-mix(in srgb, var(--color-ink) 72%, transparent),
-    transparent 55%
-  );
+    transparent 35%
+  ); /* kept short so the GIF stays visible */
 }
 .bira-mock__meta {
   position: absolute;
@@ -381,23 +388,6 @@ html {
   left: 7%;
   right: 7%;
   bottom: 6%;
-}
-.bira-mock__arrow {
-  position: absolute;
-  z-index: 1;
-  top: 6%;
-  right: 6%;
-  width: max(22px, 4.2cqw);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--color-white) 92%, transparent);
-  color: var(--mock-ink);
-}
-.bira-mock__arrow svg {
-  width: 55%;
-  height: 55%;
 }
 
 .bira-mock__handle {
@@ -417,9 +407,9 @@ html {
 
 /* Green sticker */
 .bira-mock__sticker {
-  left: 73%;
-  top: 9%;
-  width: 18%;
+  left: 70%;
+  top: 6%;
+  width: 22%;
   aspect-ratio: 1;
   display: grid;
   place-content: center;
@@ -437,12 +427,12 @@ html {
   transform: rotate(14deg);
 }
 .bira-mock__sticker svg {
-  width: max(10px, 2.6cqw);
+  width: max(12px, 3.2cqw);
 }
 .bira-mock__sticker p {
   margin: 0;
   max-width: 9ch;
-  font-size: clamp(7px, 1.45cqw, 12px);
+  font-size: clamp(10px, 2.3cqw, 19px);
   font-weight: 800;
   line-height: 1.05;
   text-transform: uppercase;

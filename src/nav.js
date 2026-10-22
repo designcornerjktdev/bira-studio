@@ -1,4 +1,4 @@
-// Toggle menu mobile: tombol hamburger membuka/menutup panel, Escape dan klik link menutupnya.
+// Mobile menu toggle: the hamburger opens/closes the panel; Escape and link clicks close it.
 export function initNav() {
   const header = document.querySelector('[data-nav]');
   const toggle = header?.querySelector('[data-nav-toggle]');

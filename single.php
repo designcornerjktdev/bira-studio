@@ -1,8 +1,8 @@
 <?php
 /**
- * Detail post blog. (Page biasa tetap memakai singular.php, project memakai single-bira_project.php.)
- * Progress baca → kembali ke arsip + meta → judul besar + ringkasan → gambar lebar →
- * isi (kolom baca nyaman) dengan bagikan di samping → tag → post terkait → Final CTA.
+ * Blog post detail. (Regular pages use singular.php, projects use single-bira_project.php.)
+ * Reading progress → back to archive + meta → large title + excerpt → wide image →
+ * content (comfortable reading column) with share alongside → tags → related posts → Final CTA.
  */
 get_header();
 the_post();
@@ -12,7 +12,7 @@ $category   = get_the_category()[0] ?? null;
 $tags       = get_the_tags() ?: [];
 $minutes    = bira_read_minutes();
 $permalink  = rawurlencode( get_permalink() );
-// Judul untuk teks share: entity HTML (mis. &#8217;) didekode dulu supaya tidak tampil mentah di X/WhatsApp.
+// Title for share text: HTML entities (e.g. &#8217;) are decoded first so they do not show raw on X/WhatsApp.
 $share_text = rawurlencode( html_entity_decode( wp_strip_all_tags( get_the_title() ), ENT_QUOTES, get_bloginfo( 'charset' ) ) );
 $shares     = [
 	'LinkedIn' => "https://www.linkedin.com/sharing/share-offsite/?url={$permalink}",
@@ -58,7 +58,7 @@ $related = new WP_Query( [
 	</header>
 
 	<?php if ( has_post_thumbnail() ) : ?>
-		<?php // Container di <div>, bukan di <figure>: CSS bawaan WordPress "figure { margin: … }" (tanpa layer) menimpa margin auto container. ?>
+		<?php // Container on a <div>, not the <figure>: WordPress core CSS "figure { margin: … }" (unlayered) overrides the container's auto margin. ?>
 		<div class="bira-container">
 			<figure class="m-0">
 				<div class="relative aspect-[16/9] overflow-hidden rounded-md bg-sand/30">
@@ -72,7 +72,7 @@ $related = new WP_Query( [
 	<?php endif; ?>
 
 	<div class="bira-container grid gap-12 py-16 md:py-24 lg:grid-cols-12">
-		<?php // Bagikan: kolom kiri yang menempel saat scroll (desktop), di bawah isi (mobile). ?>
+		<?php // Share: sticky left column while scrolling (desktop), below the content (mobile). ?>
 		<aside class="order-2 lg:order-1 lg:col-span-2" aria-label="<?php esc_attr_e( 'Share', 'bira' ); ?>">
 			<div class="lg:sticky lg:top-32">
 				<p class="bira-eyebrow mb-4 text-ink/50"><?php esc_html_e( 'Share', 'bira' ); ?></p>
@@ -86,7 +86,7 @@ $related = new WP_Query( [
 						</li>
 					<?php endforeach; ?>
 					<li>
-						<?php // Salin link (src/share.js). Selalu jalan, juga di situs lokal yang tidak bisa diambil LinkedIn. ?>
+						<?php // Copy link (src/share.js). Always works, including on local sites LinkedIn cannot fetch. ?>
 						<button type="button" class="bira-link group inline-flex min-h-9 items-center gap-2 text-sm font-bold tracking-[0.12em] uppercase" data-copy-link="<?php echo esc_url( get_permalink() ); ?>">
 							<span class="bira-link__text" data-copy-label><?php esc_html_e( 'Copy link', 'bira' ); ?></span>
 							<span class="sr-only" aria-live="polite" data-copy-status></span>

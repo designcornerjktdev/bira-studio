@@ -1,4 +1,4 @@
-// FAB back-to-top: tampil setelah halaman di-scroll melewati ambang, klik → scroll halus ke atas.
+// Back-to-top FAB: shown once the page scrolls past a threshold; click → smooth scroll to top.
 export function initFab() {
   const fab = document.querySelector('[data-fab]');
   if (!fab) return;

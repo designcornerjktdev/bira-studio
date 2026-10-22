@@ -1,8 +1,8 @@
 <?php
 /**
- * Kartu project — dipakai section Work (homepage) dan "Up next" di halaman detail project.
- * $args['project']: data dari bira_project_data() atau contoh statis.
- * 'tone' (green/sand/ink) hanya dipakai kartu contoh; project asli tanpa gambar berlatar hijau.
+ * Project card — used by the Work section (homepage) and "Up next" on the project detail page.
+ * $args['project']: data from bira_project_data() or a static sample.
+ * 'tone' (green/sand/ink) is only used by sample cards; real projects without an image get a green background.
  */
 $project = $args['project'];
 $stats   = array_filter( array_map( 'trim', explode( ',', (string) $project['stats'] ) ) );

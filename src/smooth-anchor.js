@@ -1,19 +1,19 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Klik link anchor ke section di halaman yang sama (navbar, tombol hero, "Let’s talk") → scroll halus.
-// Sengaja lewat JS, bukan CSS `scroll-behavior: smooth`: aturan CSS itu ikut menganimasikan
-// pengembalian posisi scroll oleh GSAP ScrollTrigger (section yang di-pin) sehingga halaman bisa meluncur sendiri.
+// Clicking an anchor link to a section on the same page (navbar, hero button, "Let’s talk") → smooth scroll.
+// Done in JS on purpose, not CSS `scroll-behavior: smooth`: that CSS rule also animates
+// GSAP ScrollTrigger scroll restoration (pinned sections), which can make the page glide on its own.
 //
-// Section dengan data-anchor-end (mis. #team) yang di-pin GSAP: scroll ke UJUNG pin,
-// jadi animasinya sudah selesai (kartu tim sudah terbuka semua) saat tiba.
+// Sections with data-anchor-end (e.g. #team) pinned by GSAP: scroll to the END of the pin,
+// so the animation is finished (all team cards open) on arrival.
 
 const headerOffset = () => parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
 
-// Posisi scroll tujuan untuk sebuah section.
+// Target scroll position for a section.
 function targetTop(target) {
   if (target.hasAttribute('data-anchor-end')) {
-    const pin = ScrollTrigger.getAll().find((st) => st.pin === target); // hanya trigger yang mem-pin section ini
-    if (pin) return pin.end; // ujung pin: animasi scrub sudah 100%
+    const pin = ScrollTrigger.getAll().find((st) => st.pin === target); // only the trigger that pins this section
+    if (pin) return pin.end; // pin end: the scrub animation is at 100%
   }
   return target.getBoundingClientRect().top + window.scrollY - headerOffset();
 }
@@ -27,7 +27,7 @@ export function initSmoothAnchors() {
     if (!link) return;
 
     const url = new URL(link.href, location.href);
-    // Hanya anchor di halaman ini (link "/#services" dari halaman lain tetap pindah halaman biasa).
+    // Only anchors on this page ("/#services" links from other pages still navigate normally).
     if (url.origin !== location.origin || url.pathname !== location.pathname || !url.hash) return;
 
     const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
@@ -35,11 +35,11 @@ export function initSmoothAnchors() {
 
     e.preventDefault();
     window.scrollTo({ top: targetTop(target), behavior: reduce.matches ? 'auto' : 'smooth' });
-    history.pushState(null, '', url.hash); // URL tetap ikut berubah (#team) dan tombol back jalan
+    history.pushState(null, '', url.hash); // the URL still updates (#team) and the back button works
   });
 
-  // Datang dari halaman lain ke "/#team": browser berhenti di awal section; setelah semua
-  // ScrollTrigger siap (window load), loncat ke ujung pin supaya kartu sudah terbuka.
+  // Arriving from another page at "/#team": the browser stops at the section start; once all
+  // ScrollTriggers are ready (window load), jump to the pin end so the cards are already open.
   window.addEventListener('load', () => {
     const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
     if (!target?.hasAttribute('data-anchor-end')) return;

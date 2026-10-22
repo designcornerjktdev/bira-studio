@@ -3,8 +3,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Kurva dalam koordinat ternormalisasi (0–1). Dibangun ulang ke ukuran piksel
-// container saat resize, supaya ketebalan garis tetap konsisten (tidak ikut melar).
+// Curve in normalized coordinates (0–1). Rebuilt to the container pixel size
+// on resize so the stroke width stays consistent (doesn't stretch).
 const SEGMENTS = [
   ['M', -0.05, 0.04],
   ['C', 0.2, 0.02, 0.42, 0.1, 0.5, 0.22],
@@ -21,14 +21,14 @@ function buildPath(w, h) {
   ).join(' ');
 }
 
-// Garis "tergambar" mengikuti scroll di dalam setiap [data-scroll-line] (gaya lusion.co).
+// A line "draws" itself with scroll inside each [data-scroll-line] (lusion.co style).
 export function initScrollLine() {
   document.querySelectorAll('[data-scroll-line]').forEach((wrap) => {
     const svg = wrap.querySelector('.bira-scroll-line');
     const path = svg?.querySelector('path');
     if (!path) return;
 
-    // Progress 0–1 dari ScrollTrigger; offset dihitung dari panjang path asli (px).
+    // Progress 0–1 from ScrollTrigger; offset computed from the real path length (px).
     const state = { progress: 1, length: 0 };
     const draw = () => {
       path.style.strokeDasharray = `${state.length} ${state.length}`;

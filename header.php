@@ -10,7 +10,7 @@
 <a class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2" href="#main"><?php esc_html_e( 'Skip to content', 'bira' ); ?></a>
 
 <?php
-// Menu tanpa lokasi terpasang: section di homepage.
+// Menu with no assigned location: homepage sections.
 $bira_menu_fallback = static function () {
 	$links = [
 		'#work'        => __( 'Work', 'bira' ),

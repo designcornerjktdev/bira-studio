@@ -1,6 +1,6 @@
 <?php
 /**
- * BIRA — standalone theme (tanpa parent theme).
+ * BIRA — standalone theme (no parent theme).
  */
 
 add_action( 'after_setup_theme', function () {
@@ -17,7 +17,7 @@ add_action( 'after_setup_theme', function () {
 } );
 
 require_once get_template_directory() . '/inc/template-tags.php';
-require_once get_template_directory() . '/inc/customizer.php'; // konten homepage (Appearance → Customize → Homepage)
+require_once get_template_directory() . '/inc/customizer.php'; // homepage content (Appearance → Customize → Homepage)
 require_once get_template_directory() . '/inc/projects.php';
 
 add_action( 'wp_enqueue_scripts', function () {
@@ -25,12 +25,12 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'bira', get_stylesheet_uri(), [], $ver );
 } );
 
-// Tandai bahwa JS aktif (dipakai CSS untuk menyembunyikan teks sebelum animasi).
+// Flag that JS is active (used by CSS to hide text before animating).
 add_action( 'wp_head', function () {
 	echo '<script>document.documentElement.classList.add("js")</script>' . "\n";
 }, 1 );
 
-// Muat bundle Vite sebagai script module (WordPress 6.5+).
+// Load the Vite bundle as a script module (WordPress 6.5+).
 add_action( 'wp_enqueue_scripts', function () {
 	$file = get_stylesheet_directory() . '/assets/dist/main.js';
 	if ( file_exists( $file ) ) {
@@ -43,7 +43,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	}
 } );
 
-// Font dari Google Fonts CDN: Hanken Grotesk (grotesk untuk semua UI) + Caveat (aksen handwritten).
+// Fonts from the Google Fonts CDN: Hanken Grotesk (grotesque for all UI) + Caveat (handwritten accent).
 const BIRA_FONTS_URL = 'https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&family=Caveat:wght@500..700&display=swap';
 
 add_action( 'wp_enqueue_scripts', function () {
@@ -71,9 +71,9 @@ add_action( 'wp_enqueue_scripts', function () {
 } );
 
 /*
- * GIF animasi: WordPress membuat ukuran kecil (medium, large, …) yang hanya berisi frame pertama.
- * Untuk GIF, selalu pakai file asli dan matikan srcset, supaya animasinya tetap jalan di semua tempat
- * (kartu hero, foto tim, project, dll).
+ * Animated GIFs: WordPress generates smaller sizes (medium, large, …) containing only the first frame.
+ * For GIFs, always use the original file and disable srcset so the animation plays everywhere
+ * (hero cards, team photos, projects, etc.).
  */
 function bira_is_gif( int $id ): bool {
 	return 'image/gif' === get_post_mime_type( $id );
@@ -91,7 +91,7 @@ add_filter( 'wp_calculate_image_srcset', function ( $sources, $size_array, $src,
 	return bira_is_gif( (int) $id ) ? false : $sources;
 }, 10, 5 );
 
-// Halaman About sudah tidak ada (kontennya jadi section #about di homepage): alihkan /about ke sana.
+// The About page no longer exists (its content is now the #about homepage section): redirect /about there.
 add_action( 'template_redirect', function () {
 	$path = static fn( string $url ): string => trim( (string) wp_parse_url( $url, PHP_URL_PATH ), '/' );
 	if ( $path( home_url( '/about' ) ) === $path( $_SERVER['REQUEST_URI'] ?? '' ) && ( is_404() || is_page( 'about' ) ) ) {

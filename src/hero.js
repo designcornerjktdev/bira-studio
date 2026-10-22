@@ -50,7 +50,7 @@ export function initHero() {
         });
       };
 
-      // ---------- Pecah judul per huruf (tanpa animasi masuk) ----------
+      // ---------- Split the title into characters (no entrance animation) ----------
       document.fonts.ready.then(() => {
         split = SplitText.create(title, {
           type: 'lines,chars',
@@ -74,12 +74,12 @@ export function initHero() {
         });
       });
 
-      // ---------- Parallax scroll judul ----------
+      // ---------- Title scroll parallax ----------
       gsap.to(title, {
         yPercent: -14,
         opacity: 0.15,
         ease: 'none',
-        // Mulai setelah pin hero (mockup.js) selesai, supaya judul tetap utuh selama kipas terbuka.
+        // Starts after the hero pin (mockup.js) ends, so the title stays intact while the fan opens.
         scrollTrigger: {
           start: () => ScrollTrigger.getById('hero-pin')?.end ?? 0,
           end: (self) => self.start + root.offsetHeight,
@@ -87,7 +87,7 @@ export function initHero() {
         },
       });
 
-      // ---------- Huruf bereaksi pada kursor ----------
+      // ---------- Characters react to the cursor ----------
       let cleanupPointer = () => {};
       if (fine) {
         let px = 0, py = 0, queued = false;

@@ -1,6 +1,6 @@
 <?php
 /**
- * 404 — "This one didn't post." (struktur dari prototype bira-preview).
+ * 404 — "This one didn't post." (structure from the bira-preview prototype).
  */
 get_header();
 ?>

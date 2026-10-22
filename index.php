@@ -1,7 +1,7 @@
 <?php
 /**
- * Arsip post: halaman blog, kategori, tag, penulis, tanggal, dan pencarian.
- * Hero (eyebrow + judul besar) → filter kategori → post terbaru besar (halaman 1) → grid kartu → paginasi.
+ * Post archive: blog page, category, tag, author, date, and search.
+ * Hero (eyebrow + large title) → category filter → large latest post (page 1) → card grid → pagination.
  */
 get_header();
 
@@ -49,7 +49,7 @@ $first_page  = ! is_paged();
 	<div class="bira-container">
 		<?php if ( have_posts() ) : ?>
 			<?php
-			// Halaman pertama: post terbaru tampil besar, sisanya di grid.
+			// First page: the latest post is shown large, the rest in the grid.
 			if ( $first_page ) {
 				the_post();
 				get_template_part( 'template-parts/post-card', null, [ 'featured' => true ] );

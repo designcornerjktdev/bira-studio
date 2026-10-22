@@ -1,30 +1,30 @@
 </main>
 
 <?php
-// Footer ala web agency:
-// 1. Atas: logo + tagline besar (kiri), ajakan kontak + email besar (kanan).
-// 2. Kolom info: logo + Family, Menu, Follow, Office.
-// 3. Baris legal: copyright.
+// Agency-style footer:
+// 1. Top: logo + large tagline (left), contact prompt + large email (right).
+// 2. Info columns: logo + Family, Menu, Follow, Office.
+// 3. Legal row: copyright.
 $tagline = bira_text( 'footer_tagline', "Born in Indonesia.\nBuilt for the internet." );
 $legal   = bira_text( 'footer_legal', 'A little different. On purpose.' );
 $family  = bira_text( 'footer_family', 'Bira is part of the ID Ads family, along with our siblings Gili Social and Moyo Technologies.' );
 $office  = bira_text( 'footer_office', 'Bira Studio Office' );
 $address = bira_text( 'footer_address', "AD Premier Office Park 9th Floor, Jl. TB Simatupang No.5\nJakarta Selatan 12550" );
 [ 'email' => $email, 'socials' => $socials ] = bira_contact_links();
-// Menu footer: dari Appearance → Menus (lokasi "Footer Menu"); kalau belum diatur, link ke section homepage.
+// Footer menu: from Appearance → Menus ("Footer Menu" location); if not set, links to homepage sections.
 $menu_fallback = [
 	'#services' => __( 'Services', 'bira' ),
 	'#process'  => __( 'Process', 'bira' ),
 	'#work'     => __( 'Work', 'bira' ),
 	'#team'     => __( 'Team', 'bira' ),
 	'#about'    => __( 'About', 'bira' ),
-	'#contact'  => __( 'Contact', 'bira' ), // membuka pop-up kontak
+	'#contact'  => __( 'Contact', 'bira' ), // opens the contact pop-up
 ];
 ?>
-<footer class="bira-footer bira-pov-section relative isolate overflow-clip"><?php // latar sand muda, sama dengan section POV ?>
+<footer class="bira-footer bira-pov-section relative isolate overflow-clip"><?php // light sand background, same as the POV section ?>
 	<?php echo bira_bg_doodles( [ [ 'sparkle', 'top-[22%] right-[22%] size-7 rotate-[10deg]' ] ] ); ?>
 	<div class="bira-container">
-		<?php // 1. Atas: logo + tagline besar | ajakan kontak + email besar ?>
+		<?php // 1. Top: logo + large tagline | contact prompt + large email ?>
 		<div class="grid gap-10 pt-16 pb-12 md:grid-cols-12 md:items-end md:gap-8 md:pt-24 md:pb-16">
 			<div class="md:col-span-7">
 				<p class="mt-8 text-[clamp(2rem,4.2vw,3.75rem)] leading-[0.98] font-extrabold tracking-[-0.03em] whitespace-pre-line uppercase"><?php echo esc_html( $tagline ); ?></p>
@@ -40,7 +40,7 @@ $menu_fallback = [
 			<?php endif; ?>
 		</div>
 
-		<?php // 2. Kolom info berlabel ?>
+		<?php // 2. Labelled info columns ?>
 		<div class="grid gap-10 border-t border-ink/15 py-10 sm:grid-cols-2 md:grid-cols-12 md:gap-8 md:py-12">
 			<?php if ( $family ) : ?>
 				<div class="md:col-span-4">
@@ -107,7 +107,7 @@ $menu_fallback = [
 			<?php endif; ?>
 		</div>
 
-		<?php // 3. Baris legal ?>
+		<?php // 3. Legal row ?>
 		<div class="border-t border-ink/15 py-5 text-sm tracking-wider text-ink/55 uppercase">
 			<span>&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>. <?php echo esc_html( $legal ); ?></span>
 		</div>

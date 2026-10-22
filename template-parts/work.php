@@ -1,16 +1,16 @@
 <?php
 /**
- * Work (The Good Stuff) — SEMUA project dalam satu baris horizontal.
- * Desktop: section di-pin dan kartu digeser saat scroll. Mobile: swipe biasa (scroll-snap).
- * Lazy load: hanya BIRA_WORK_BATCH kartu pertama dirender; sisanya diambil dari
- * /wp-json/bira/v1/work saat baris hampir habis digeser (src/work.js).
- * Kartu tanpa gambar tampil sebagai blok warna.
+ * Work (The Good Stuff) — ALL projects in one horizontal row.
+ * Desktop: the section is pinned and cards slide on scroll. Mobile: plain swipe (scroll-snap).
+ * Lazy load: only the first BIRA_WORK_BATCH cards are rendered; the rest are fetched from
+ * /wp-json/bira/v1/work as the row nears its end (src/work.js).
+ * Cards without an image render as color blocks.
  */
 $eyebrow  = bira_text( 'work_eyebrow', 'The good stuff' );
 $title    = bira_text( 'work_title', 'Stuff we’re proud of' );
 $batch    = bira_projects( 0, BIRA_WORK_BATCH );
-$next     = count( $batch['items'] ) < $batch['total'] ? count( $batch['items'] ) : null; // offset muatan berikutnya
-// Contoh di bawah hanya tampil selama belum ada project yang dipublish.
+$next     = count( $batch['items'] ) < $batch['total'] ? count( $batch['items'] ) : null; // offset of the next batch
+// The samples below only show while no project is published.
 $projects = $batch['items'] ?: [
 	[
 		'image'  => 0,
@@ -63,7 +63,7 @@ $projects = $batch['items'] ?: [
 		<ul class="bira-work__track" data-work-track<?php if ( null !== $next ) : ?> data-work-next="<?php echo (int) $next; ?>" data-work-endpoint="<?php echo esc_url( rest_url( 'bira/v1/work' ) ); ?>"<?php endif; ?>>
 			<?php
 			foreach ( $projects as $project ) {
-				echo bira_work_item_html( $project ); // phpcs:ignore WordPress.Security.EscapeOutput -- di-escape di project-card.php
+				echo bira_work_item_html( $project ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in project-card.php
 			}
 			?>
 			<li class="bira-work__item bira-work__item--outro" data-work-outro>

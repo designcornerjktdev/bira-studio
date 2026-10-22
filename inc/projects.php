@@ -1,8 +1,8 @@
 <?php
 /**
- * Post type Project (menu "Projects" di admin). URL detail: /work/{slug}.
- * Semua project tampil di section Work di homepage (#work), dimuat bertahap (lazy load).
- * Tidak ada halaman arsip: /work dialihkan ke /#work.
+ * Project post type ("Projects" menu in admin). Detail URL: /work/{slug}.
+ * All projects appear in the homepage Work section (#work), loaded incrementally (lazy load).
+ * No archive page: /work redirects to /#work.
  */
 
 add_action( 'init', function () {
@@ -30,15 +30,15 @@ add_action( 'init', function () {
 			'item_updated'          => 'Project updated.',
 		],
 		'public'        => true,
-		'has_archive'   => false, // daftar project ada di section Work homepage
+		'has_archive'   => false, // the project list lives in the homepage Work section
 		'rewrite'       => [ 'slug' => 'work', 'with_front' => false ],
 		'menu_icon'     => 'dashicons-portfolio',
 		'menu_position' => 5,
 		'show_in_rest'  => true,
-		'supports'      => [ 'title', 'excerpt', 'thumbnail', 'page-attributes' ], // tanpa editor: isi halaman detail lewat field Case Study Page
+		'supports'      => [ 'title', 'excerpt', 'thumbnail', 'page-attributes' ], // no editor: detail page content comes from the Case Study Page fields
 	] );
 
-	// Kategori project bergaya tag: pilih yang sudah ada (autocomplete / "most used") atau ketik baru langsung.
+	// Tag-style project categories: pick existing ones (autocomplete / "most used") or type new ones directly.
 	register_taxonomy( 'bira_project_cat', 'bira_project', [
 		'labels'            => [
 			'name'                       => 'Categories',
@@ -58,14 +58,14 @@ add_action( 'init', function () {
 		],
 		'public'            => false,
 		'show_ui'           => true,
-		'show_in_rest'      => true, // tampil di sidebar editor blok
+		'show_in_rest'      => true, // shown in the block editor sidebar
 		'show_admin_column' => true,
 		'hierarchical'      => false,
-		'sort'              => true, // urutan kategori mengikuti urutan saat diisi
+		'sort'              => true, // category order follows entry order
 		'rewrite'           => false,
 	] );
 
-	// Flush rewrite sekali setiap versi ini berubah (2 = arsip /work dihapus).
+	// Flush rewrites once whenever this version changes (2 = /work archive removed).
 	if ( get_option( 'bira_project_rewrite' ) !== '2' ) {
 		flush_rewrite_rules( false );
 		update_option( 'bira_project_rewrite', '2' );
@@ -96,7 +96,7 @@ add_action( 'acf/include_fields', function () {
 		'position' => 'side',
 	] );
 
-	// Isi halaman detail /work/{slug} (single-bira_project.php). Bagian yang kosong tidak ditampilkan.
+	// Content of the /work/{slug} detail page (single-bira_project.php). Empty parts are not shown.
 	$tab = static fn( string $name, string $label ): array => [ 'key' => 'field_bira_project_tab_' . $name, 'label' => $label, 'type' => 'tab', 'placement' => 'top' ];
 	acf_add_local_field_group( [
 		'key'      => 'group_bira_project_case',
@@ -128,12 +128,12 @@ add_action( 'acf/include_fields', function () {
 	] );
 } );
 
-/** Jumlah kartu per muatan di section Work (awal halaman dan setiap lazy load). */
+/** Cards per batch in the Work section (initial page and each lazy load). */
 const BIRA_WORK_BATCH = 3;
 
 /**
- * Sebagian project untuk section Work, urut Order lalu terbaru.
- * Hasil: [ 'items' => data kartu, 'total' => jumlah semua project ].
+ * A batch of projects for the Work section, ordered by Order then newest.
+ * Returns: [ 'items' => card data, 'total' => total project count ].
  */
 function bira_projects( int $offset, int $count ): array {
 	$q = new WP_Query( [
@@ -147,7 +147,7 @@ function bira_projects( int $offset, int $count ): array {
 }
 
 /**
- * HTML satu kartu di baris Work (<li> + kartu). Dipakai template dan endpoint lazy load.
+ * HTML for one card in the Work row (<li> + card). Used by the template and the lazy-load endpoint.
  */
 function bira_work_item_html( array $project ): string {
 	ob_start();
@@ -157,7 +157,7 @@ function bira_work_item_html( array $project ): string {
 	return (string) ob_get_clean();
 }
 
-// Lazy load: GET /wp-json/bira/v1/work?offset=3 → kartu berikutnya (HTML) + apakah masih ada sisa.
+// Lazy load: GET /wp-json/bira/v1/work?offset=3 → next cards (HTML) + whether more remain.
 add_action( 'rest_api_init', function () {
 	register_rest_route( 'bira/v1', '/work', [
 		'methods'             => 'GET',
@@ -174,10 +174,10 @@ add_action( 'rest_api_init', function () {
 	] );
 } );
 
-// Arsip lama /work sudah tidak ada: alihkan ke section Work di homepage.
+// The old /work archive is gone: redirect to the homepage Work section.
 add_action( 'template_redirect', function () {
 	$path = static fn( string $url ): string => trim( (string) wp_parse_url( $url, PHP_URL_PATH ), '/' );
-	// Dibandingkan dengan path home_url('/work'), jadi tetap jalan bila WordPress di subfolder (mis. /bira/work).
+	// Compared against the home_url('/work') path, so it still works when WordPress is in a subfolder (e.g. /bira/work).
 	if ( is_404() && $path( home_url( '/work' ) ) === $path( $_SERVER['REQUEST_URI'] ?? '' ) ) {
 		wp_safe_redirect( home_url( '/#work' ), 301 );
 		exit;
@@ -185,7 +185,7 @@ add_action( 'template_redirect', function () {
 } );
 
 /**
- * Data satu project dalam format kartu (template-parts/project-card.php).
+ * One project as card data (template-parts/project-card.php).
  */
 function bira_project_data( WP_Post $p ): array {
 	$cats = wp_get_object_terms( $p->ID, 'bira_project_cat', [ 'orderby' => 'term_order', 'fields' => 'names' ] );
@@ -194,7 +194,7 @@ function bira_project_data( WP_Post $p ): array {
 		'brand' => (string) get_post_meta( $p->ID, 'brand', true ),
 		'tag'   => (string) get_post_meta( $p->ID, 'tag', true ),
 		'hook'  => (string) get_post_meta( $p->ID, 'hook', true ),
-		'cats'  => is_wp_error( $cats ) ? '' : implode( ' / ', $cats ), // "Social / Content", sama seperti kartu contoh
+		'cats'  => is_wp_error( $cats ) ? '' : implode( ' / ', $cats ), // "Social / Content", same as the sample cards
 		'title' => get_the_title( $p ),
 		'text'  => get_the_excerpt( $p ),
 		'stats' => (string) get_post_meta( $p->ID, 'stats', true ),
@@ -203,7 +203,7 @@ function bira_project_data( WP_Post $p ): array {
 }
 
 /**
- * Kategori dari teks "Social / Content / Influence" → [ 'social' => 'Social', ... ].
+ * Categories from the text "Social / Content / Influence" → [ 'social' => 'Social', ... ].
  */
 function bira_project_cats( string $cats ): array {
 	$out = [];
@@ -213,7 +213,7 @@ function bira_project_cats( string $cats ): array {
 	return $out;
 }
 
-// Field Stats sebagai tag input (admin/stats-tags.js), hanya di layar edit Project.
+// Stats field as a tag input (admin/stats-tags.js), only on the Project edit screen.
 add_action( 'admin_enqueue_scripts', function ( string $hook ) {
 	if ( ! in_array( $hook, [ 'post.php', 'post-new.php' ], true ) || 'bira_project' !== get_current_screen()->post_type ) {
 		return;
@@ -234,7 +234,7 @@ add_action( 'admin_enqueue_scripts', function ( string $hook ) {
 } );
 
 /**
- * Project berikutnya (urutan sama dengan section Work), kembali ke awal setelah yang terakhir.
+ * Next project (same order as the Work section), wrapping to the first after the last.
  */
 function bira_next_project( int $id ): ?WP_Post {
 	$ids = get_posts( [

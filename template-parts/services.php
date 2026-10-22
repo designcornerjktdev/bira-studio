@@ -1,7 +1,7 @@
 <?php
 /**
- * What We Do — layanan sebagai accordion (struktur dari prototype).
- * Item pertama terbuka; satu item terbuka pada satu waktu (lihat src/accordion.js).
+ * What We Do — services as an accordion (structure from the prototype).
+ * The first item is open; one item open at a time (see src/accordion.js).
  */
 $title = bira_text( 'wwd_title', 'We do internet things.' );
 $muted = bira_text( 'wwd_title_muted', 'But with a plan.' );
@@ -19,7 +19,7 @@ $items = bira_items( 'wwd_item', [
 		<header class="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
 			<div class="relative">
 				<?php echo bira_doodle( 'sparkle', 'bira-drift absolute -top-3 -right-12 hidden size-9 rotate-[14deg] text-green md:block [&_path]:stroke-[1.8]' ); ?>
-				<?php // data-split="center": baris 1 naik dari garis tengah, baris 2 turun (lihat split-heading.js). ?>
+				<?php // data-split="center": line 1 rises from the center line, line 2 drops (see split-heading.js). ?>
 				<h2 id="services-title" class="bira-h2 text-[9vw] leading-[1.02] sm:text-[clamp(2.5rem,5.2vw,5.3rem)] font-extrabold tracking-[-0.02em]" data-split="center">
 					<span class="bira-split-mask"><span class="block text-balance" data-split-line="up"><?php echo esc_html( $title ); ?></span></span>
 					<span class="bira-split-mask"><span class="block text-balance text-ink/45" data-split-line="down"><?php echo esc_html( $muted ); ?></span></span>

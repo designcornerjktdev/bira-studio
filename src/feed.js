@@ -3,9 +3,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Team (desktop): section di-pin, kartu naik dari bawah dalam tumpukan,
-// lalu menyebar membentuk busur setengah lingkaran (titik pusat di bawah layar).
-// Mobile / reduced motion: tetap swipe biasa (CSS).
+// Team (desktop): the section is pinned, cards rise from below in a stack,
+// then spread into a semicircular arc (center point below the screen).
+// Mobile / reduced motion: plain swipe (CSS).
 export function initFeed() {
   const section = document.querySelector('#team');
   const list = section?.querySelector('.bira-feed-cards');
@@ -16,17 +16,17 @@ export function initFeed() {
     list.classList.add('is-arc');
 
     const n = cards.length;
-    const spread = Math.min(70, 18 * (n - 1)); // total sudut busur (derajat)
+    const spread = Math.min(70, 18 * (n - 1)); // total arc angle (degrees)
     const radius = () => Math.min(window.innerWidth * 0.75, 1100);
 
-    // Posisi akhir tiap kartu di busur.
+    // Each card's final position on the arc.
     const arc = (i) => {
       const deg = n > 1 ? -spread / 2 + (spread / (n - 1)) * i : 0;
       const rad = (deg * Math.PI) / 180;
       return { x: Math.sin(rad) * radius(), y: (1 - Math.cos(rad)) * radius(), rotation: deg };
     };
 
-    // Awal: tumpukan di bawah, sedikit acak supaya terlihat bertumpuk.
+    // Start: stacked below, slightly randomized so it reads as a pile.
     gsap.set(cards, {
       xPercent: -50,
       yPercent: -50,
@@ -48,19 +48,19 @@ export function initFeed() {
       },
     });
 
-    tl.to(cards, { y: 0, opacity: 1, duration: 1, stagger: 0.08 }) // naik bertumpuk
+    tl.to(cards, { y: 0, opacity: 1, duration: 1, stagger: 0.08 }) // rise as a stack
       .to(cards, {
         x: (i) => arc(i).x,
         y: (i) => arc(i).y,
         rotation: (i) => arc(i).rotation,
         duration: 1.4,
         ease: 'power2.inOut',
-      }); // menyebar jadi busur
+      }); // spread into an arc
 
-    // ---------- Wave hover (hanya setelah busur terbentuk) ----------
-    // Kartu terdekat ke mouse maju + membesar; tetangganya ikut terangkat dengan
-    // falloff, dan berputar (rotateY) menghadap ke arah mouse.
-    // Lift & scale lewat CSS var supaya tidak bentrok dengan x/y/rotation milik timeline.
+    // ---------- Wave hover (only once the arc has formed) ----------
+    // The card nearest the mouse comes forward + grows; its neighbors lift too with
+    // falloff, and rotate (rotateY) to face the mouse.
+    // Lift & scale go through CSS vars so they don't clash with the timeline's x/y/rotation.
     gsap.set(cards, { transformPerspective: 900, '--lift': 0, '--grow': 1 });
     const quick = cards.map((card) => ({
       lift: gsap.quickTo(card, '--lift', { duration: 0.5, ease: 'power3.out' }),
@@ -71,14 +71,14 @@ export function initFeed() {
 
     const onMove = (e) => {
       if (!ready()) return;
-      const sigma = window.innerWidth * 0.12; // lebar "gelombang"
+      const sigma = window.innerWidth * 0.12; // "wave" width
       cards.forEach((card, i) => {
         const r = card.getBoundingClientRect();
         const dx = e.clientX - (r.left + r.width / 2);
-        const near = Math.exp(-(dx * dx) / (2 * sigma * sigma)); // 1 di bawah mouse → 0 menjauh
+        const near = Math.exp(-(dx * dx) / (2 * sigma * sigma)); // 1 under the mouse → 0 farther away
         quick[i].lift(-60 * near);
         quick[i].grow(1 + 0.12 * near);
-        // Tetangga menghadap mouse; kartu tepat di bawah mouse tetap lurus.
+        // Neighbors face the mouse; the card right under it stays straight.
         quick[i].turn(gsap.utils.clamp(-28, 28, dx / 12) * (1 - near * 0.8));
         card.style.zIndex = String(10 + Math.round(near * 20));
       });
@@ -103,5 +103,5 @@ export function initFeed() {
     };
   });
 
-  ScrollTrigger.sort(); // pin dibuat setelah trigger lain; urutkan ulang sesuai posisi di halaman
+  ScrollTrigger.sort(); // the pin is created after other triggers; re-sort by page position
 }

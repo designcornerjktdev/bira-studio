@@ -1,13 +1,13 @@
 <?php
 /**
- * Strip logo klien. Pakai logo dari Customizer (Clients → Brand logos); kalau kosong,
- * nama brand tampil sebagai wordmark teks dengan gaya berbeda-beda.
+ * Client logo strip. Uses logos from the Customizer (Clients → Brand logos); if empty,
+ * brand names are shown as text wordmarks in varying styles.
  */
 $clients_title = bira_text( 'clients_title', 'Brands we’ve made some noise with' );
 $logos         = bira_gallery( 'clients_logos' );
-// Satu textarea dipisah koma → array nama brand.
+// One comma-separated textarea → array of brand names.
 $names = array_values( array_filter( array_map( 'trim', explode( ',', bira_text( 'clients_list', 'Relaxa, ABC, Your Brand, Next Up, Watch This Space' ) ) ) ) );
-// Gaya wordmark bergantian supaya strip tetap terlihat seperti deretan logo berbeda.
+// Alternating wordmark styles so the strip still looks like a row of distinct logos.
 $styles  = [
 	'italic font-extrabold tracking-tighter',
 	'font-black tracking-tighter',

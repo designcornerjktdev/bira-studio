@@ -1,23 +1,23 @@
 <?php
 /**
- * 01 Hero — konten dari Customizer (Homepage → Hero).
- * Struktur mengikuti prototype (bira-preview), token warna/font mengikuti guideline.
+ * 01 Hero — content from the Customizer (Homepage → Hero).
+ * Structure follows the prototype (bira-preview); color/font tokens follow the guideline.
  */
 $title    = bira_text( 'hero_headline', "We make\nbrands part\nof the\nconversation." );
 $accent   = bira_text( 'hero_accent_word', 'conversation' );
 $desc_raw = bira_text( 'hero_description' );
 $desc     = $desc_raw ?: 'Built for brands that want people to actually talk about them.';
-// Kalimat pembuka default hanya dipakai bila Description juga masih default (hindari teks ganda).
+// The default lead is only used while Description is also default (avoids duplicate text).
 $lead     = bira_text( 'hero_lead', $desc_raw ? '' : 'Social, content & influence from Indonesia.' );
 $label  = bira_text( 'hero_cta_label', 'See our work' );
 $url    = bira_text( 'hero_cta_url', '#work' );
 $label2 = bira_text( 'hero_cta2_label', 'Let’s make something' );
 $url2   = bira_text( 'hero_cta2_url', '#cta' );
 
-// Baris baru di headline jadi pemenggalan baris; kata aksen hanya kemunculan pertama.
+// Newlines in the headline become line breaks; the accent applies to the first occurrence only.
 $title_html = nl2br( bira_accent( $title, $accent, 'bira-hero__accent text-green' ), false );
 
-// 5 kartu bertumpuk (hero_post_1_* … hero_post_5_*: image, handle, caption). Kartu 1 paling bawah, kartu 5 paling atas.
+// 5 stacked cards (hero_post_1_* … hero_post_5_*: image, handle, caption). Card 1 at the bottom, card 5 on top.
 $cards = bira_items( 'hero_post', [
 	[ 'image' => 0, 'handle' => '@madeforthefeed', 'caption' => 'Main character energy' ],
 	[ 'image' => 0, 'handle' => 'Creator culture', 'caption' => 'a little behind the scenes.' ],
@@ -25,11 +25,11 @@ $cards = bira_items( 'hero_post', [
 	[ 'image' => 0, 'handle' => 'Street notes', 'caption' => 'not made to blend in.' ],
 	[ 'image' => 0, 'handle' => 'Content mood', 'caption' => 'a little sweet. a little extra.' ],
 ] );
-// Tumpukan: tiap kartu sedikit miring acak (seperti foto ditaruh tangan).
+// Stack: each card slightly, randomly tilted (like hand-placed photos).
 $tilt = [ -6, 5, -4, 4, -1 ];
-// Kipas saat scroll (data-spread di mockup.js: geser x %, geser y %, tambahan putar °).
-// Sudut kipas dibuat rata (t × 10°, t = -2 … 2); tambahan putar = sudut kipas − miring acak,
-// jadi saat terbuka semua kartu berjarak sama tanpa sisa kemiringan acak.
+// Fan on scroll (data-spread in mockup.js: x shift %, y shift %, extra rotation °).
+// Fan angles are even (t × 10°, t = -2 … 2); extra rotation = fan angle − random tilt,
+// so when open all cards are evenly spaced with no leftover random tilt.
 $fan = static function ( int $i, int $count ) use ( $tilt ): string {
 	$t = $i - ( $count - 1 ) / 2;
 	return sprintf( '%s %s %s', round( $t * 10, 1 ), round( $t * $t * 1.2, 1 ), round( $t * 10 - $tilt[ $i % count( $tilt ) ], 1 ) );

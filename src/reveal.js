@@ -3,8 +3,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Section muncul saat di-scroll. Elemen disembunyikan oleh JS (bukan CSS),
-// jadi konten tetap terlihat bila script gagal dimuat.
+// Sections reveal on scroll. Elements are hidden by JS (not CSS),
+// so content stays visible if the script fails to load.
 export function initReveal() {
   const items = gsap.utils.toArray('[data-reveal]');
   if (!items.length) return;
@@ -19,9 +19,9 @@ export function initReveal() {
       onEnter: (batch) =>
         gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08, overwrite: true }),
     });
-    // Reset setelah elemen keluar dari bawah layar (scroll ke atas), supaya reveal
-    // diputar ulang saat di-scroll turun lagi tanpa terlihat "hilang" di layar.
-    // Elemen di dalam [data-reveal-once] (mis. The Good Stuff) cukup sekali main.
+    // Reset after the element leaves through the bottom (scrolling up), so the reveal
+    // replays when scrolling down again without visibly "vanishing" on screen.
+    // Elements inside [data-reveal-once] (e.g. The Good Stuff) play only once.
     const replay = items.filter((el) => !el.closest('[data-reveal-once]'));
     ScrollTrigger.batch(replay, {
       start: 'top bottom',

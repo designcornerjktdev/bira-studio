@@ -1,7 +1,7 @@
 <?php
 /**
- * Trust — angka pencapaian di atas strip brand (Clients). Angka terakhir berwarna hijau.
- * Konten dari Customizer → Homepage → Trust.
+ * Trust — achievement numbers above the brand strip (Clients). The last number is green.
+ * Content from Customizer → Homepage → Trust.
  */
 $stats = bira_items( 'trust_stat', [
 	[ 'number' => '50M+', 'label' => 'Views' ],

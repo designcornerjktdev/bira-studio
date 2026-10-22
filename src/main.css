@@ -6,7 +6,7 @@
 @source '../*.php';
 @source '../template-parts';
 
-/* Token warna dari BIRA Website Guideline (sumber utama: theme.json). */
+/* Color tokens from the BIRA Website Guideline (source of truth: theme.json). */
 @theme inline {
   --font-display:
     var(--wp--preset--font-family--bira-sans), "Helvetica Neue", Arial,
@@ -18,20 +18,20 @@
   --color-white: var(--wp--preset--color--bira-white, #ffffff);
   --color-sand: var(--wp--preset--color--bira-sand, #bd8a5d);
 
-  /* Hanken Grotesk tampil lebih tipis dari Inter Tight: setiap kelas tebal dinaikkan satu tingkat. */
+  /* Hanken Grotesk renders lighter than Inter Tight: each weight class is bumped up one step. */
   --font-weight-semibold: 700;
   --font-weight-bold: 800;
   --font-weight-extrabold: 900;
 }
 
-/* ---------- Dasar (menggantikan global styles dari parent theme lama) ---------- */
+/* ---------- Base (replaces global styles from the old parent theme) ---------- */
 @layer base {
   body {
     background: var(--color-cream);
     color: var(--color-ink);
     font-family: var(--font-display);
   }
-  /* H1/H2: oversized, tight-tracked. Utility tracking-* tetap bisa menimpa. */
+  /* H1/H2: oversized, tight-tracked. tracking-* utilities can still override. */
   h1,
   h2,
   h3,
@@ -45,7 +45,7 @@
   }
 }
 
-/* ---------- Layout: 12 kolom, max 1280px, margin 24px mobile → 80px desktop ---------- */
+/* ---------- Layout: 12 columns, max 1280px, margin 24px mobile → 80px desktop ---------- */
 @layer components {
   .bira-container {
     --bira-margin: clamp(24px, 6.25vw, 80px);
@@ -55,7 +55,7 @@
     padding-inline: var(--bira-margin);
   }
 
-  /* Mobile: satu kolom. Desktop: 12 kolom, gutter 24px. Anak default selebar penuh, atur dengan lg:col-span-* */
+  /* Mobile: one column. Desktop: 12 columns, 24px gutter. Children are full width by default; set with lg:col-span-* */
   .bira-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -74,7 +74,7 @@
     padding-block: clamp(4rem, 10vw, 9rem);
   }
 
-  /* Eyebrow: all-caps, spaced, kecil — di atas headline */
+  /* Eyebrow: all-caps, spaced, small — above the headline */
   .bira-eyebrow {
     display: block;
     font-size: 0.875rem;
@@ -95,11 +95,11 @@
   }
 }
 
-/* ---------- Header (struktur dari prototype) ---------- */
+/* ---------- Header (structure from the prototype) ---------- */
 html {
-  scroll-padding-top: 88px; /* anchor tidak tertutup header sticky */
-  /* Elemen dekoratif (mockup hero, doodle) tidak boleh membuat halaman bisa digeser ke samping.
-     `hidden` untuk browser lama (iOS Safari < 16) yang belum mengenal `clip`. */
+  scroll-padding-top: 88px; /* anchors are not hidden under the sticky header */
+  /* Decorative elements (hero mockup, doodles) must not make the page scroll sideways.
+     `hidden` for older browsers (iOS Safari < 16) that do not support `clip`. */
   overflow-x: hidden;
   overflow-x: clip;
 }
@@ -135,12 +135,12 @@ html {
 }
 
 /* ---------- Primary button ----------
-   Normal : pill hitam, titik putih di kiri, teks.
-   Hover  : hijau menyebar dari titik (wave) → titik hilang → teks geser kiri → panah muncul.
-   Keluar : urutan dibalik (panah hilang dulu, lalu titik muncul). Lebar tombol tetap. */
+   Normal : black pill, white dot on the left, text.
+   Hover  : green spreads from the dot (wave) → dot disappears → text shifts left → arrow appears.
+   Leave  : reversed (arrow disappears first, then the dot returns). Button width stays fixed. */
 .bira-btn {
   --btn-pad: 1.5rem;
-  --btn-slot: 1.5rem; /* ruang titik di kiri = ruang panah di kanan, jadi lebar tetap */
+  --btn-slot: 1.5rem; /* dot space on the left = arrow space on the right, so the width stays fixed */
   --btn-ease: cubic-bezier(0.65, 0, 0.35, 1);
   position: relative;
   isolation: isolate;
@@ -160,7 +160,7 @@ html {
   white-space: nowrap;
 }
 
-/* Titik */
+/* Dot */
 .bira-btn__dot {
   flex: none;
   width: var(--btn-slot);
@@ -173,10 +173,10 @@ html {
   height: 0.4rem;
   border-radius: 50%;
   background: currentColor;
-  transition: transform 0.25s var(--btn-ease) 0.3s; /* muncul kembali setelah panah hilang */
+  transition: transform 0.25s var(--btn-ease) 0.3s; /* reappears after the arrow is gone */
 }
 
-/* Wave hijau: lingkaran yang tumbuh dari posisi titik */
+/* Green wave: a circle growing from the dot's position */
 .bira-btn::before {
   content: "";
   position: absolute;
@@ -196,7 +196,7 @@ html {
   transition: transform 0.35s var(--btn-ease) 0.15s;
 }
 
-/* Panah */
+/* Arrow */
 .bira-btn__arrow {
   position: absolute;
   right: var(--btn-pad);
@@ -208,7 +208,7 @@ html {
   transform: translateX(-0.6rem);
   transition:
     opacity 0.2s ease,
-    transform 0.25s var(--btn-ease); /* hilang lebih dulu saat keluar */
+    transform 0.25s var(--btn-ease); /* disappears first on leave */
 }
 
 .bira-btn:hover::before,
@@ -231,7 +231,7 @@ html {
   transform: translateX(0);
   transition:
     opacity 0.25s ease 0.3s,
-    transform 0.35s var(--btn-ease) 0.3s; /* muncul setelah titik hilang */
+    transform 0.35s var(--btn-ease) 0.3s; /* appears after the dot is gone */
 }
 .bira-btn:focus-visible {
   outline: 2px solid var(--color-green);
@@ -246,7 +246,7 @@ html {
   }
 }
 
-/* Konten dari editor (halaman & post) */
+/* Editor content (pages & posts) */
 .bira-content > * + * {
   margin-top: 1.25em;
 }
@@ -282,13 +282,13 @@ html {
   border-radius: 0.5rem;
 }
 
-/* ---------- Bagian yang tetap CSS biasa ---------- */
+/* ---------- Parts that stay plain CSS ---------- */
 .split-char {
   display: inline-block;
   will-change: transform;
 }
 
-/* ---------- Mockup hero (komposisi seperti BIRA Studio) ---------- */
+/* ---------- Hero mockup (BIRA Studio-style composition) ---------- */
 .bira-mock {
   --mock-ink: var(--color-ink);
   --mock-green: var(--color-green);
@@ -298,7 +298,7 @@ html {
   max-width: 44rem;
   justify-self: end;
   aspect-ratio: 1 / 1;
-  container-type: inline-size; /* ukuran font dan jarak mengikuti lebar mockup (cqw) */
+  container-type: inline-size; /* font sizes and spacing follow the mockup width (cqw) */
   color: var(--mock-ink);
   font-family: var(--font-display);
 }
@@ -307,7 +307,7 @@ html {
   margin: 0;
 }
 
-/* Bingkai garis tipis yang miring */
+/* Thin tilted outline frame */
 .bira-mock__frame {
   left: 6.6%;
   top: 28%;
@@ -319,35 +319,35 @@ html {
   z-index: 0;
 }
 
-/* Kartu */
+/* Cards */
 .bira-mock__card {
   overflow: hidden;
-  border: max(4px, 0.8cqw) solid var(--color-white); /* bingkai polaroid seperti prototype */
+  border: max(4px, 0.8cqw) solid var(--color-white); /* polaroid border as in the prototype */
   border-radius: 4cqw;
   background: color-mix(
     in srgb,
     var(--color-sand) 35%,
     var(--color-cream)
-  ); /* tampil bila gambar belum diisi */
+  ); /* shown when no image is set */
   color: var(--color-white);
   box-shadow: 0 2cqw 5cqw -1.5cqw
     color-mix(in srgb, var(--color-ink) 30%, transparent);
 }
-/* 7 kartu bertumpuk di tengah; urutan DOM = urutan tumpukan (kartu terakhir paling atas).
-   Poros jauh di bawah kartu, jadi saat hover (data-spread di mockup.js) kartu mengembang seperti kipas. */
+/* Cards stacked in the center; DOM order = stack order (last card on top).
+   Pivot far below the cards, so on scroll (data-spread in mockup.js) the cards open like a fan. */
 .bira-mock__card {
   left: 32%;
   top: 4%;
   width: 36%;
-  aspect-ratio: 9 / 16; /* rasio Reels / TikTok */
+  aspect-ratio: 9 / 16; /* Reels / TikTok ratio */
   transform-origin: 50% 115%;
   z-index: 2;
-  /* scale & translate terpisah dari transform (dipegang GSAP), jadi aman dianimasikan CSS */
+  /* scale & translate are separate from transform (owned by GSAP), so CSS can safely animate them */
   transition:
     scale 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
-/* Kartu yang di-hover naik ke depan tumpukan. */
+/* A hovered card rises to the front of the stack. */
 @media (hover: hover) {
   .bira-mock__card:hover {
     z-index: 6;
@@ -355,7 +355,7 @@ html {
     translate: 0 -4%;
   }
 }
-/* Kemiringan acak tiap kartu diatur inline di hero.php ($tilt), supaya sudut kipas bisa dihitung rata. */
+/* Each card's random tilt is set inline in hero.php ($tilt) so the fan angles can be evened out. */
 
 .bira-mock__card img {
   position: absolute;
@@ -365,7 +365,7 @@ html {
   object-fit: cover;
 }
 .bira-mock__card::after {
-  /* gradasi gelap di bagian bawah */
+  /* dark gradient at the bottom */
   content: "";
   position: absolute;
   inset: 0;
@@ -404,7 +404,7 @@ html {
   margin: 0 0 1cqw;
   font-size: clamp(10px, 1.8cqw, 15px);
 }
-/* caption 1 baris, sisanya dipotong "…" */
+/* one-line caption, the rest truncated with "…" */
 .bira-mock__caption {
   margin: 0;
   max-width: 85%;
@@ -415,7 +415,7 @@ html {
   text-overflow: ellipsis;
 }
 
-/* Stiker hijau */
+/* Green sticker */
 .bira-mock__sticker {
   left: 73%;
   top: 9%;
@@ -448,7 +448,7 @@ html {
   text-transform: uppercase;
 }
 
-/* Bintang hijau */
+/* Green star */
 .bira-mock__star {
   left: 11%;
   top: 39%;
@@ -461,7 +461,7 @@ html {
   width: 100%;
 }
 
-/* Bubble komentar */
+/* Comment bubble */
 .bira-mock__comment {
   left: 13.5%;
   top: 67%;
@@ -511,7 +511,7 @@ html {
   width: 100%;
 }
 
-/* Catatan panah di bawah — aksen handwritten (satu-satunya di section hero) */
+/* Arrow note below — handwritten accent (the only one in the hero section) */
 .bira-mock__note {
   left: 31%;
   top: 92%;
@@ -526,7 +526,7 @@ html {
   transform: rotate(-3deg);
   z-index: 1;
 }
-/* Mobile: lebih kecil dan di tengah mockup (posisi via left/right, karena transform dipakai animasi GSAP). */
+/* Mobile: smaller and centered in the mockup (positioned via left/right, since transform is used by GSAP). */
 @media (max-width: 47.99rem) {
   .bira-mock__note {
     left: 0;
@@ -540,7 +540,7 @@ html {
   width: max(14px, 3cqw);
 }
 
-/* Disembunyikan sampai animasi mulai; pengaman 4 detik jika JS gagal */
+/* Hidden until the animation starts; 4-second safety net if JS fails */
 @media (prefers-reduced-motion: no-preference) {
   .js [data-mock-item],
   .js [data-mock-frame] {
@@ -554,10 +554,10 @@ html {
   }
 }
 /* ======================================================================
-   Section homepage
+   Homepage sections
    ====================================================================== */
 
-/* ---------- Marquee (satu-satunya horizontal scroll yang disengaja) ---------- */
+/* ---------- Marquee (the only intentional horizontal scroll) ---------- */
 .bira-marquee {
   overflow: hidden;
 }
@@ -574,7 +574,7 @@ html {
   }
 }
 
-/* Strip logo klien: jarak sama dengan gap di dalam item, supaya loop mulus. */
+/* Client logo strip: spacing matches the gap inside items so the loop is seamless. */
 .bira-marquee__track--clients {
   --gap: 3.5rem;
   gap: var(--gap);
@@ -595,8 +595,8 @@ html {
   animation-play-state: paused;
 }
 
-/* ---------- Scroll line: garis kurva yang tergambar saat scroll ---------- */
-/* SVG di atas background section, tapi di bawah konten (.bira-container). */
+/* ---------- Scroll line: a curve drawn as you scroll ---------- */
+/* SVG sits above the section background but below the content (.bira-container). */
 .bira-line-wrap {
   position: relative;
 }
@@ -620,15 +620,15 @@ html {
   z-index: 2;
 }
 
-/* ---------- The Good Stuff: project dalam satu baris horizontal ---------- */
-/* Mobile / reduced motion: swipe native dengan scroll-snap. Desktop: di-pin oleh work.js. */
+/* ---------- The Good Stuff: projects in one horizontal row ---------- */
+/* Mobile / reduced motion: native swipe with scroll-snap. Desktop: pinned by work.js. */
 .bira-work__viewport {
   --bira-margin: clamp(24px, 6.25vw, 80px);
   position: relative;
   z-index: 2;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  /* Snap berhenti sejauh margin container, jadi kartu pertama tidak mepet kiri. */
+  /* Snap stops at the container margin, so the first card isn't flush left. */
   scroll-padding-inline: max(var(--bira-margin), calc((100vw - 1280px) / 2));
   scrollbar-width: none;
 }
@@ -647,7 +647,7 @@ html {
   width: min(82vw, calc(var(--work-h, 62vw) * var(--ratio)));
   scroll-snap-align: start;
 }
-/* Proporsi berulang tiap 3 kartu, jadi kartu yang dimuat belakangan (lazy load) tetap berirama. */
+/* Proportions repeat every 3 cards, so lazily loaded cards keep the rhythm. */
 .bira-work__item:nth-child(3n + 2) {
   --ratio: 1.85;
 }
@@ -685,7 +685,7 @@ html {
   transform: scale(1.035);
 }
 
-/* Desktop: tinggi media mengikuti tinggi layar supaya seluruh kartu muat saat di-pin. */
+/* Desktop: media height follows the viewport height so whole cards fit while pinned. */
 @media (min-width: 64rem) {
   .bira-work__item {
     --work-h: clamp(260px, 48vh, 520px);
@@ -703,7 +703,7 @@ html {
   }
 }
 
-/* Link besar: garis bawah dan panah bergerak saat hover ATAU focus */
+/* Large link: underline and arrow move on hover OR focus */
 .bira-link__text {
   background: linear-gradient(currentColor, currentColor) 0 100% / 0 3px
     no-repeat;
@@ -725,7 +725,7 @@ html {
   outline-offset: 6px;
 }
 
-/* ---------- Motion: sticker/doodle melayang pelan ---------- */
+/* ---------- Motion: slowly floating stickers/doodles ---------- */
 @media (prefers-reduced-motion: no-preference) {
   .bira-drift {
     animation: bira-drift 6s ease-in-out infinite alternate;
@@ -746,7 +746,7 @@ html {
   }
 }
 
-/* ---------- What We Do: accordion layanan ---------- */
+/* ---------- What We Do: services accordion ---------- */
 .bira-acc.is-open .bira-acc__title {
   color: var(--color-green);
 }
@@ -762,7 +762,7 @@ html {
   opacity: 0;
 }
 
-/* Buka-tutup halus: tinggi dianimasikan lewat grid 0fr → 1fr, isi ikut fade + geser. */
+/* Smooth open/close: height animates via grid 0fr → 1fr, content fades + slides. */
 .bira-acc__panel {
   display: grid;
   grid-template-rows: 0fr;
@@ -796,7 +796,7 @@ html {
   }
 }
 
-/* Mask baris heading untuk reveal dari garis tengah (data-split="center"). */
+/* Heading line masks for the center-line reveal (data-split="center"). */
 .bira-split-mask {
   display: block;
   overflow: hidden;
@@ -804,7 +804,7 @@ html {
   margin-block: -0.06em;
 }
 
-/* ---------- How We Work: timeline proses ---------- */
+/* ---------- How We Work: process timeline ---------- */
 .bira-steps::before {
   content: "";
   position: absolute;
@@ -857,7 +857,7 @@ html {
   }
 }
 
-/* ---------- Team: kartu anggota tim bergaya post sosial (template-parts/team.php) ---------- */
+/* ---------- Team: team member cards styled as social posts (template-parts/team.php) ---------- */
 .bira-pov-section {
   background: color-mix(in srgb, var(--color-sand) 22%, var(--color-cream));
 }
@@ -977,7 +977,7 @@ html {
   }
 }
 
-/* Mode busur (desktop, diatur oleh src/feed.js): kartu ditumpuk absolut di tengah. */
+/* Arc mode (desktop, driven by src/feed.js): cards stacked absolutely in the center. */
 @media (min-width: 48rem) {
   .bira-feed-cards.is-arc {
     display: block;
@@ -1015,9 +1015,9 @@ html {
   flex: none;
   border-radius: 999px;
   background: var(--color-green);
-  padding-inline: 1rem; /* teks tidak menyentuh tepi lingkaran */
+  padding-inline: 1rem; /* text doesn't touch the circle edge */
   color: var(--color-white);
-  font-size: 1.25rem; /* mobile: muat di lingkaran 9rem */
+  font-size: 1.25rem; /* mobile: fits the 9rem circle */
   font-weight: 700;
   line-height: 1.05;
   text-align: center;
@@ -1056,8 +1056,8 @@ html {
   }
 }
 
-/* ---------- Watermark "BIRA" vertikal (gaya business card) ---------- */
-/* Cukup sekali di halaman. Outline sangat samar supaya terasa tekstur, bukan elemen baru. */
+/* ---------- Vertical "BIRA" watermark (business card style) ---------- */
+/* Once per page is enough. Very faint outline so it reads as texture, not a new element. */
 .bira-watermark {
   position: absolute;
   top: 50%;
@@ -1070,8 +1070,8 @@ html {
   pointer-events: none;
   user-select: none;
 }
-/* paint-order: stroke dulu lalu isi warna latar → garis kontur yang tumpang-tindih
-   di dalam huruf (font variabel) tertutup, tinggal outline luar. */
+/* paint-order: stroke first, then fill with the background color → overlapping contour lines
+   inside the letters (variable font) are covered, leaving only the outer outline. */
 .bira-watermark text {
   font-family: var(--font-display);
   font-size: 300px;
@@ -1083,7 +1083,7 @@ html {
   paint-order: stroke fill;
 }
 
-/* ---------- Doodle latar (bira_bg_doodles): kecil, samar, di belakang konten ---------- */
+/* ---------- Background doodles (bira_bg_doodles): small, faint, behind the content ---------- */
 .bira-bg-doodle {
   position: absolute;
   z-index: -1;
@@ -1106,7 +1106,7 @@ html {
   }
 }
 
-/* ---------- Panah "swipe": keluar ke kanan atas, salinannya masuk dari kiri bawah ---------- */
+/* ---------- "Swipe" arrow: exits top-right, a copy enters from bottom-left ---------- */
 .bira-swipe-arrow svg {
   transition: translate 0.45s cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -1128,7 +1128,7 @@ html {
   }
 }
 
-/* ---------- FAB back-to-top: muncul di kanan bawah setelah mulai scroll ---------- */
+/* ---------- Back-to-top FAB: appears bottom-right once scrolling starts ---------- */
 .bira-fab {
   position: fixed;
   right: clamp(1rem, 3vw, 2rem);
@@ -1173,9 +1173,9 @@ html {
   }
 }
 
-/* The Good Stuff: hook di kartu digaris bawahi saat kartu di-hover (garis tumbuh dari kiri, per baris). */
+/* The Good Stuff: the card hook is underlined on card hover (line grows from the left, per line). */
 .bira-work__hook {
-  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 0.14em) / 0 0.08em no-repeat; /* naikkan angka 0.14em agar garis lebih dekat ke teks */
+  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 0.14em) / 0 0.08em no-repeat; /* raise 0.14em to bring the line closer to the text */
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   transition: background-size 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1185,15 +1185,15 @@ html {
   background-size: 100% 0.08em;
 }
 
-/* ---------- Detail project (single-bira_project.php) ---------- */
+/* ---------- Project detail (single-bira_project.php) ---------- */
 .bira-case__tint {
   background: color-mix(in srgb, var(--color-sand) 22%, var(--color-cream));
 }
 .bira-case__next {
-  --ratio: 1.85; /* kartu "Up next" melebar, seperti prototype */
+  --ratio: 1.85; /* wide "Up next" card, as in the prototype */
 }
 
-/* Logo klien di strip marquee: tinggi seragam, warna asli logo. */
+/* Client logos in the marquee strip: uniform height, original logo colors. */
 .bira-clients__logo {
   width: auto;
   height: 2.5rem;
@@ -1207,14 +1207,14 @@ html {
   }
 }
 
-/* About: penanda peta di bawah gambar Pulau Bira (rata kanan) — nama tulisan tangan dengan
-   panah ke atas menunjuk pulau, nama wilayah (huruf renggang bergaris bawah) dan koordinat. */
+/* About: map marker below the Bira Island image (right-aligned) — handwritten name with
+   an up arrow pointing at the island, region name (spaced, underlined) and coordinates. */
 .bira-pin {
   position: relative;
   display: grid;
   justify-items: start;
   margin-left: auto;
-  padding-left: clamp(2.5rem, 5vw, 4rem); /* ruang untuk panah di kiri nama */
+  padding-left: clamp(2.5rem, 5vw, 4rem); /* room for the arrow left of the name */
   color: var(--color-green);
 }
 .bira-pin__name {
@@ -1248,9 +1248,9 @@ html {
   color: color-mix(in srgb, var(--color-ink) 70%, var(--color-green));
 }
 
-/* ---------- Pop-up kontak (template-parts/contact-modal.php, src/contact.js) ---------- */
+/* ---------- Contact pop-up (template-parts/contact-modal.php, src/contact.js) ---------- */
 html.is-contact-open {
-  overflow: hidden; /* halaman di belakang tidak ikut ter-scroll */
+  overflow: hidden; /* the page behind doesn't scroll */
 }
 .bira-contact {
   width: min(100% - 2rem, 38rem);
@@ -1263,7 +1263,7 @@ html.is-contact-open {
   color: var(--color-ink);
   box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.45);
 }
-/* Mobile: tombol "Back to exploring" disembunyikan; pop-up ditutup lewat tombol × (atau Esc / klik di luar). */
+/* Mobile: "Back to exploring" is hidden; close the pop-up with × (or Esc / clicking outside). */
 @media (max-width: 47.99rem) {
   .bira-contact .bira-btn {
     display: none;
@@ -1317,7 +1317,7 @@ html.is-contact-open {
   }
 }
 
-/* Menu footer (wp_nav_menu atau fallback) — gaya sama dengan link Follow, hijau saat hover. */
+/* Footer menu (wp_nav_menu or fallback) — same style as the Follow links, green on hover. */
 .bira-footer__menu a {
   display: inline-flex;
   align-items: center;
@@ -1336,7 +1336,7 @@ html.is-contact-open {
   outline-offset: 3px;
 }
 
-/* ---------- Arsip post / blog (index.php, template-parts/post-card.php) ---------- */
+/* ---------- Post / blog archive (index.php, template-parts/post-card.php) ---------- */
 .bira-post__media {
   position: relative;
   overflow: hidden;
@@ -1358,7 +1358,7 @@ html.is-contact-open {
 .bira-post__body {
   padding-top: 1.25rem;
 }
-/* Post terbaru: gambar lebar di kiri, teks di kanan (desktop). */
+/* Latest post: wide image on the left, text on the right (desktop). */
 @media (min-width: 64rem) {
   .bira-post--featured .bira-post {
     display: grid;
@@ -1374,7 +1374,7 @@ html.is-contact-open {
   }
 }
 
-/* Pill filter kategori */
+/* Category filter pills */
 .bira-pill {
   display: inline-flex;
   align-items: center;
@@ -1405,7 +1405,7 @@ html.is-contact-open {
   outline-offset: 3px;
 }
 
-/* Paginasi angka bulat */
+/* Round-number pagination */
 .bira-pagination {
   margin-top: 4rem;
 }
@@ -1442,8 +1442,8 @@ html.is-contact-open {
   border-color: transparent;
 }
 
-/* ---------- Detail post (single.php) ---------- */
-/* Garis progres baca di atas layar, digerakkan scroll (CSS scroll-driven animation; browser lama: tidak tampil). */
+/* ---------- Post detail (single.php) ---------- */
+/* Reading progress bar at the top, scroll-driven (CSS scroll-driven animation; older browsers: hidden). */
 .bira-read-progress {
   position: fixed;
   inset: 0 0 auto;
@@ -1467,7 +1467,7 @@ html.is-contact-open {
   }
 }
 
-/* Tipografi isi artikel: kolom baca nyaman, ukuran lebih besar dari body biasa. */
+/* Article typography: comfortable reading column, larger than regular body text. */
 .bira-content--article {
   max-width: 52rem;
   font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
@@ -1513,7 +1513,7 @@ html.is-contact-open {
 .bira-content--article a:hover {
   color: var(--color-ink);
 }
-/* Gambar "lebar" dari editor blok boleh melebihi kolom baca. */
+/* "Wide" images from the block editor may exceed the reading column. */
 @media (min-width: 64rem) {
   .bira-content--article .alignwide {
     width: calc(100% + 8rem);

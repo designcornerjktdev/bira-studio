@@ -1,4 +1,4 @@
-// Tombol "Copy link" di detail post ([data-copy-link]): salin URL ke clipboard, label sementara jadi "Copied!".
+// "Copy link" button on post detail ([data-copy-link]): copies the URL to the clipboard, label briefly becomes "Copied!".
 export function initShare() {
   document.querySelectorAll('[data-copy-link]').forEach((button) => {
     const label = button.querySelector('[data-copy-label]');
@@ -10,7 +10,7 @@ export function initShare() {
       try {
         await navigator.clipboard.writeText(url);
       } catch {
-        // Clipboard API butuh HTTPS / localhost; fallback lama untuk http (mis. bira.local).
+        // The Clipboard API needs HTTPS / localhost; legacy fallback for http (e.g. bira.local).
         const field = Object.assign(document.createElement('textarea'), { value: url });
         field.style.cssText = 'position:fixed;opacity:0';
         document.body.append(field);

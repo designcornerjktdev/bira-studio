@@ -18,13 +18,13 @@ import { initShare } from './share.js';
 document.addEventListener('DOMContentLoaded', () => {
   initHero();
   initCount();
-  initContact(); // sebelum smooth anchor: klik "Let’s talk" membuka pop-up, bukan scroll ke #cta
+  initContact(); // before smooth anchor: clicking "Let’s talk" opens the pop-up instead of scrolling to #cta
   initSmoothAnchors();
   initShare();
   initMockup();
   initReveal();
   initNav();
-  initWork(); // sebelum scroll line: pin-spacer harus ada saat garis diukur
+  initWork(); // before scroll line: the pin-spacer must exist when the line is measured
   initSplitHeadings();
   initAccordion();
   initSteps();

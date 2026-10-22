@@ -1,17 +1,17 @@
 <?php
 /**
- * Team — "The group chat admins": kartu anggota tim bergaya post sosial.
- * Kartu: foto, role (pill), nama, fun fact (muncul saat hover), handle sosmed.
- * Desktop: kartu dipin lalu menyebar jadi busur (src/feed.js). Mobile: swipe dengan scroll-snap.
- * Kartu tanpa foto tampil sebagai blok warna.
+ * Team — "The group chat admins": team member cards styled as social posts.
+ * Card: photo, role (pill), name, fun fact (shown on hover), social handle.
+ * Desktop: cards are pinned then spread into an arc (src/feed.js). Mobile: swipe with scroll-snap.
+ * Cards without a photo render as color blocks.
  */
 $eyebrow = bira_text( 'feed_eyebrow', 'Straight from group chat.' );
-// Judul: Enter = pindah baris, kata aksen (kemunculan pertama) jadi hijau — sama seperti hero.
+// Title: Enter = line break, the accent word (first occurrence) turns green — same as the hero.
 $headline = nl2br( bira_accent( bira_text( 'feed_headline', "The group\nchat admins." ), bira_text( 'feed_accent', 'admins.' ), 'text-green' ), false );
 $intro   = bira_text( 'feed_intro', "A few of the people behind the ideas, conversations, and occasional group chat chaos." );
 $sticker = bira_text( 'feed_sticker', "24/7\nAlways online" );
 $comment = bira_text( 'feed_comment', '“the ones who sent the photos on time.”' );
-// Contoh isi sampai data tim diisi di Customizer (Homepage → Team).
+// Sample content until team data is filled in the Customizer (Homepage → Team).
 $members = bira_items( 'team_member', [
 	[ 'photo' => 0, 'role' => 'Strategy', 'name' => '[Name]', 'fun' => 'Has a spreadsheet for every trend.', 'handle' => '' ],
 	[ 'photo' => 0, 'role' => 'Creative', 'name' => '[Name]', 'fun' => 'Pitches ideas in voice notes.', 'handle' => '' ],
@@ -62,7 +62,7 @@ $icon_chat  = '<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="curre
 								<?php endif; ?>
 								<div class="mt-4 flex justify-between gap-3 border-t border-white/30 pt-3">
 									<span class="truncate text-sm font-semibold tracking-wider<?php echo $member['handle'] ? '' : ' uppercase'; ?>"><?php echo esc_html( $member['handle'] ?: 'BIRA team' ); ?></span>
-									<span class="flex gap-3"><?php echo $icon_heart . $icon_chat; // phpcs:ignore WordPress.Security.EscapeOutput -- SVG statis ?></span>
+									<span class="flex gap-3"><?php echo $icon_heart . $icon_chat; // phpcs:ignore WordPress.Security.EscapeOutput -- static SVG ?></span>
 								</div>
 							</div>
 						</div>

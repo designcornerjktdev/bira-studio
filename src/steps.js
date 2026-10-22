@@ -3,8 +3,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// How We Work: langkah yang melewati tengah layar jadi aktif (dot + judul + progress bar),
-// dan garis vertikal terisi mengikuti scroll.
+// How We Work: the step crossing the screen center becomes active (dot + title + progress bar),
+// and the vertical line fills with scroll.
 export function initSteps() {
   const root = document.querySelector('[data-steps]');
   if (!root) return;

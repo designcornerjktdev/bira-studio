@@ -1,8 +1,8 @@
 <?php
 /**
- * Pop-up kontak "Let's make some noise." — dibuka oleh tombol "Let's talk" (header) dan
- * "Talk to BIRA" (CTA), lihat src/contact.js. Dimuat di footer.php, jadi ada di semua halaman.
- * Memakai <dialog> bawaan: fokus terkunci di dalam, Esc menutup, latar di belakang tidak bisa diklik.
+ * Contact pop-up "Let's make some noise." — opened by the "Let's talk" button (header) and
+ * "Talk to BIRA" (CTA), see src/contact.js. Loaded in footer.php, so it is on every page.
+ * Uses the native <dialog>: focus is trapped inside, Esc closes, the background is not clickable.
  */
 [ 'email' => $email, 'socials' => $socials ] = bira_contact_links();
 $rows = array_filter( [ 'Email' => $email ] + $socials );
@@ -33,7 +33,7 @@ $rows = array_filter( [ 'Email' => $email ] + $socials );
 			</ul>
 		<?php endif; ?>
 
-		<?php // Sama dengan primary button (bira_button()), tapi <button> karena menutup pop-up. ?>
+		<?php // Same as the primary button (bira_button()), but a <button> since it closes the pop-up. ?>
 		<button type="button" class="bira-btn mt-10" data-contact-close>
 			<span class="bira-btn__dot" aria-hidden="true"></span>
 			<span class="bira-btn__label"><?php echo esc_html( bira_text( 'contact_back', 'Back to exploring' ) ); ?></span>

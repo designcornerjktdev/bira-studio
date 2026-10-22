@@ -1,10 +1,10 @@
 <?php
 /**
- * How We Work — proses 5 langkah (struktur dari prototype "How we make things move").
- * Kolom kiri sticky di desktop; langkah aktif + progress bar diatur oleh src/steps.js.
+ * How We Work — 5-step process (structure from the "How we make things move" prototype).
+ * Sticky left column on desktop; active step + progress bar are driven by src/steps.js.
  */
 $eyebrow = bira_text( 'hww_eyebrow', 'Not a formula. A feeling.' );
-$title   = rtrim( bira_text( 'hww_title', 'How we make things move' ), '. ' ); // titik akhir diganti titik warna sand
+$title   = rtrim( bira_text( 'hww_title', 'How we make things move' ), '. ' ); // the trailing period is replaced by a sand-colored dot
 $intro   = bira_text( 'hww_intro', 'From a spark in the group chat to something the whole feed is talking about.' );
 $steps   = bira_items( 'hww_step', [
 	[ 'title' => 'Insight', 'text' => 'Deep in the comments, group chats and fyp rabbit holes, finding what people are actually obsessed with. the stuff they rant about at 2am, the ‘why is this so me’ moments, the tea everyone has an opinion on.' ],

@@ -1,6 +1,6 @@
 <?php
 /**
- * Halaman dan post tunggal.
+ * Single pages and posts.
  */
 get_header();
 

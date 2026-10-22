@@ -1,17 +1,17 @@
 <?php
 /**
- * Konten homepage di Appearance → Customize → Homepage (live preview).
- * Satu skema di bawah dipakai untuk: section & control Customizer, sanitasi,
- * dan bira_text()/bira_items()/bira_gallery() di template.
+ * Homepage content in Appearance → Customize → Homepage (live preview).
+ * The single schema below drives: Customizer sections & controls, sanitization,
+ * and bira_text()/bira_items()/bira_gallery() in templates.
  *
- * Nilai disimpan sebagai theme_mod (mis. hero_headline, wwd_item_1_title).
- * Kosong = template memakai teks default.
+ * Values are stored as theme_mods (e.g. hero_headline, wwd_item_1_title).
+ * Empty = the template uses its default text.
  */
 
 /**
- * Skema: section => [ panel (default bira_home), title, partial selector, fields ].
- * Field: key => [ label, type, extra ]. Type: text | textarea | url | image | gallery (banyak gambar, ID dipisah koma).
- * Item berulang: 'repeat' => [ prefix, label, jumlah, [ sub => [ label, type ] ] ].
+ * Schema: section => [ panel (default bira_home), title, partial selector, fields ].
+ * Field: key => [ label, type, extra ]. Type: text | textarea | url | image | gallery (multiple images, comma-separated IDs).
+ * Repeating items: 'repeat' => [ prefix, label, count, [ sub => [ label, type ] ] ].
  */
 function bira_content_schema(): array {
 	return [
@@ -173,7 +173,7 @@ function bira_content_schema(): array {
 		'footer'  => [
 			'title'    => 'Footer',
 			'selector' => '.bira-footer',
-			'part'     => null, // footer.php memuat wp_footer(), jadi tidak bisa dirender ulang sebagian
+			'part'     => null, // footer.php outputs wp_footer(), so it cannot be partially re-rendered
 			'fields'   => [
 				'footer_tagline'   => [ 'Tagline', 'textarea', [ 'placeholder' => "Born in Indonesia.\nBuilt for the internet." ] ],
 				'footer_family'    => [ 'Group note (under the logo)', 'textarea', [ 'placeholder' => 'Bira is part of the ID Ads family, along with our siblings Gili Social and Moyo Technologies.' ] ],
@@ -191,7 +191,7 @@ function bira_content_schema(): array {
 }
 
 /**
- * Semua field satu section, item berulang dijabarkan jadi prefix_1_sub, prefix_2_sub, …
+ * All fields of one section; repeating items are expanded to prefix_1_sub, prefix_2_sub, …
  */
 function bira_content_fields( array $section ): array {
 	$fields = $section['fields'];
@@ -247,8 +247,8 @@ add_action( 'customize_register', function ( WP_Customize_Manager $wp_customize 
 			}
 		}
 
-		// Partial hanya untuk tombol pensil (edit shortcut) di preview; setting tetap transport "refresh"
-		// supaya animasi GSAP section dijalankan ulang dengan benar.
+		// Partials only provide the pencil (edit shortcut) in the preview; settings keep the "refresh" transport
+		// so section GSAP animations re-run correctly.
 		if ( isset( $wp_customize->selective_refresh ) && $keys ) {
 			$part = $section['part'];
 			$wp_customize->selective_refresh->add_partial( $section_id, [
@@ -264,7 +264,7 @@ add_action( 'customize_register', function ( WP_Customize_Manager $wp_customize 
 } );
 
 /**
- * "12,5,9" → "12,5,9" (hanya ID attachment yang valid, urutan dipertahankan).
+ * "12,5,9" → "12,5,9" (only valid attachment IDs, order preserved).
  */
 function bira_sanitize_ids( $value ): string {
 	$ids = array_filter( array_map( 'absint', explode( ',', (string) $value ) ) );
@@ -272,15 +272,15 @@ function bira_sanitize_ids( $value ): string {
 }
 
 /**
- * Daftar ID gambar dari field gallery.
+ * Image IDs from a gallery field.
  */
 function bira_gallery( string $key ): array {
 	return array_values( array_filter( array_map( 'absint', explode( ',', bira_text( $key ) ) ), 'wp_attachment_is_image' ) );
 }
 
 /**
- * Kontrol Customizer untuk banyak gambar sekaligus (pengganti ACF Gallery yang hanya ada di versi Pro).
- * Nilai disimpan sebagai ID dipisah koma; logika pemilih ada di admin/gallery-control.js.
+ * Customizer control for multiple images at once (replacement for ACF Gallery, which is Pro-only).
+ * Stored as comma-separated IDs; picker logic lives in admin/gallery-control.js.
  */
 add_action( 'customize_register', function () {
 	class Bira_Gallery_Control extends WP_Customize_Control {

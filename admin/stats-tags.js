@@ -1,6 +1,6 @@
 /**
- * Field "Stats" di editor Project: ketik → Enter / koma → jadi tag (tanpa saran).
- * Nilai tetap disimpan di input asli sebagai teks dipisah koma ("20M+ Views, 150+ Content pieces").
+ * "Stats" field in the Project editor: type → Enter / comma → becomes a tag (no suggestions).
+ * The value is still stored in the original input as comma-separated text ("20M+ Views, 150+ Content pieces").
  */
 (function () {
   function init(input) {
@@ -56,14 +56,14 @@
 
     entry.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ',') {
-        e.preventDefault(); // Enter jangan submit / publish post
+        e.preventDefault(); // Enter must not submit / publish the post
         add();
       } else if (e.key === 'Backspace' && !entry.value && values.length) {
         values.pop();
         sync();
       }
     });
-    entry.addEventListener('blur', add); // teks yang belum di-Enter tetap tersimpan
+    entry.addEventListener('blur', add); // text not yet confirmed with Enter is still saved
     entry.addEventListener('paste', function () { setTimeout(add, 0); });
     box.addEventListener('click', function (e) { if (e.target === box) entry.focus(); });
 
@@ -74,7 +74,7 @@
     document.querySelectorAll('.bira-stats-field input[type="text"]:not(.bira-tags__entry)').forEach(init);
   }
 
-  // Meta box ACF bisa muncul belakangan di editor blok, jadi pantau DOM.
+  // ACF meta boxes can appear late in the block editor, so watch the DOM.
   scan();
   new MutationObserver(scan).observe(document.body, { childList: true, subtree: true });
 })();

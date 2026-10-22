@@ -1,11 +1,11 @@
 <?php
 /**
- * Final CTA — "Got something weird in mind?" (struktur dari prototype).
+ * Final CTA — "Got something weird in mind?" (structure from the prototype).
  */
 $status = bira_text( 'cta_status', 'Open for good conversations' );
 $title  = bira_text( 'cta_title', "Got something\nWeird in mind?" );
 $accent = bira_text( 'cta_accent', 'Weird' );
-// Sama seperti headline hero: Enter = pindah baris, kata aksen (kemunculan pertama) jadi hijau.
+// Same as the hero headline: Enter = line break, the accent word (first occurrence) turns green.
 $title_html = nl2br( bira_accent( $title, $accent, 'text-green' ), false );
 $label  = bira_text( 'cta_label', 'Talk to BIRA' );
 $url    = bira_text( 'cta_url', '/contact' );
@@ -31,7 +31,7 @@ $note_2 = bira_text( 'cta_note_2', 'Let’s make it happen.' );
 
 		<p class="mt-8 inline-block -rotate-2 font-hand text-[clamp(2rem,3.5vw,2.75rem)] leading-none font-bold" data-reveal><span class="text-green"><?php echo esc_html( $note ); ?></span> <span class="text-ink/55"><?php echo esc_html( $note_2 ); ?></span></p>
 
-		<?php // Panah tangan dari catatan ke tombol bulat, di belakang konten (tidak ikut layout). Ujungnya di kiri tombol (lebar tombol 11rem). ?>
+		<?php // Hand-drawn arrow from the note to the round button, behind the content (out of layout). Its tip sits left of the button (button width 11rem). ?>
 		<svg class="pointer-events-none absolute right-44 -bottom-26 left-120 -z-10 hidden h-60 text-green opacity-[0.28] lg:block" viewBox="-10 -10 800 285" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 			<path vector-effect="non-scaling-stroke" d="M2 152C70 225 170 262 262 260C360 258 440 220 535 140C620 70 700 30 776 6"/>
 			<path vector-effect="non-scaling-stroke" d="M732 -4 776 6 746 39"/>

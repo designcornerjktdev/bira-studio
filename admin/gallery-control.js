@@ -1,6 +1,6 @@
 /**
- * Kontrol "gallery" di Customizer (Bira_Gallery_Control): pilih banyak gambar sekaligus dari Media Library.
- * Nilai setting = ID attachment dipisah koma, urutan sesuai pilihan.
+ * "gallery" control in the Customizer (Bira_Gallery_Control): pick multiple images at once from the Media Library.
+ * Setting value = comma-separated attachment IDs, in selection order.
  */
 (function ($) {
   $(document).on('click', '[data-bira-gallery] .bira-gallery__select', function () {
@@ -13,10 +13,10 @@
       title: 'Select logos',
       button: { text: 'Use these logos' },
       library: { type: 'image' },
-      multiple: 'add', // klik untuk menambah / mengurangi pilihan tanpa menahan Ctrl
+      multiple: 'add', // click to add / remove from the selection without holding Ctrl
     });
 
-    // Tandai logo yang sudah terpilih saat media library dibuka.
+    // Mark already-selected logos when the media library opens.
     frame.on('open', function () {
       var selection = frame.state().get('selection');
       current.forEach(function (id) {

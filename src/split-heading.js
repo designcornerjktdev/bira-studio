@@ -4,13 +4,13 @@ import { SplitText } from "gsap/SplitText";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-// data-split="loop": setelah reveal, tiap beberapa detik 1–3 huruf acak tergeser
-// ke atas lalu muncul lagi dari bawah. Hanya jalan saat heading terlihat.
+// data-split="loop": after the reveal, every few seconds 1–3 random characters slide
+// up and come back from below. Only runs while the heading is visible.
 function startCharLoop(heading, chars) {
   const letters = chars.filter((c) => /\p{L}/u.test(c.textContent));
-  const star = heading.querySelector("svg"); // asterisk ikut "bereaksi" tiap huruf bergeser
+  const star = heading.querySelector("svg"); // the asterisk "reacts" each time characters slide
   let dir = 1;
-  let active; // timeline swipe yang sedang jalan
+  let active; // the swipe timeline currently running
   let visible = true;
   const watch = ScrollTrigger.create({
     trigger: heading,
@@ -38,7 +38,7 @@ function startCharLoop(heading, chars) {
           stagger: 0.08,
         });
 
-      // Asterisk berputar sedikit, bergantian kanan-kiri tiap putaran.
+      // The asterisk rotates slightly, alternating right/left each round.
       if (star) {
         gsap.to(star, {
           rotation: 20 * dir,
@@ -61,10 +61,10 @@ function startCharLoop(heading, chars) {
   };
 }
 
-// Putar animasi saat elemen masuk dari atas; reset setelah elemen keluar dari bawah
-// layar (scroll ke atas), jadi setiap kali di-scroll turun lagi animasi diulang.
+// Play the animation when the element enters from below; reset once it leaves through the bottom
+// (scrolling up), so the animation replays every time you scroll down again.
 function replayOnEnter(trigger, anim, onReset) {
-  // Di dalam [data-reveal-once] (mis. The Good Stuff): cukup sekali main, tanpa reset.
+  // Inside [data-reveal-once] (e.g. The Good Stuff): play once, no reset.
   const once = Boolean(trigger.closest("[data-reveal-once]"));
   const play = ScrollTrigger.create({
     trigger,
@@ -81,7 +81,7 @@ function replayOnEnter(trigger, anim, onReset) {
           onReset?.();
         },
       });
-  // Sudah lewat saat halaman dimuat (mis. reload di tengah halaman): tampilkan langsung.
+  // Already scrolled past on page load (e.g. reload mid-page): show immediately.
   if (play.progress === 1 || window.scrollY > play.start) anim.progress(1);
   return () => {
     play.kill();
@@ -89,8 +89,8 @@ function replayOnEnter(trigger, anim, onReset) {
   };
 }
 
-// Heading section (.bira-h2) muncul per huruf saat masuk viewport.
-// Dipecah per kata dulu supaya kata tidak terpotong di tengah saat wrap.
+// Section headings (.bira-h2) reveal character by character when entering the viewport.
+// Split by word first so words don't break mid-word when wrapping.
 export function initSplitHeadings() {
   const headings = gsap.utils.toArray(
     '.bira-h2:not([data-split="center"]):not(.bira-h2--static)',
@@ -99,7 +99,7 @@ export function initSplitHeadings() {
 
   const mm = gsap.matchMedia();
   mm.add("(prefers-reduced-motion: no-preference)", () => {
-    // Dua baris membelah dari garis tengah: baris atas naik, baris bawah turun.
+    // Two lines split from the center line: the top line rises, the bottom line drops.
     centered.forEach((heading) => {
       const tl = gsap
         .timeline({ paused: true })
@@ -123,8 +123,8 @@ export function initSplitHeadings() {
 
       SplitText.create(heading, {
         type: "words,chars",
-        mask: loop ? "chars" : undefined, // huruf loop perlu mask agar bisa keluar-masuk
-        autoSplit: true, // split ulang saat font selesai dimuat / resize
+        mask: loop ? "chars" : undefined, // loop characters need a mask to slide in and out
+        autoSplit: true, // re-split when fonts finish loading / on resize
         onSplit: (self) => {
           loopCall?.kill();
           cleanup?.();

@@ -14,7 +14,7 @@ export default defineConfig({
       output: {
         entryFileNames: 'main.js',
         chunkFileNames: 'chunks/[name]-[hash].js',
-        assetFileNames: 'main.css', // CSS jadi main.css (nama tetap)
+        assetFileNames: 'main.css', // CSS becomes main.css (fixed name)
       },
     },
   },

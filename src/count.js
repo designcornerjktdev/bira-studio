@@ -3,8 +3,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// [data-count]: angka menghitung naik dari 0 saat masuk layar (sekali).
-// Awalan/akhiran tetap utuh: "50M+" → 0M+ … 50M+, "1,000+" tetap memakai pemisah ribuan.
+// [data-count]: numbers count up from 0 when entering the viewport (once).
+// Prefix/suffix are kept: "50M+" → 0M+ … 50M+, "1,000+" keeps its thousands separator.
 export function initCount() {
   const els = gsap.utils.toArray('[data-count]');
   if (!els.length) return;
@@ -39,7 +39,7 @@ export function initCount() {
       });
       return { tween, el, text };
     });
-    // Saat media query berubah (mis. reduce motion dinyalakan): hentikan dan kembalikan teks asli.
+    // When the media query changes (e.g. reduced motion turned on): stop and restore the original text.
     return () =>
       tweens.forEach((t) => {
         if (!t) return;

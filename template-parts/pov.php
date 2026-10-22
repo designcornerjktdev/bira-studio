@@ -1,11 +1,11 @@
 <?php
 /**
- * BIRA POV — manifesto "A friendly reminder" (struktur dari prototype).
+ * BIRA POV — manifesto "A friendly reminder" (structure from the prototype).
  */
 $eyebrow = bira_text( 'pov_eyebrow', 'A friendly reminder' );
 $title   = bira_text( 'pov_title', "Don’t interrupt\nthe culture.\nJoin it." );
 $accent  = bira_text( 'pov_accent', 'Join it.' );
-// Sama seperti headline hero: Enter = pindah baris, kata aksen (kemunculan pertama) jadi hijau.
+// Same as the hero headline: Enter = line break, the accent word (first occurrence) turns green.
 $title_html = nl2br( bira_accent( $title, $accent, 'text-green' ), false );
 $body    = bira_text( 'pov_body', "Nobody opens TikTok thinking ‘omg I hope I see an ad today.’ so we make brands show up like part of the feed, not a pop-up in it." );
 ?>

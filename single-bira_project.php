@@ -1,8 +1,8 @@
 <?php
 /**
- * Detail project /work/{slug} (struktur dari prototype bira-preview /work/relaxa).
- * Intro → gambar hero → 01 Challenge / 02 Insight → 03 Idea → 04 Execution + 05 Content
- * → 06 People → Results → Up next → Final CTA. Bagian yang field-nya kosong dilewati.
+ * Project detail /work/{slug} (structure from the bira-preview prototype /work/relaxa).
+ * Intro → hero image → 01 Challenge / 02 Insight → 03 Idea → 04 Execution + 05 Content
+ * → 06 People → Results → Up next → Final CTA. Parts with empty fields are skipped.
  */
 get_header();
 the_post();
@@ -23,7 +23,7 @@ $image_2   = (int) $meta( 'content_image' );
 $has_exec  = $meta( 'execution_title' ) || $exec_text || $content || $image_2;
 $next      = bira_next_project( $id );
 
-// Nomor bagian: label kecil hijau "01 / The Challenge".
+// Part number: small green label "01 / The Challenge".
 $label = static fn( string $n, string $text, string $class = 'mb-6' ): string => sprintf(
 	'<p class="%s text-sm font-bold tracking-widest text-green uppercase">%s / %s</p>',
 	esc_attr( $class ),

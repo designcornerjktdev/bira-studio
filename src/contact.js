@@ -1,6 +1,6 @@
-// Pop-up kontak (template-parts/contact-modal.php). Dibuka oleh .bira-contact-open
-// ("Let's talk" di header, "Talk to BIRA" di CTA) atau link apa pun ke #contact.
-// Tanpa JS, tombol-tombol itu tetap berfungsi sebagai link biasa (ke section CTA / URL tombol).
+// Contact pop-up (template-parts/contact-modal.php). Opened by .bira-contact-open
+// ("Let's talk" in the header, "Talk to BIRA" in the CTA) or any link to #contact.
+// Without JS those buttons still work as plain links (to the CTA section / button URL).
 export function initContact() {
   const dialog = document.querySelector('[data-contact]');
   if (!dialog || typeof dialog.showModal !== 'function') return;
@@ -13,17 +13,17 @@ export function initContact() {
     if (!trigger || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
     e.preventDefault();
     opener = trigger;
-    document.documentElement.classList.add('is-contact-open'); // kunci scroll halaman
+    document.documentElement.classList.add('is-contact-open'); // lock page scroll
     dialog.showModal();
   });
 
   dialog.addEventListener('click', (e) => {
-    // Klik tombol tutup, atau klik di luar panel (backdrop = elemen dialog itu sendiri).
+    // Close button click, or a click outside the panel (backdrop = the dialog element itself).
     if (e.target.closest('[data-contact-close]') || e.target === dialog) close();
   });
 
   dialog.addEventListener('close', () => {
     document.documentElement.classList.remove('is-contact-open');
-    opener?.focus({ preventScroll: true }); // kembalikan fokus ke tombol pembuka
+    opener?.focus({ preventScroll: true }); // return focus to the opener
   });
 }

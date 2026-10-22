@@ -1,7 +1,7 @@
 <?php
 /**
- * Kartu post untuk arsip blog (index.php). $args['featured'] = true → kartu besar (gambar kiri, teks kanan).
- * Dipanggil di dalam The Loop.
+ * Post card for the blog archive (index.php). $args['featured'] = true → large card (image left, text right).
+ * Called inside The Loop.
  */
 $featured = ! empty( $args['featured'] );
 $category = get_the_category()[0] ?? null;

@@ -20,17 +20,17 @@ export function initMockup() {
     },
     (ctx) => {
       const { motion, fine } = ctx.conditions;
-      if (!motion) return; // reduced motion: semua elemen tampil statis
+      if (!motion) return; // reduced motion: all elements stay static
 
       let cleanup = () => {};
 
-      // Hero di-pin (seperti Team): halaman tertahan sampai kipas terbuka penuh, baru lanjut
-      // ke section berikutnya. Dibuat sekarang (bukan setelah intro) supaya pin-spacer sudah
-      // ada saat trigger lain di halaman diukur.
+      // Hero is pinned (like Team): the page holds until the fan is fully open, then moves on
+      // to the next section. Created now (not after the intro) so the pin-spacer exists
+      // when other triggers on the page are measured.
       const HOLD = '+=80%';
-      // Yang di-pin: pembungkus hero + trust (front-page.php), supaya layar tidak kosong di bawah hero.
-      // Mulai dari scroll 0 (bukan 'top top') karena header sticky; bila pembungkus lebih tinggi
-      // dari layar, scroll dulu sampai bagian bawahnya (angka trust) terlihat, baru ditahan.
+      // Pinned element: the hero + trust wrapper (front-page.php), so the screen below the hero isn't empty.
+      // Starts at scroll 0 (not 'top top') because of the sticky header; if the wrapper is taller
+      // than the viewport, scroll until its bottom (trust numbers) is visible, then hold.
       const block = root.closest('[data-hero-pin]') || root;
       const pin = ScrollTrigger.create({
         id: 'hero-pin',
@@ -51,9 +51,9 @@ export function initMockup() {
         0.1
       );
 
-      // ---------- Kipas kartu (aktif setelah intro) ----------
-      // Kipas berpencar mengikuti scroll; mouse menambah parallax kursor.
-      // Semua digabung ke setter x/y/rotation yang sama, karena GSAP memegang transform elemen.
+      // ---------- Card fan (active after the intro) ----------
+      // The fan spreads with scroll; mice add cursor parallax.
+      // Everything feeds the same x/y/rotation setters, since GSAP owns the element transforms.
       tl.call(() => {
         const state = { spread: 0 };
         let nx = 0;
@@ -64,7 +64,7 @@ export function initMockup() {
           return {
             depth: el.hasAttribute('data-mock-frame') ? 0 : parseFloat(el.dataset.depth || '0.5'),
             sx, sy, sr,
-            rot: gsap.getProperty(el, 'rotation'), // rotasi dasar dari CSS
+            rot: gsap.getProperty(el, 'rotation'), // base rotation from CSS
             x: gsap.quickTo(el, 'x', { duration: 0.6, ease: 'power3.out' }),
             y: gsap.quickTo(el, 'y', { duration: 0.6, ease: 'power3.out' }),
             r: gsap.quickTo(el, 'rotation', { duration: 0.6, ease: 'power3.out' }),
@@ -72,7 +72,7 @@ export function initMockup() {
         });
 
         const apply = () => {
-          const w = mock.offsetWidth / 100; // nilai spread dalam % lebar mockup
+          const w = mock.offsetWidth / 100; // spread values are % of mockup width
           movers.forEach((m) => {
             m.x(nx * 18 * m.depth + state.spread * m.sx * w);
             m.y(ny * 14 * m.depth + state.spread * m.sy * w);
@@ -80,8 +80,8 @@ export function initMockup() {
           });
         };
 
-        // Kipas mengikuti scroll selama hero di-pin: tertutup di awal, terbuka penuh di ujung pin,
-        // menutup lagi saat di-scroll kembali ke atas.
+        // The fan follows scroll while the hero is pinned: closed at the start, fully open at the pin end,
+        // closing again when scrolling back up.
         const scroll = gsap.to(state, {
           spread: 1,
           ease: 'none',
@@ -94,7 +94,7 @@ export function initMockup() {
           return;
         }
 
-        // Mouse: parallax kursor tetap aktif di atas kipas scroll.
+        // Mouse: cursor parallax stays active on top of the scroll fan.
         const onMove = (e) => {
           const r = root.getBoundingClientRect();
           nx = ((e.clientX - r.left) / r.width) * 2 - 1;
@@ -113,11 +113,11 @@ export function initMockup() {
         };
       });
 
-      // ---------- Parallax scroll (naik dan turun) ----------
+      // ---------- Scroll parallax (up and down) ----------
       gsap.to(mock, {
         yPercent: -6,
         ease: 'none',
-        // Baru jalan setelah pin selesai, supaya mockup diam selama kipas terbuka.
+        // Only runs after the pin ends, so the mockup stays still while the fan opens.
         scrollTrigger: { start: () => pin.end, end: () => pin.end + root.offsetHeight, scrub: true },
       });
 

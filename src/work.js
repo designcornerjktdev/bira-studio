@@ -3,12 +3,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Work (The Good Stuff): di desktop section di-pin, scroll vertikal menggeser kartu ke kiri.
-// Di mobile / reduced motion tetap swipe native (lihat .bira-work__viewport di CSS).
+// Work (The Good Stuff): on desktop the section is pinned and vertical scroll moves the cards left.
+// On mobile / reduced motion it stays a native swipe (see .bira-work__viewport in CSS).
 //
-// Lazy load: server hanya merender beberapa kartu pertama. Saat kartu penutup ([data-work-outro])
-// mendekati layar, kartu berikutnya diambil dari endpoint REST dan disisipkan sebelum penutup,
-// lalu ScrollTrigger dihitung ulang supaya jarak pin ikut memanjang.
+// Lazy load: the server only renders the first few cards. When the outro card ([data-work-outro])
+// nears the viewport, the next cards are fetched from the REST endpoint and inserted before it,
+// then ScrollTrigger is refreshed so the pin distance grows too.
 export function initWork() {
   const section = document.querySelector('[data-work]');
   const track = section?.querySelector('[data-work-track]');
@@ -33,16 +33,16 @@ export function initWork() {
       if (data.next === null) delete track.dataset.workNext;
       else track.dataset.workNext = data.next;
 
-      ScrollTrigger.refresh(); // lebar baris bertambah → jarak pin & posisi section di bawahnya diperbarui
+      ScrollTrigger.refresh(); // the row got wider → pin distance & positions of sections below are updated
     } catch {
-      // Gagal (offline dsb.): biarkan, dicoba lagi saat penutup terlihat berikutnya.
+      // Failed (offline etc.): leave it; retry the next time the outro is visible.
     } finally {
       loading = false;
     }
   };
 
-  // Pantau kartu penutup. Root berbeda per mode: saat di-pin, baris digeser dengan transform
-  // (root = layar); saat swipe native, kartu terpotong oleh viewport yang bisa di-scroll (root = viewport).
+  // Watch the outro card. The root differs per mode: when pinned, the row moves via transform
+  // (root = screen); with native swipe, cards are clipped by the scrollable viewport (root = viewport).
   const watch = (root) => {
     if (track.dataset.workNext === undefined || !outro) return () => {};
     const io = new IntersectionObserver(
@@ -51,12 +51,12 @@ export function initWork() {
         await loadMore();
         if (track.dataset.workNext === undefined) io.disconnect();
         else {
-          // Penutup bisa masih terlihat setelah kartu baru masuk: observe ulang supaya dicek lagi.
+          // The outro may still be visible after new cards arrive: re-observe so it is checked again.
           io.unobserve(outro);
           io.observe(outro);
         }
       },
-      { root, rootMargin: '0px 100% 0px 0px' }, // mulai memuat satu layar sebelum ujung baris
+      { root, rootMargin: '0px 100% 0px 0px' }, // start loading one screen before the end of the row
     );
     io.observe(outro);
     return () => io.disconnect();

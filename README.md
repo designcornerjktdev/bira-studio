@@ -57,8 +57,8 @@ Sections render in this order (see `front-page.php`):
 | Process (How We Work) | `process.php` | Sticky step timeline (`src/steps.js`) + scroll-drawn line (`src/scroll-line.js`) |
 | Trust | `trust.php` | Numbers count up (`src/count.js`) |
 | Clients | `clients.php` | Logo marquee |
-| Work (The Good Stuff) | `work.php` | Desktop: pinned horizontal scroll; mobile: native swipe. Lazy-loads more projects (`src/work.js`) |
 | Team | `team.php` | Desktop: pinned, cards spread into an arc (`src/feed.js`) |
+| Work (The Good Stuff) | `work.php` | Desktop: pinned horizontal scroll; mobile: native swipe. Lazy-loads more projects (`src/work.js`) |
 | POV | `pov.php` | Manifesto |
 | CTA | `cta.php` | Final call to action |
 

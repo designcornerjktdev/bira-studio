@@ -36,25 +36,19 @@ function bira_content_schema(): array {
 				'caption' => [ 'Caption', 'text', [ 'desc' => 'One line; longer text is cut off with “…”.' ] ],
 			] ],
 		],
-		'trust'   => [
-			'title'    => 'Trust',
-			'desc'     => 'Numbers shown above the brand strip. The last number is green.',
-			'selector' => '#trust',
-			'part'     => 'trust',
-			'fields'   => [],
-			'repeat'   => [ 'trust_stat', 'Stat', 3, [
-				'number' => [ 'Number', 'text', [ 'placeholder' => 'e.g. 50M+' ] ],
-				'label'  => [ 'Label', 'text', [ 'placeholder' => 'e.g. Views' ] ],
-			] ],
-		],
-		'clients' => [
-			'title'    => 'Clients',
-			'selector' => '#clients',
-			'part'     => 'clients',
+		'about'   => [
+			'title'    => 'About (Pulau Bira)',
+			'desc'     => 'Where the name comes from. Shown after POV.',
+			'selector' => '#about',
+			'part'     => 'about',
 			'fields'   => [
-				'clients_title' => [ 'Strip title', 'text', [ 'placeholder' => 'Brands we’ve made some noise with' ] ],
-				'clients_logos' => [ 'Brand logos', 'gallery', [ 'desc' => 'Select as many logos as you like (transparent PNG works best). Order follows your selection. When empty, the brand names below are shown as text.' ] ],
-				'clients_list'  => [ 'Brand names (fallback)', 'textarea', [ 'placeholder' => 'Relaxa, ABC, Your Brand, Next Up, Watch This Space', 'desc' => 'Only used when no logos are selected. Separate brands with commas.' ] ],
+				'origin_image'    => [ 'Image', 'image', [ 'desc' => 'Shown at its original size and ratio, without a background. A transparent PNG (e.g. an aerial cut-out of Pulau Bira) works best.' ] ],
+				'origin_caption'  => [ 'Image caption (optional)', 'text' ],
+				'origin_pin_name'   => [ 'Map label — handwritten name', 'text', [ 'placeholder' => 'Bira', 'desc' => 'Green handwritten name with an arrow pointing at the island.' ] ],
+				'origin_pin_region' => [ 'Map label — region', 'text', [ 'placeholder' => 'Kepulauan Seribu' ] ],
+				'origin_pin_coords' => [ 'Map label — coordinates', 'text', [ 'placeholder' => '5.7300° S, 106.6275° E', 'desc' => 'Separate latitude and longitude with a comma (each on its own line).' ] ],
+				'origin_intro'    => [ 'Intro', 'textarea', [ 'placeholder' => 'We borrowed our name from Pulau Bira in Kepulauan Seribu. Small on the map, but that’s kind of the point.' ] ],
+				'origin_headline' => [ 'Headline', 'text', [ 'placeholder' => 'You don’t have to be the biggest to make waves', 'desc' => 'A green period is added at the end.' ] ],
 			],
 		],
 		'services' => [
@@ -87,14 +81,25 @@ function bira_content_schema(): array {
 				'text'  => [ 'Description', 'textarea' ],
 			] ],
 		],
-		'work'    => [
-			'title'    => 'Work (The Good Stuff)',
-			'desc'     => 'All published projects appear here (Projects menu), ordered by Order then newest. The first 3 load with the page; the rest load as visitors scroll.',
-			'selector' => '#work',
-			'part'     => 'work',
+		'trust'   => [
+			'title'    => 'Trust',
+			'desc'     => 'Numbers shown above the brand strip. The last number is green.',
+			'selector' => '#trust',
+			'part'     => 'trust',
+			'fields'   => [],
+			'repeat'   => [ 'trust_stat', 'Stat', 3, [
+				'number' => [ 'Number', 'text', [ 'placeholder' => 'e.g. 50M+' ] ],
+				'label'  => [ 'Label', 'text', [ 'placeholder' => 'e.g. Views' ] ],
+			] ],
+		],
+		'clients' => [
+			'title'    => 'Clients',
+			'selector' => '#clients',
+			'part'     => 'clients',
 			'fields'   => [
-				'work_eyebrow' => [ 'Eyebrow', 'text', [ 'placeholder' => 'The good stuff' ] ],
-				'work_title'   => [ 'Title', 'text', [ 'placeholder' => 'Stuff we’re proud of' ] ],
+				'clients_title' => [ 'Strip title', 'text', [ 'placeholder' => 'Brands we’ve made some noise with' ] ],
+				'clients_logos' => [ 'Brand logos', 'gallery', [ 'desc' => 'Select as many logos as you like (transparent PNG works best). Order follows your selection. When empty, the brand names below are shown as text.' ] ],
+				'clients_list'  => [ 'Brand names (fallback)', 'textarea', [ 'placeholder' => 'Relaxa, ABC, Your Brand, Next Up, Watch This Space', 'desc' => 'Only used when no logos are selected. Separate brands with commas.' ] ],
 			],
 		],
 		'team'    => [
@@ -118,6 +123,16 @@ function bira_content_schema(): array {
 				'handle' => [ 'Social handle (optional)', 'text', [ 'placeholder' => '@username', 'desc' => 'Shown at the bottom of the card. Empty = "BIRA team".' ] ],
 			] ],
 		],
+		'work'    => [
+			'title'    => 'Work (The Good Stuff)',
+			'desc'     => 'All published projects appear here (Projects menu), ordered by Order then newest. The first 3 load with the page; the rest load as visitors scroll.',
+			'selector' => '#work',
+			'part'     => 'work',
+			'fields'   => [
+				'work_eyebrow' => [ 'Eyebrow', 'text', [ 'placeholder' => 'The good stuff' ] ],
+				'work_title'   => [ 'Title', 'text', [ 'placeholder' => 'Stuff we’re proud of' ] ],
+			],
+		],
 		'pov'     => [
 			'title'    => 'POV (A Friendly Reminder)',
 			'selector' => '#pov',
@@ -127,21 +142,6 @@ function bira_content_schema(): array {
 				'pov_title'   => [ 'Headline', 'textarea', [ 'placeholder' => "Don’t interrupt\nthe culture.\nJoin it.", 'desc' => 'Press Enter for a new line in the headline.' ] ],
 				'pov_accent'  => [ 'Accent word (green)', 'text', [ 'placeholder' => 'Join it.', 'desc' => 'The word or phrase in the headline shown in green.' ] ],
 				'pov_body'    => [ 'Supporting text', 'textarea' ],
-			],
-		],
-		'about'   => [
-			'title'    => 'About (Pulau Bira)',
-			'desc'     => 'Where the name comes from. Shown after POV.',
-			'selector' => '#about',
-			'part'     => 'about',
-			'fields'   => [
-				'origin_image'    => [ 'Image', 'image', [ 'desc' => 'Shown at its original size and ratio, without a background. A transparent PNG (e.g. an aerial cut-out of Pulau Bira) works best.' ] ],
-				'origin_caption'  => [ 'Image caption (optional)', 'text' ],
-				'origin_pin_name'   => [ 'Map label — handwritten name', 'text', [ 'placeholder' => 'Bira', 'desc' => 'Green handwritten name with an arrow pointing at the island.' ] ],
-				'origin_pin_region' => [ 'Map label — region', 'text', [ 'placeholder' => 'Kepulauan Seribu' ] ],
-				'origin_pin_coords' => [ 'Map label — coordinates', 'text', [ 'placeholder' => '5.7300° S, 106.6275° E', 'desc' => 'Separate latitude and longitude with a comma (each on its own line).' ] ],
-				'origin_intro'    => [ 'Intro', 'textarea', [ 'placeholder' => 'We borrowed our name from Pulau Bira in Kepulauan Seribu. Small on the map, but that’s kind of the point.' ] ],
-				'origin_headline' => [ 'Headline', 'text', [ 'placeholder' => 'You don’t have to be the biggest to make waves', 'desc' => 'A green period is added at the end.' ] ],
 			],
 		],
 		'cta'     => [

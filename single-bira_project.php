@@ -72,8 +72,13 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 
 <?php if ( $project['image'] ) : ?>
 	<div class="bira-container">
-		<div class="relative aspect-[1.35] overflow-hidden md:aspect-[2.1]">
-			<?php echo wp_get_attachment_image( (int) $project['image'], 'full', false, [ 'class' => 'absolute inset-0 size-full object-cover', 'sizes' => '100vw', 'loading' => 'eager' ] ); ?>
+		<?php
+		// Portrait image: shown whole (object-contain) at the frame height, the sides stay page background.
+		$hero_meta = wp_get_attachment_metadata( (int) $project['image'] );
+		$portrait  = ! empty( $hero_meta['width'] ) && ! empty( $hero_meta['height'] ) && $hero_meta['height'] > $hero_meta['width'];
+		?>
+		<div class="relative aspect-[1.35] overflow-hidden md:aspect-[2.1]<?php echo $portrait ? ' bg-ink/[0.06]' : ''; ?>">
+			<?php echo wp_get_attachment_image( (int) $project['image'], 'full', false, [ 'class' => 'absolute inset-0 size-full ' . ( $portrait ? 'object-contain' : 'object-cover' ), 'sizes' => $portrait ? '50vw' : '100vw', 'loading' => 'eager' ] ); ?>
 			<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
 			<?php if ( $project['brand'] ) : ?>
 				<p class="absolute right-5 bottom-5 left-5 truncate text-[clamp(2rem,10vw,8rem)] leading-none md:right-7 md:bottom-7 md:left-7 font-extrabold tracking-[-0.06em] text-white uppercase" aria-hidden="true"><?php echo esc_html( $project['brand'] ); ?></p>
@@ -171,7 +176,7 @@ $label = static fn( string $n, string $text, string $class = 'mb-6' ): string =>
 			</a>
 		</div>
 		<div class="bira-case__next">
-			<?php get_template_part( 'template-parts/project-card', null, [ 'project' => bira_project_data( $next ) ] ); ?>
+			<?php get_template_part( 'template-parts/project-card', null, [ 'project' => bira_project_data( $next ), 'contain_portrait' => true ] ); ?>
 		</div>
 	</section>
 <?php endif; ?>

@@ -10,7 +10,12 @@ $url     = str_starts_with( $project['url'], 'http' ) ? $project['url'] : home_u
 ?>
 <article class="group">
 	<a class="block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green" href="<?php echo esc_url( $url ); ?>">
-		<div class="bira-work__media<?php echo empty( $project['tone'] ) ? '' : ' bira-work__media--' . esc_attr( $project['tone'] ); ?>">
+		<?php
+		// 'contain_portrait' (Up next card): a portrait image is shown whole instead of zoomed to fill the wide frame.
+		$img_meta = ( empty( $args['contain_portrait'] ) || empty( $project['image'] ) ) ? false : wp_get_attachment_metadata( (int) $project['image'] );
+		$contain  = ! empty( $img_meta['width'] ) && ! empty( $img_meta['height'] ) && $img_meta['height'] > $img_meta['width'];
+		?>
+		<div class="bira-work__media<?php echo empty( $project['tone'] ) ? '' : ' bira-work__media--' . esc_attr( $project['tone'] ); ?><?php echo $contain ? ' bira-work__media--contain' : ''; ?>">
 			<?php
 			if ( ! empty( $project['image'] ) ) {
 				echo wp_get_attachment_image( (int) $project['image'], 'large', false, [ 'class' => 'bira-work__img', 'loading' => 'lazy' ] );

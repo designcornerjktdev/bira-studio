@@ -1183,6 +1183,13 @@ html {
 .bira-case__next {
   --ratio: 1.85; /* wide "Up next" card, as in the prototype */
 }
+/* Portrait image in the wide card: shown whole, sides in a slightly darker page color (same as the hero). */
+.bira-work__media--contain {
+  background: color-mix(in srgb, var(--color-ink) 6%, var(--color-cream));
+}
+.bira-work__media--contain .bira-work__img {
+  object-fit: contain;
+}
 
 /* Client logos in the marquee strip: uniform height, original logo colors. */
 .bira-clients__logo {

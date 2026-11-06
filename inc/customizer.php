@@ -118,9 +118,9 @@ function bira_content_schema(): array {
 			'repeat'   => [ 'team_member', 'Member', 4, [
 				'photo'  => [ 'Photo', 'image', [ 'desc' => 'Portrait works best (about 2:3).' ] ],
 				'name'   => [ 'Name', 'text' ],
-				'role'   => [ 'Role', 'text', [ 'placeholder' => 'e.g. Creative Director' ] ],
+				'role'   => [ 'Tag', 'text', [ 'placeholder' => 'e.g. Strategy', 'desc' => 'Pill at the top of the card.' ] ],
 				'fun'    => [ 'Fun fact (shown on hover)', 'text', [ 'placeholder' => 'e.g. Pitches ideas in voice notes.' ] ],
-				'handle' => [ 'Social handle (optional)', 'text', [ 'placeholder' => '@username', 'desc' => 'Shown at the bottom of the card. Empty = "BIRA team".' ] ],
+				'handle' => [ 'Role', 'text', [ 'placeholder' => 'e.g. Creative Director', 'desc' => 'Shown at the bottom of the card. Empty = "BIRA team".' ] ],
 			] ],
 		],
 		'work'    => [

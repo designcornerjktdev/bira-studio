@@ -42,7 +42,7 @@ $icon_chat  = '<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="curre
 
 			<ul class="bira-feed-cards">
 				<?php foreach ( $members as $member ) : ?>
-					<li class="bira-feed-card group" tabindex="0" aria-label="<?php echo esc_attr( trim( $member['name'] . ', ' . $member['role'], ', ' ) ); ?>">
+					<li class="bira-feed-card group" tabindex="0" aria-label="<?php echo esc_attr( trim( $member['name'] . ', ' . ( $member['handle'] ?: $member['role'] ), ', ' ) ); ?>">
 						<div class="bira-feed-card__media">
 							<?php
 							if ( ! empty( $member['photo'] ) ) {
@@ -60,7 +60,7 @@ $icon_chat  = '<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="curre
 									<p class="bira-feed-card__more text-sm"><?php echo esc_html( $member['fun'] ); ?></p>
 								<?php endif; ?>
 								<div class="mt-4 flex justify-between gap-3 border-t border-white/30 pt-3">
-									<span class="truncate text-sm font-semibold tracking-wider<?php echo $member['handle'] ? '' : ' uppercase'; ?>"><?php echo esc_html( $member['handle'] ?: 'BIRA team' ); ?></span>
+									<span class="truncate text-sm font-semibold tracking-wider uppercase"><?php echo esc_html( $member['handle'] ?: 'BIRA team' ); ?></span>
 									<span class="flex gap-3"><?php echo $icon_heart . $icon_chat; // phpcs:ignore WordPress.Security.EscapeOutput -- static SVG ?></span>
 								</div>
 							</div>

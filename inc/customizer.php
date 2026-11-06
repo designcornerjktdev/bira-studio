@@ -104,7 +104,7 @@ function bira_content_schema(): array {
 		],
 		'team'    => [
 			'title'    => 'Team (The Group Chat Admins)',
-			'desc'     => 'Team cards.',
+			'desc'     => '4 team cards.',
 			'selector' => '#team',
 			'part'     => 'team',
 			'fields'   => [
@@ -115,7 +115,7 @@ function bira_content_schema(): array {
 				'feed_sticker'  => [ 'Round sticker', 'textarea', [ 'placeholder' => "24/7\nAlways online" ] ],
 				'feed_comment'  => [ 'Comment bubble', 'text', [ 'placeholder' => '“the ones who sent the photos on time.”' ] ],
 			],
-			'repeat'   => [ 'team_member', 'Member', 5, [
+			'repeat'   => [ 'team_member', 'Member', 4, [
 				'photo'  => [ 'Photo', 'image', [ 'desc' => 'Portrait works best (about 2:3).' ] ],
 				'name'   => [ 'Name', 'text' ],
 				'role'   => [ 'Role', 'text', [ 'placeholder' => 'e.g. Creative Director' ] ],

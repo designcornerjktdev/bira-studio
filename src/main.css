@@ -655,6 +655,7 @@ html {
   overflow: hidden;
   border-radius: 4px;
   aspect-ratio: var(--ratio);
+  container-type: inline-size; /* the hook text scales with the card width (cqi), so words never split */
   background: var(--color-green);
 }
 .bira-work__media--sand {

@@ -151,7 +151,14 @@ function bira_projects( int $offset, int $count ): array {
  */
 function bira_work_item_html( array $project ): string {
 	ob_start();
-	echo '<li class="bira-work__item">';
+	// Same height for every card; width follows the image's own aspect ratio (portrait = narrow, landscape = wide).
+	$style = '';
+	$meta  = empty( $project['image'] ) ? false : wp_get_attachment_metadata( (int) $project['image'] );
+	if ( ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ) {
+		$ratio = max( 0.6, min( 2.2, $meta['width'] / $meta['height'] ) );
+		$style = ' style="--ratio:' . round( $ratio, 4 ) . '"';
+	}
+	echo '<li class="bira-work__item"' . $style . '>';
 	get_template_part( 'template-parts/project-card', null, [ 'project' => $project ] );
 	echo '</li>';
 	return (string) ob_get_clean();
